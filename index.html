@@ -1,43 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Video Player Unlock System</title>
 
-<video id="myVideo" width="100%" controls>
-  <source src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" data-quality="720">
-  <source src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" data-quality="480">
-  <source src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" data-quality="360">
-</video>
+<style>
+body {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial;
+}
 
-<label>Volume:</label>
-<input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+.player {
+  width: 90%;
+  max-width: 750px;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid #444;
+}
 
-<select id="qualitySelector">
-  <option value="720">720p</option>
-  <option value="480">480p</option>
-  <option value="360">360p</option>
-</select>
+/* Popup */
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
 
-<!-- Telegram Join Button -->
-<a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"
-   style="display:block; margin-top:10px; padding:10px; background:#0088cc; color:white; text-align:center; border-radius:5px;">
-   Join Telegram to Watch Free 🎬🔥
-</a>
+.popup-box {
+  background: #111;
+  padding: 25px;
+  border-radius: 14px;
+  text-align: center;
+  width: 80%;
+  max-width: 350px;
+}
+
+.popup-box h2 {
+  color: #7cf;
+  margin-bottom: 10px;
+}
+
+.popup-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.join {
+  background: linear-gradient(90deg,#00d0ff,#8a2cff);
+  color: #fff;
+}
+
+.already {
+  background: #222;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: rgba(0,0,0,0.6);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+button, input, select {
+  padding: 5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- POPUP -->
+<div id="popup" class="popup">
+  <div class="popup-box">
+    <h2>Support Us!</h2>
+    <p>Join our Telegram for live links updates.</p>
+
+    <button class="popup-btn join"
+      onclick="window.open('https://t.me/+rwZKMV0-L8wyOTll','_blank')">
+      Join Now
+    </button>
+
+    <button class="popup-btn already" onclick="unlockVideo()">
+      Already Joined
+    </button>
+  </div>
+</div>
+
+<!-- Video Player -->
+<div class="player">
+
+  <video id="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" width="100%" controls style="display:none;">
+    <!-- ✅ Replace these with your video URLs -->
+    <source src="https://YOUR-LIVE-LINK-720.m3u8" data-quality="720p">
+    <source src="https://YOUR-LIVE-LINK-480.m3u8" data-quality="480p">
+  </video>
+
+  <div class="controls" id="controls" style="display:none;">
+    <button onclick="togglePlay()">Play/Pause</button>
+    <input type="range" id="seek" value="0" onchange="seekVideo()">
+    <input type="range" id="volume" min="0" max="1" step="0.1" onchange="setVolume()">
+    <select id="quality" onchange="changeQuality()">
+      <option value="720">720p</option>
+      <option value="480">480p</option>
+    </select>
+  </div>
+
+</div>
 
 <script>
-let video = document.getElementById("myVideo");
-let volumeSlider = document.getElementById("volumeSlider");
-let qualitySelector = document.getElementById("qualitySelector");
+const video = document.getElementById("video");
+const seek = document.getElementById("seek");
 
-volumeSlider.addEventListener("input", () => {
-  video.volume = volumeSlider.value;
-});
+function unlockVideo() {
+  document.getElementById("popup").style.display = "none";
+  video.style.display = "block";
+  document.getElementById("controls").style.display = "flex";
+  video.play();
+}
 
-qualitySelector.addEventListener("change", () => {
-  let quality = qualitySelector.value;
-  let sources = video.querySelectorAll("source");
-  
-  sources.forEach(src => {
-    if (src.getAttribute("data-quality") === quality) {
+// Player Functions
+video.ontimeupdate = () => seek.value = (video.currentTime / video.duration) * 100;
+function togglePlay(){ video.paused ? video.play() : video.pause(); }
+function seekVideo(){ video.currentTime = video.duration * (seek.value / 100); }
+function setVolume(){ video.volume = document.getElementById("volume").value; }
+
+function changeQuality(){
+  const selected = document.getElementById("quality").value;
+  const sources = video.querySelectorAll("source");
+  const currentTime = video.currentTime;
+
+  sources.forEach(src=>{
+    if(src.getAttribute("data-quality") === selected + "p"){
       video.src = src.src;
+      video.currentTime = currentTime;
       video.play();
     }
   });
-});
+}
 </script>
+
+</body>
+</html>
