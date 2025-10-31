@@ -1,161 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Video Player Unlock System</title>
+<meta charset="UTF-8">
+<title>Live Streaming</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body {
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  font-family: Arial;
+body{margin:0;background:#000;font-family:sans-serif;}
+.popup{
+ position:fixed;top:0;left:0;width:100%;height:100%;
+ background:rgba(0,0,0,.85);display:flex;align-items:center;
+ justify-content:center;z-index:9999;
 }
+.box{
+ background:#0b0b0f;padding:25px;width:330px;text-align:center;
+ border-radius:15px;box-shadow:0 0 20px rgba(0,255,255,.3);position:relative;
+}
+.close{
+ position:absolute;top:10px;right:15px;color:#0ff;font-size:26px;
+ cursor:pointer;font-weight:bold;
+}
+h2{color:#0ff;font-size:26px;margin:0 0 10px;}
+p{color:#ddd;font-size:15px;margin-bottom:18px;}
 
-.player {
-  width: 90%;
-  max-width: 750px;
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  border: 2px solid #444;
+.btn{
+ width:100%;padding:12px;border-radius:10px;border:none;
+ font-size:17px;color:#fff;cursor:pointer;
 }
-
-/* Popup */
-.popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
+.join{
+ background:linear-gradient(90deg,#3af,#a0f);margin-bottom:10px;
 }
-
-.popup-box {
-  background: #111;
-  padding: 25px;
-  border-radius: 14px;
-  text-align: center;
-  width: 80%;
-  max-width: 350px;
+.already{
+ background:#181818;border:1px solid #333;
 }
-
-.popup-box h2 {
-  color: #7cf;
-  margin-bottom: 10px;
-}
-
-.popup-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.join {
-  background: linear-gradient(90deg,#00d0ff,#8a2cff);
-  color: #fff;
-}
-
-.already {
-  background: #222;
-  color: #fff;
-  border: 1px solid #555;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  background: rgba(0,0,0,0.6);
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-button, input, select {
-  padding: 5px;
+iframe{
+ width:100%;height:100vh;border:none;display:none;
 }
 </style>
-
 </head>
 
 <body>
 
 <!-- POPUP -->
-<div id="popup" class="popup">
-  <div class="popup-box">
-    <h2>Support Us!</h2>
-    <p>Join our Telegram for live links updates.</p>
-
-    <button class="popup-btn join"
-      onclick="window.open('https://t.me/+rwZKMV0-L8wyOTll','_blank')">
-      Join Now
-    </button>
-
-    <button class="popup-btn already" onclick="unlockVideo()">
-      Already Joined
-    </button>
-  </div>
+<div class="popup" id="popup">
+ <div class="box">
+  <span class="close" onclick="playVideo()">×</span>
+  <h2>Support Us!</h2>
+  <p>Join Telegram to Watch Free Live Stream</p>
+  
+  <button class="btn join" onclick="joinNow()">Join Now</button>
+  <button class="btn already" onclick="playVideo()">Already Joined</button>
+ </div>
 </div>
 
-<!-- Video Player -->
-<div class="player">
-
-  <video id="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" width="100%" controls style="display:none;">
-    <!-- ✅ Replace these with your video URLs -->
-    <source src="https://YOUR-LIVE-LINK-720.m3u8" data-quality="720p">
-    <source src="https://YOUR-LIVE-LINK-480.m3u8" data-quality="480p">
-  </video>
-
-  <div class="controls" id="controls" style="display:none;">
-    <button onclick="togglePlay()">Play/Pause</button>
-    <input type="range" id="seek" value="0" onchange="seekVideo()">
-    <input type="range" id="volume" min="0" max="1" step="0.1" onchange="setVolume()">
-    <select id="quality" onchange="changeQuality()">
-      <option value="720">720p</option>
-      <option value="480">480p</option>
-    </select>
-  </div>
-
-</div>
+<!-- STREAM PLAYER -->
+<iframe id="video" src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" allow="autoplay"></iframe>
 
 <script>
-const video = document.getElementById("video");
-const seek = document.getElementById("seek");
-
-function unlockVideo() {
-  document.getElementById("popup").style.display = "none";
-  video.style.display = "block";
-  document.getElementById("controls").style.display = "flex";
-  video.play();
+function joinNow(){
+ window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
+ playVideo();
 }
 
-// Player Functions
-video.ontimeupdate = () => seek.value = (video.currentTime / video.duration) * 100;
-function togglePlay(){ video.paused ? video.play() : video.pause(); }
-function seekVideo(){ video.currentTime = video.duration * (seek.value / 100); }
-function setVolume(){ video.volume = document.getElementById("volume").value; }
-
-function changeQuality(){
-  const selected = document.getElementById("quality").value;
-  const sources = video.querySelectorAll("source");
-  const currentTime = video.currentTime;
-
-  sources.forEach(src=>{
-    if(src.getAttribute("data-quality") === selected + "p"){
-      video.src = src.src;
-      video.currentTime = currentTime;
-      video.play();
-    }
-  });
+function playVideo(){
+ document.getElementById("popup").style.display="none";
+ document.getElementById("video").style.display="block";
 }
 </script>
 
