@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Watch Live</title>
+<style>
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box {
+  background: #fff;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  border-radius: 10px;
+}
+button {
+  padding: 10px 20px;
+  background: #0088cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+<div id="popup" class="popup">
+  <div class="box">
+    <h2>Join Telegram To Watch Live</h2>
+    <p>Free Live Streaming</p>
+    <button onclick="joinNow()">Join Now</button>
+  </div>
+</div>
+
+<iframe id="video"
+src="https://in-mc-fdlive.fancode.com/mumbai/137890_english_hls_d76ffc379177424_1ta-di_h264/index.m3u8"
+style="width:100%; height:100vh; display:none;" allow="autoplay"
+></iframe>
+
+<script>
+function joinNow() {
+  window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
+  document.getElementById("popup").style.display = "none";
+  document.getElementById("video").style.display = "block";
+}
+</script>
+
+</body>
+</html>
