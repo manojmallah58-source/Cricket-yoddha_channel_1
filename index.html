@@ -1,93 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Watch Live</title>
+<title>Live Streaming</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body {
-  margin: 0;
-  background: #000;
-  font-family: Arial, sans-serif;
+body{margin:0;background:#000;font-family:sans-serif;}
+.popup{
+ position:fixed;top:0;left:0;width:100%;height:100%;
+ background:rgba(0,0,0,.85);display:flex;align-items:center;
+ justify-content:center;z-index:9999;
 }
-
-/* Popup Background */
-.popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+.box{
+ background:#0b0b0f;padding:25px;width:330px;text-align:center;
+ border-radius:15px;box-shadow:0 0 20px rgba(0,255,255,.3);position:relative;
 }
-
-/* Popup Box */
-.box {
-  background: #0b0b0f;
-  padding: 25px;
-  width: 320px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 0 20px rgb(0,255,255);
-  position: relative;
+.close{
+ position:absolute;top:10px;right:15px;color:#0ff;font-size:26px;
+ cursor:pointer;font-weight:bold;
 }
+h2{color:#0ff;font-size:26px;margin:0 0 10px;}
+p{color:#ddd;font-size:15px;margin-bottom:18px;}
 
-/* Close Button */
-.close {
-  position: absolute;
-  top: 10px; right: 15px;
-  font-size: 25px;
-  color: #0ff;
-  cursor: pointer;
+.btn{
+ width:100%;padding:12px;border-radius:10px;border:none;
+ font-size:17px;color:#fff;cursor:pointer;
 }
-
-/* Heading */
-.box h2 {
-  color: #0ff;
-  font-size: 28px;
-  margin-bottom: 10px;
+.join{
+ background:linear-gradient(90deg,#3af,#a0f);margin-bottom:10px;
 }
-
-/* Text */
-.box p {
-  color: #ddd;
-  font-size: 16px;
-  margin-bottom: 20px;
+.already{
+ background:#181818;border:1px solid #333;
 }
-
-/* Join Button */
-.join-btn {
-  background: linear-gradient(90deg, #3af, #a0f);
-  border: none;
-  color: #fff;
-  padding: 12px;
-  width: 100%;
-  border-radius: 10px;
-  font-size: 18px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-/* Already Joined */
-.already-btn {
-  background: #181818;
-  border: none;
-  color: #fff;
-  padding: 12px;
-  width: 100%;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-iframe {
-  width:100%;
-  height:100vh;
-  display:none;
+iframe{
+ width:100%;height:100vh;border:none;display:none;
 }
 </style>
 </head>
@@ -95,21 +42,31 @@ iframe {
 <body>
 
 <!-- POPUP -->
-<div id="popup" class="popup">
-  <div class="box">
-    <span class="close" onclick="closePopup()">×</span>
-    <h2>Support Us!</h2>
-    <p>Join our Telegram for more links & updates.</p>
-    
-    <button class="join-btn" onclick="joinNow()">Join Now</button>
-    <button class="already-btn" onclick="playVideo()">Already Joined</button>
-  </div>
+<div class="popup" id="popup">
+ <div class="box">
+  <span class="close" onclick="playVideo()">×</span>
+  <h2>Support Us!</h2>
+  <p>Join Telegram to Watch Free Live Stream</p>
+  
+  <button class="btn join" onclick="joinNow()">Join Now</button>
+  <button class="btn already" onclick="playVideo()">Already Joined</button>
+ </div>
 </div>
 
-<!-- VIDEO -->
+<!-- STREAM PLAYER -->
 <iframe id="video" src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" allow="autoplay"></iframe>
 
 <script>
-function joinNow() {
-  window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
-  playVideo();
+function joinNow(){
+ window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
+ playVideo();
+}
+
+function playVideo(){
+ document.getElementById("popup").style.display="none";
+ document.getElementById("video").style.display="block";
+}
+</script>
+
+</body>
+</html>
