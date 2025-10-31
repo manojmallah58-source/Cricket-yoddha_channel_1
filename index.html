@@ -1,73 +1,43 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Live Streaming</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<video id="myVideo" width="100%" controls>
+  <source src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" data-quality="720">
+  <source src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" data-quality="480">
+  <source src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" data-quality="360">
+</video>
 
-<style>
-body{margin:0;background:#000;font-family:sans-serif;}
-.popup{
- position:fixed;top:0;left:0;width:100%;height:100%;
- background:rgba(0,0,0,.85);display:flex;align-items:center;
- justify-content:center;z-index:9999;
-}
-.box{
- background:#0b0b0f;padding:25px;width:330px;text-align:center;
- border-radius:15px;box-shadow:0 0 20px rgba(0,255,255,.3);position:relative;
-}
-.close{
- position:absolute;top:10px;right:15px;color:#0ff;font-size:26px;
- cursor:pointer;font-weight:bold;
-}
-h2{color:#0ff;font-size:26px;margin:0 0 10px;}
-p{color:#ddd;font-size:15px;margin-bottom:18px;}
+<label>Volume:</label>
+<input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
 
-.btn{
- width:100%;padding:12px;border-radius:10px;border:none;
- font-size:17px;color:#fff;cursor:pointer;
-}
-.join{
- background:linear-gradient(90deg,#3af,#a0f);margin-bottom:10px;
-}
-.already{
- background:#181818;border:1px solid #333;
-}
-iframe{
- width:100%;height:100vh;border:none;display:none;
-}
-</style>
-</head>
+<select id="qualitySelector">
+  <option value="720">720p</option>
+  <option value="480">480p</option>
+  <option value="360">360p</option>
+</select>
 
-<body>
-
-<!-- POPUP -->
-<div class="popup" id="popup">
- <div class="box">
-  <span class="close" onclick="playVideo()">×</span>
-  <h2>Support Us!</h2>
-  <p>Join Telegram to Watch Free Live Stream</p>
-  
-  <button class="btn join" onclick="joinNow()">Join Now</button>
-  <button class="btn already" onclick="playVideo()">Already Joined</button>
- </div>
-</div>
-
-<!-- STREAM PLAYER -->
-<iframe id="video" src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" allow="autoplay"></iframe>
+<!-- Telegram Join Button -->
+<a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"
+   style="display:block; margin-top:10px; padding:10px; background:#0088cc; color:white; text-align:center; border-radius:5px;">
+   Join Telegram to Watch Free 🎬🔥
+</a>
 
 <script>
-function joinNow(){
- window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
- playVideo();
-}
+let video = document.getElementById("myVideo");
+let volumeSlider = document.getElementById("volumeSlider");
+let qualitySelector = document.getElementById("qualitySelector");
 
-function playVideo(){
- document.getElementById("popup").style.display="none";
- document.getElementById("video").style.display="block";
-}
+volumeSlider.addEventListener("input", () => {
+  video.volume = volumeSlider.value;
+});
+
+qualitySelector.addEventListener("change", () => {
+  let quality = qualitySelector.value;
+  let sources = video.querySelectorAll("source");
+  
+  sources.forEach(src => {
+    if (src.getAttribute("data-quality") === quality) {
+      video.src = src.src;
+      video.play();
+    }
+  });
+});
 </script>
-
-</body>
-</html>
