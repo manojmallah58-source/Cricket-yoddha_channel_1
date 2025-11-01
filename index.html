@@ -1,120 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live TV</title>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
-body{margin:0;background:#020202;font-family:sans-serif;color:#fff; display:flex;justify-content:center;align-items:center;height:100vh;}
-/* Popup */
-.popup{position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,0.9);display:flex;align-items:center;
-justify-content:center;z-index:1000;}
-.popup-box{background:#0d0f18;padding:25px;width:330px;
-border-radius:15px;text-align:center;box-shadow:0 0 20px rgba(0,255,255,.2);
-position:relative;}
-.popup-box h2{font-size:28px;background:linear-gradient(90deg,#3af,#a0f);
--webkit-background-clip:text;color:transparent;margin:0 0 8px;}
-.popup-box p{color:#aaa;font-size:15px;margin-bottom:20px}
-.btn{width:100%;padding:13px;border-radius:10px;border:none;font-size:18px;
-cursor:pointer;margin-bottom:10px}
-.join-btn{background:linear-gradient(90deg,#3af,#a0f);color:#fff}
-.already-btn{background:#151515;color:#fff;border:1px solid #333}
-.close{position:absolute;top:10px;right:15px;color:#0ff;font-size:26px;
-cursor:pointer;font-weight:bold}
-
-/* Player Center */
-.container{width:100%;max-width:900px;padding:10px;}
-.video-wrap{position:relative;background:#000;border-radius:15px;
-overflow:hidden;display:flex;justify-content:center;align-items:center;
-height:60vh;}
-video{width:100%;height:100%;object-fit:contain;border-radius:15px}
-
-/* Controls */
-.controls{position:absolute;bottom:8px;left:0;right:0;padding:8px;display:flex;
-align-items:center;justify-content:space-between;background:rgba(0,0,0,0.4);
-border-radius:10px}
-button, select, input[type=range]{cursor:pointer}
-input[type=range]{width:70px}
-
-/* Quality menu */
-.quality-box{position:absolute;bottom:55px;right:10px;background:#111;
-border-radius:7px;padding:6px;display:none}
-.quality-box div{padding:6px;font-size:14px}
-.quality-box div:hover{background:#222}
+body { background:black; margin:0; font-family:Arial; }
+#popup {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center;
+}
+.popup-box {
+    width:85%; background:#111; padding:25px; text-align:center;
+    border-radius:15px; color:#fff; box-shadow:0 0 20px #00d9ff;
+}
+.btn-join {
+    width:100%; background:linear-gradient(90deg,#00d9ff,#8b2cff);
+    border:none; padding:12px; border-radius:10px; font-size:18px; margin-bottom:10px;
+}
+.btn-joined {
+    width:100%; background:#222; border:none; padding:12px; border-radius:10px; font-size:18px;
+}
+#video-box { display:none; height:100vh; background:black; }
+video { width:100%; height:100%; background:black; }
+.quality-menu {
+    position:absolute; top:10px; right:10px; background:#000; color:#fff;
+    padding:10px; border-radius:8px; display:none; z-index:999;
+}
+.quality-item { padding:5px 10px; cursor:pointer; }
+.quality-item:hover { background:#222; }
 </style>
 </head>
 
 <body>
 
-<!-- POPUP -->
-<div id="popup" class="popup">
-  <div class="popup-box">
-    <span class="close" onclick="playVideo()">✕</span>
-    <h2>Support Us!</h2>
-    <p>Join our Telegram for More links & updates.</p>
-    <button class="btn join-btn" onclick="joinNow()">Join Now</button>
-    <button class="btn already-btn" onclick="playVideo()">Already Joined</button>
-  </div>
+<div id="popup">
+<div class="popup-box">
+<h2>Support Us!</h2>
+<p>Join our Telegram for more links and updates.</p>
+<button class="btn-join" onclick="joinNow()">Join Now</button>
+<button class="btn-joined" onclick="already()">Already Joined</button>
+</div>
 </div>
 
-<!-- PLAYER -->
-<div class="container">
-  <div class="video-wrap">
-    <video id="video"></video>
-
-    <div class="controls">
-      <button onclick="togglePlay()">⏯️</button>
-      <input type="range" id="seek" value="0">
-      <span id="time">00:00</span>
-      <button onclick="toggleMute()">🔊</button>
-      <input type="range" id="vol" min="0" max="1" step="0.1" value="1">
-      <button onclick="toggleQuality()">⚙️</button>
-      <button onclick="fullScreen()">⛶</button>
-    </div>
-
-    <div id="qBox" class="quality-box">
-      <div onclick="setQ('STREAM_360.m3u8')">360p</div>
-      <div onclick="setQ('STREAM_480.m3u8')">480p</div>
-      <div onclick="setQ('STREAM_720.m3u8')">720p</div>
-      <div onclick="setQ('STREAM_1080.m3u8')">1080p</div>
-    </div>
-
-  </div>
+<div id="video-box">
+<div id="qualityMenu" class="quality-menu"></div>
+<video id="video" playsinline controls></video>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-let video=document.getElementById("video");
-let popup=document.getElementById("popup");
-let hls=new Hls();
 
-function loadStream(u){hls.loadSource(u);hls.attachMedia(video);}
-loadStream("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
+// ✅ Replace only here — Your Stream Link
+const stream = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
 
-function joinNow(){
-  window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
-  playVideo();
+// ✅ Quality menu
+function showQualityMenu(levels, hls) {
+    const menu = document.getElementById("qualityMenu");
+    menu.innerHTML = '';
+
+    levels.forEach((level, i) => {
+        const q = document.createElement("div");
+        q.className = "quality-item";
+        q.innerText = level.height + "p";
+        q.onclick = () => { hls.currentLevel = i; menu.style.display = "none"; };
+        menu.appendChild(q);
+    });
+
+    const auto = document.createElement("div");
+    auto.className = "quality-item";
+    auto.innerText = "Auto ✅";
+    auto.onclick = () => { hls.currentLevel = -1; menu.style.display="none"; };
+    menu.appendChild(auto);
 }
-function playVideo(){popup.style.display="none";video.play();}
-function togglePlay(){video.paused?video.play():video.pause();}
-function toggleMute(){video.muted=!video.muted;}
-function fullScreen(){video.requestFullscreen();}
-function toggleQuality(){let q=document.getElementById("qBox");
-q.style.display=q.style.display==="block"?"none":"block";}
-function setQ(u){loadStream(u);toggleQuality();}
 
-let seek=document.getElementById("seek");
-video.addEventListener("timeupdate",()=>{
-  seek.max=video.duration;
-  seek.value=video.currentTime;
-  document.getElementById("time").innerText=
-  ("0"+Math.floor(video.currentTime/60)).slice(-2)+":"+
-  ("0"+Math.floor(video.currentTime%60)).slice(-2);
-});
-seek.oninput=()=>video.currentTime=seek.value;
-document.getElementById("vol").oninput=e=>video.volume=e.target.value;
+// ✅ Player init
+function initPlayer() {
+    const v = document.getElementById("video");
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(stream);
+        hls.attachMedia(v);
+        hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+            showQualityMenu(data.levels, hls);
+        });
+
+        v.addEventListener("click", () => {
+          document.getElementById("qualityMenu").style.display="block";
+        });
+    } else {
+        v.src = stream;
+    }
+}
+
+// ✅ Telegram button actions
+function joinNow() {
+    window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
+}
+function already() {
+    document.getElementById("popup").style.display="none";
+    document.getElementById("video-box").style.display="block";
+    initPlayer();
+}
+
 </script>
-
 </body>
 </html>
