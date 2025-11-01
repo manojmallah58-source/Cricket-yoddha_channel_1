@@ -81,10 +81,10 @@ border-radius:7px;padding:6px;display:none
   </div>
 
   <div id="qBox" class="quality-box">
-   <div onclick="setQ('https://foxenglish.pages.dev/playlist.m3u8')">360p</div>
-   <div onclick="setQ('https://foxenglish.pages.dev/playlist.m3u8')">480p</div>
-   <div onclick="setQ('https://foxenglish.pages.dev/playlist.m3u8')">720p</div>
-   <div onclick="setQ('https://foxenglish.pages.dev/playlist.m3u8')">1080p</div>
+   <div onclick="setQ('http://xott.live:8080/live/Ali00300/Ahmad0298/341039.m3u8')">360p</div>
+   <div onclick="setQ('http://xott.live:8080/live/Ali00300/Ahmad0298/341039.m3u8')">480p</div>
+   <div onclick="setQ('http://xott.live:8080/live/Ali00300/Ahmad0298/341039.m3u8')">720p</div>
+   <div onclick="setQ('http://xott.live:8080/live/Ali00300/Ahmad0298/341039.m3u8')">1080p</div>
   </div>
 
  </div>
@@ -99,7 +99,7 @@ let hls = new Hls();
 function loadStream(u){
  hls.loadSource(u); hls.attachMedia(video);
 }
-loadStream("https://foxenglish.pages.dev/playlist.m3u8"); // Default quality
+loadStream("http://xott.live:8080/live/Ali00300/Ahmad0298/341039.m3u8"); // Default quality
 
 function joinNow(){
  window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
