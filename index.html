@@ -74,10 +74,10 @@ border-radius:7px;padding:6px;display:none}
     </div>
 
     <div id="qBox" class="quality-box">
-      <div onclick="setQ('https://c1.rojoni9589.workers.dev/?v=ten1hd')">360p</div>
-      <div onclick="setQ('https://c1.rojoni9589.workers.dev/?v=ten1hd')">480p</div>
-      <div onclick="setQ('https://c1.rojoni9589.workers.dev/?v=ten1hd')">720p</div>
-      <div onclick="setQ('https://c1.rojoni9589.workers.dev/?v=ten1hd')">1080p</div>
+      <div onclick="setQ('STREAM_360.m3u8')">360p</div>
+      <div onclick="setQ('STREAM_480.m3u8')">480p</div>
+      <div onclick="setQ('STREAM_720.m3u8')">720p</div>
+      <div onclick="setQ('STREAM_1080.m3u8')">1080p</div>
     </div>
 
   </div>
@@ -90,7 +90,7 @@ let popup=document.getElementById("popup");
 let hls=new Hls();
 
 function loadStream(u){hls.loadSource(u);hls.attachMedia(video);}
-loadStream("STREAM_720.m3u8");
+loadStream("https://in-mc-fdlive.fancode.com/mumbai/137890_english_hls_d76ffc379177424_1ta-di_h264/index.m3u8");
 
 function joinNow(){
   window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
