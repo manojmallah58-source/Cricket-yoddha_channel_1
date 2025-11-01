@@ -1,124 +1,182 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Live Streaming</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body{margin:0;background:#000;font-family:sans-serif;}
-.popup{
- position:fixed;top:0;left:0;width:100%;height:100%;
- background:rgba(0,0,0,.85);display:flex;align-items:center;
- justify-content:center;z-index:9999;
+body{
+ background:#0d0d0d;
+ font-family:Arial;
+ margin:0;
+ color:#fff;
 }
-.box{
- background:#0b0b0f;padding:25px;width:330px;text-align:center;
- border-radius:15px;box-shadow:0 0 20px rgba(0,255,255,.3);position:relative;
-}
-.close{
- position:absolute;top:10px;right:15px;color:#0ff;font-size:26px;
- cursor:pointer;font-weight:bold;
-}
-h2{color:#0ff;font-size:26px;margin:0 0 10px;}
-p{color:#ddd;font-size:15px;margin-bottom:18px;}
 
-.btn{
- width:100%;padding:12px;border-radius:10px;border:none;
- font-size:17px;color:#fff;cursor:pointer;
+.player-box{
+ width:100%;
+ max-width:900px;
+ margin:auto;
+ padding:15px;
 }
-.join{background:linear-gradient(90deg,#3af,#a0f);margin-bottom:10px;}
-.already{background:#181818;border:1px solid #333;}
 
-.video-container{
- position: relative;width:100%;height:100vh;
+.video-wrapper{
+ position:relative;
+ background:#000;
+ border-radius:15px;
+ overflow:hidden;
 }
-video{width:100%;height:100%;background:#000;}
+
+video{
+ width:100%;
+ border-radius:15px;
+}
 
 .controls{
- position:absolute;bottom:15px;left:0;width:100%;display:flex;
- justify-content:center;gap:10px;z-index:9;
+ position:absolute;
+ bottom:10px;left:0;right:0;
+ display:flex;align-items:center;
+ justify-content:space-between;
+ padding:10px;
+ background:rgba(0,0,0,0.4);
+ border-radius:10px;
 }
-.control-btn{
- background:rgba(0,0,0,.6);color:#fff;border:none;
- padding:10px 14px;font-size:16px;border-radius:8px;cursor:pointer;
+
+button, select, input[type=range]{
+ cursor:pointer;
 }
-.settings-box{
- position:absolute;bottom:60px;right:20px;background:#111;
- color:#fff;padding:10px;border-radius:8px;display:none;
+
+button{
+ background:none;
+ border:none;
+ color:#fff;
+ font-size:20px;
+ margin:0 5px;
 }
-.settings-box div{padding:5px;cursor:pointer;}
-.settings-box div:hover{background:#222;}
+
+input[type=range]{
+ width:70px;
+}
+
+.quality-box{
+ background:#111;
+ padding:10px;
+ border-radius:5px;
+ display:none;
+ position:absolute;
+ bottom:60px;
+ right:10px;
+}
+
+.quality-box div{
+ padding:6px;
+ cursor:pointer;
+}
+.quality-box div:hover{
+ background:#222;
+}
+
+/* Telegram section */
+.box{
+ background:#151515;
+ margin-top:15px;
+ padding:15px;
+ border-radius:12px;
+ text-align:center;
+}
+.join-btn{
+ background:linear-gradient(45deg,#08f,#0af);
+ padding:12px;
+ border-radius:10px;
+ display:block;
+ margin-top:10px;
+ text-decoration:none;
+ color:#fff;
+ font-size:18px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
- <div class="box">
-  <span class="close" onclick="playVideo()">×</span>
-  <h2>Support Us!</h2>
-  <p>Join Telegram More Link Update</p>
-  <button class="btn join" onclick="joinNow()">Join Now</button>
-  <button class="btn already" onclick="playVideo()">Already Joined</button>
- </div>
-</div>
+<div class="player-box">
+ <div class="video-wrapper">
 
-<!-- VIDEO PLAYER -->
-<div class="video-container" style="display:none;" id="playerBox">
- <video id="video" controls>
-  <source id="streamSource" src="STREAM_URL_720P" type="application/x-mpegURL">
- </video>
+ <video id="video"></video>
 
  <div class="controls">
-  <button class="control-btn" onclick="seek(-10)">⏪ 10s</button>
-  <button class="control-btn" onclick="toggleFullscreen()">⛶</button>
-  <button class="control-btn" onclick="seek(10)">⏩ 10s</button>
-  <button class="control-btn" onclick="toggleSettings()">⚙️</button>
+   <button onclick="togglePlay()">⏯️</button>
+   <input type="range" id="seek" value="0" step="1">
+   <span id="time">00:00</span>
+   <button onclick="toggleMute()">🔊</button>
+   <input type="range" id="vol" min="0" max="1" step="0.1" value="1">
+   <button onclick="toggleQuality()">⚙️</button>
+   <button onclick="fullScreen()">⛶</button>
  </div>
 
- <div class="settings-box" id="settingsBox">
-  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">360p</div>
-  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">480p</div>
-  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">720p HD</div>
-  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">1080p Full HD</div>
+ <div class="quality-box" id="qBox">
+  <div onclick="setQuality('https://in-mc-fdlive.fancode.com/mumbai/137812_english_hls_04de2ac93f23446_1ta-di_h264/index.m3u8')">360p</div>
+  <div onclick="setQuality('https://in-mc-fdlive.fancode.com/mumbai/137812_english_hls_04de2ac93f23446_1ta-di_h264/index.m3u8')">480p</div>
+  <div onclick="setQuality('https://in-mc-fdlive.fancode.com/mumbai/137812_english_hls_04de2ac93f23446_1ta-di_h264/index.m3u8')">720p</div>
+  <div onclick="setQuality('https://in-mc-fdlive.fancode.com/mumbai/137812_english_hls_04de2ac93f23446_1ta-di_h264/index.m3u8')">1080p</div>
  </div>
+
+ </div>
+
+ <!-- Telegram -->
+ <div class="box">
+  🔔 Follow us for Updates!
+  <a class="join-btn" href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank">Click Here To Join Telegram</a>
+ </div>
+
 </div>
 
+<!-- HLS Script -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-function joinNow(){
- window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
- playVideo();
+var video = document.getElementById("video");
+var hls = new Hls();
+
+function loadStream(url){
+ hls.loadSource(url);
+ hls.attachMedia(video);
 }
 
-function playVideo(){
- document.getElementById("popup").style.display="none";
- document.getElementById("playerBox").style.display="block";
+loadStream("STREAM_720.m3u8"); // Default
+
+function togglePlay(){
+ video.paused ? video.play() : video.pause();
 }
 
-function seek(sec){
- let video=document.getElementById("video");
- video.currentTime += sec;
+function toggleMute(){
+ video.muted = !video.muted;
 }
 
-function toggleFullscreen(){
- let video=document.getElementById("video");
- if(video.requestFullscreen) video.requestFullscreen();
+function fullScreen(){
+ video.requestFullscreen();
 }
 
-function toggleSettings(){
- let box=document.getElementById("settingsBox");
- box.style.display = box.style.display === "block" ? "none" : "block";
+function setQuality(url){
+ loadStream(url);
+ document.getElementById("qBox").style.display="none";
 }
 
-function changeQuality(url){
- document.getElementById("streamSource").src=url;
- document.getElementById("video").load();
- document.getElementById("settingsBox").style.display="none";
+function toggleQuality(){
+ let b = document.getElementById("qBox");
+ b.style.display = b.style.display=="block" ? "none" : "block";
 }
+
+let seek = document.getElementById("seek");
+video.addEventListener("timeupdate",()=>{
+ seek.max = video.duration;
+ seek.value = video.currentTime;
+ document.getElementById("time").innerText =
+ ("0"+Math.floor(video.currentTime/60)).slice(-2)+":"+
+ ("0"+Math.floor(video.currentTime%60)).slice(-2);
+});
+seek.addEventListener("input",()=> video.currentTime = seek.value);
+
+document.getElementById("vol").addEventListener("input",e=>{
+ video.volume=e.target.value;
+});
 </script>
-
 </body>
 </html>
