@@ -28,15 +28,28 @@ p{color:#ddd;font-size:15px;margin-bottom:18px;}
  width:100%;padding:12px;border-radius:10px;border:none;
  font-size:17px;color:#fff;cursor:pointer;
 }
-.join{
- background:linear-gradient(90deg,#3af,#a0f);margin-bottom:10px;
+.join{background:linear-gradient(90deg,#3af,#a0f);margin-bottom:10px;}
+.already{background:#181818;border:1px solid #333;}
+
+.video-container{
+ position: relative;width:100%;height:100vh;
 }
-.already{
- background:#181818;border:1px solid #333;
+video{width:100%;height:100%;background:#000;}
+
+.controls{
+ position:absolute;bottom:15px;left:0;width:100%;display:flex;
+ justify-content:center;gap:10px;z-index:9;
 }
-iframe{
- width:100%;height:100vh;border:none;display:none;
+.control-btn{
+ background:rgba(0,0,0,.6);color:#fff;border:none;
+ padding:10px 14px;font-size:16px;border-radius:8px;cursor:pointer;
 }
+.settings-box{
+ position:absolute;bottom:60px;right:20px;background:#111;
+ color:#fff;padding:10px;border-radius:8px;display:none;
+}
+.settings-box div{padding:5px;cursor:pointer;}
+.settings-box div:hover{background:#222;}
 </style>
 </head>
 
@@ -47,15 +60,32 @@ iframe{
  <div class="box">
   <span class="close" onclick="playVideo()">×</span>
   <h2>Support Us!</h2>
-  <p>Join Telegram More Link</p>
-  
+  <p>Join Telegram More Link Update</p>
   <button class="btn join" onclick="joinNow()">Join Now</button>
   <button class="btn already" onclick="playVideo()">Already Joined</button>
  </div>
 </div>
 
-<!-- STREAM PLAYER -->
-<iframe id="video" src="https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8" allow="autoplay"></iframe>
+<!-- VIDEO PLAYER -->
+<div class="video-container" style="display:none;" id="playerBox">
+ <video id="video" controls>
+  <source id="streamSource" src="STREAM_URL_720P" type="application/x-mpegURL">
+ </video>
+
+ <div class="controls">
+  <button class="control-btn" onclick="seek(-10)">⏪ 10s</button>
+  <button class="control-btn" onclick="toggleFullscreen()">⛶</button>
+  <button class="control-btn" onclick="seek(10)">⏩ 10s</button>
+  <button class="control-btn" onclick="toggleSettings()">⚙️</button>
+ </div>
+
+ <div class="settings-box" id="settingsBox">
+  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">360p</div>
+  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">480p</div>
+  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">720p HD</div>
+  <div onclick="changeQuality('https://hugh.cdn.rumble.cloud/live/u7gf26qm/slot-15/qiz6-ltf7/chunklist.m3u8')">1080p Full HD</div>
+ </div>
+</div>
 
 <script>
 function joinNow(){
@@ -65,7 +95,28 @@ function joinNow(){
 
 function playVideo(){
  document.getElementById("popup").style.display="none";
- document.getElementById("video").style.display="block";
+ document.getElementById("playerBox").style.display="block";
+}
+
+function seek(sec){
+ let video=document.getElementById("video");
+ video.currentTime += sec;
+}
+
+function toggleFullscreen(){
+ let video=document.getElementById("video");
+ if(video.requestFullscreen) video.requestFullscreen();
+}
+
+function toggleSettings(){
+ let box=document.getElementById("settingsBox");
+ box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+function changeQuality(url){
+ document.getElementById("streamSource").src=url;
+ document.getElementById("video").load();
+ document.getElementById("settingsBox").style.display="none";
 }
 </script>
 
