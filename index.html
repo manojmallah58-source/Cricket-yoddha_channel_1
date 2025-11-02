@@ -4,31 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live TV</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
-body { background:black; margin:0; font-family:Arial; }
+body { background:black; margin:0; font-family:Arial; color:white; }
+
 #popup {
-    position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center;
+position:fixed; top:0; left:0; width:100%; height:100%;
+background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center;
 }
 .popup-box {
-    width:85%; background:#111; padding:25px; text-align:center;
-    border-radius:15px; color:#fff; box-shadow:0 0 20px #00d9ff;
+width:85%; background:#111; padding:25px; text-align:center;
+border-radius:15px; color:#fff; box-shadow:0 0 20px #00d9ff;
 }
 .btn-join {
-    width:100%; background:linear-gradient(90deg,#00d9ff,#8b2cff);
-    border:none; padding:12px; border-radius:10px; font-size:18px; margin-bottom:10px;
+width:100%; background:linear-gradient(90deg,#00d9ff,#8b2cff);
+border:none; padding:12px; border-radius:10px; font-size:18px; margin-bottom:10px;
 }
 .btn-joined {
-    width:100%; background:#222; border:none; padding:12px; border-radius:10px; font-size:18px;
+width:100%; background:#222; border:none; padding:12px; border-radius:10px; font-size:18px;
 }
-#video-box { display:none; height:100vh; background:black; }
+#video-box { display:none; position:relative; height:100vh; background:black; }
 video { width:100%; height:100%; background:black; }
-.quality-menu {
-    position:absolute; top:10px; right:10px; background:#000; color:#fff;
-    padding:10px; border-radius:8px; display:none; z-index:999;
+
+/* Quality Button */
+#qualityBtn {
+position:absolute; top:10px; right:10px; z-index:999;
+background:#000; color:#fff; padding:8px 12px; border-radius:7px; cursor:pointer;
 }
-.quality-item { padding:5px 10px; cursor:pointer; }
+
+/* Quality Menu */
+.quality-menu {
+position:absolute; top:50px; right:10px; background:#000;
+color:#fff; padding:10px; border-radius:8px; display:none; z-index:1000;
+}
+.quality-item { padding:6px 12px; cursor:pointer; }
 .quality-item:hover { background:#222; }
 </style>
 </head>
@@ -37,20 +45,15 @@ video { width:100%; height:100%; background:black; }
 
 <div id="popup">
 <div class="popup-box">
-
-<h2>📣 Support Us!</h2>
-
-<p>
-Join our Telegram channel <b>CRICKET YODDHA</b> for instant updates, highlights, and exclusive links.
-</p>
-
+<h2>📣 Support Us</h2>
+<p>Join our Telegram for Streaming Links</p>
 <button class="btn-join" onclick="joinNow()">Join Now</button>
 <button class="btn-joined" onclick="already()">Already Joined</button>
-
 </div>
 </div>
 
 <div id="video-box">
+<button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
 <div id="qualityMenu" class="quality-menu"></div>
 <video id="video" playsinline controls></video>
 </div>
@@ -58,58 +61,59 @@ Join our Telegram channel <b>CRICKET YODDHA</b> for instant updates, highlights,
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
 
-// ✅ Replace only here — Your Stream Link
-const stream = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+// ✅ Your Stream Link (multi-quality)
+const stream = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
 
-// ✅ Quality menu
 function showQualityMenu(levels, hls) {
-    const menu = document.getElementById("qualityMenu");
-    menu.innerHTML = '';
+const menu = document.getElementById("qualityMenu");
+menu.innerHTML = "";
 
-    levels.forEach((level, i) => {
-        const q = document.createElement("div");
-        q.className = "quality-item";
-        q.innerText = level.height + "p";
-        q.onclick = () => { hls.currentLevel = i; menu.style.display = "none"; };
-        menu.appendChild(q);
-    });
+levels.forEach((level, i) => {
+const opt = document.createElement("div");
+opt.className = "quality-item";
+opt.innerText = level.height + "p";
+opt.onclick = () => { 
+hls.currentLevel = i; 
+menu.style.display = "none"; 
+};
+menu.appendChild(opt);
+});
 
-    const auto = document.createElement("div");
-    auto.className = "quality-item";
-    auto.innerText = "Auto ✅";
-    auto.onclick = () => { hls.currentLevel = -1; menu.style.display="none"; };
-    menu.appendChild(auto);
+// Auto Mode
+const auto = document.createElement("div");
+auto.className = "quality-item";
+auto.innerText = "Auto";
+auto.onclick = () => { hls.currentLevel = -1; menu.style.display = "none"; };
+menu.appendChild(auto);
 }
 
-// ✅ Player init
-function initPlayer() {
-    const v = document.getElementById("video");
-    if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(stream);
-        hls.attachMedia(v);
-        hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
-            showQualityMenu(data.levels, hls);
-        });
-
-        v.addEventListener("click", () => {
-          document.getElementById("qualityMenu").style.display="block";
-        });
-    } else {
-        v.src = stream;
-    }
+function toggleQuality(){
+let menu = document.getElementById("qualityMenu");
+menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-// ✅ Telegram button actions
-function joinNow() {
-    window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
-}
-function already() {
-    document.getElementById("popup").style.display="none";
-    document.getElementById("video-box").style.display="block";
-    initPlayer();
+function initPlayer(){
+const v = document.getElementById("video");
+if(Hls.isSupported()){
+const hls = new Hls();
+hls.loadSource(stream);
+hls.attachMedia(v);
+hls.on(Hls.Events.MANIFEST_PARSED, function(_, data){
+showQualityMenu(data.levels, hls);
+});
+}else{ v.src = stream; }
 }
 
+function joinNow(){
+window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
+}
+
+function already(){
+document.getElementById("popup").style.display="none";
+document.getElementById("video-box").style.display="block";
+initPlayer();
+}
 </script>
+
 </body>
 </html>
