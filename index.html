@@ -3,213 +3,226 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ALLROUNDER Live Stream</title>
+<title>Live TV</title>
 <style>
-  body {
-    margin: 0;
-    background-color: #000;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    overflow: hidden;
-  }
+body { 
+  background: black; 
+  margin: 0; 
+  font-family: Arial, sans-serif; 
+  color: white; 
+}
 
-  /* POPUP (Intro) */
-  #popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    animation: fadeOut 1s ease 3s forwards;
-  }
+/* Popup */
+#popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
 
-  #popup img {
-    width: 120px;
-    height: 120px;
-    animation: zoomIn 1.5s ease;
-  }
+.popup-box {
+  width: 85%;
+  max-width: 400px;
+  background: #111;
+  padding: 25px 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+  border: 1px solid #ff0000;
+}
 
-  #popup h1 {
-    color: gold;
-    font-size: 32px;
-    margin-top: 15px;
-    letter-spacing: 3px;
-  }
+/* Heading */
+.popup-box h2 {
+  color: #ffffff; /* White for Support Us */
+  font-size: 24px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
-  @keyframes zoomIn {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
+/* Paragraph */
+.popup-box p {
+  color: #bfbfbf;
+  font-size: 16px;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
 
-  @keyframes fadeOut {
-    to { opacity: 0; visibility: hidden; }
-  }
+/* Buttons */
+.btn-join {
+  width: 100%;
+  background: #ff0000;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.3s;
+}
 
-  /* Main Page */
-  #main {
-    display: none;
-    animation: fadeIn 1s ease forwards;
-  }
+.btn-join:hover {
+  background: #e60000;
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+.btn-joined {
+  width: 100%;
+  background: #222;
+  border: 1px solid #444;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-  .header {
-    background-color: #0a0a0a;
-    padding: 15px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.btn-joined:hover {
+  background: #333;
+}
 
-  .header img {
-    width: 70px;
-    height: 70px;
-  }
+/* Video box */
+#video-box { 
+  display: none; 
+  position: relative; 
+  height: 100vh; 
+  background: black; 
+}
 
-  .title {
-    font-size: 26px;
-    font-weight: bold;
-    color: gold;
-    margin-top: 8px;
-    letter-spacing: 2px;
-  }
+video { 
+  width: 100%; 
+  height: 100%; 
+  background: black; 
+}
 
-  .video-container iframe {
-    width: 100%;
-    height: 220px;
-    border: none;
-  }
+/* Quality Button */
+#qualityBtn {
+  position: absolute; 
+  top: 10px; 
+  right: 10px; 
+  z-index: 999;
+  background: #000; 
+  color: #fff; 
+  padding: 8px 12px; 
+  border-radius: 7px; 
+  cursor: pointer;
+  border: 1px solid #ff0000;
+  box-shadow: 0 0 10px rgba(255,0,0,0.5);
+}
 
-  .quality {
-    margin: 15px 0;
-  }
+/* Quality Menu */
+.quality-menu {
+  position: absolute; 
+  top: 50px; 
+  right: 10px; 
+  background: #000; 
+  color: #fff; 
+  padding: 10px; 
+  border-radius: 8px; 
+  display: none; 
+  z-index: 1000;
+  border: 1px solid #ff0000;
+  box-shadow: 0 0 15px rgba(255,0,0,0.5);
+}
 
-  select {
-    background-color: #222;
-    color: white;
-    border: 1px solid #555;
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 15px;
-  }
+.quality-item { 
+  padding: 6px 12px; 
+  cursor: pointer; 
+}
 
-  .button-box {
-    background-color: #111;
-    margin: 15px auto;
-    width: 90%;
-    border-radius: 12px;
-    padding: 15px;
-  }
-
-  .button-box h3 {
-    color: #ccc;
-    font-size: 16px;
-    margin-bottom: 12px;
-  }
-
-  .btn {
-    display: inline-block;
-    width: 90%;
-    background: linear-gradient(90deg, #00b4db, #0083b0);
-    color: white;
-    text-decoration: none;
-    padding: 12px;
-    font-weight: 600;
-    border-radius: 8px;
-    transition: 0.3s;
-  }
-
-  .btn:hover {
-    opacity: 0.8;
-  }
-
-  .back-link {
-    display: block;
-    margin-top: 15px;
-    color: #aaa;
-    text-decoration: none;
-  }
-
-  .back-link:hover {
-    color: #fff;
-  }
+.quality-item:hover { 
+  background: #222; 
+}
 </style>
 </head>
+
 <body>
 
-  <!-- POPUP -->
-  <div id="popup">
-    <img src="your-logo.png" alt="Logo">
-    <h1>ALLROUNDER</h1>
+<!-- Popup -->
+<div id="popup">
+  <div class="popup-box">
+    <h2>📣 Support Us!</h2>
+    <p>
+      Join our Telegram channel <b>Cricket Yodha</b> for instant updates, highlights, and exclusive links.
+    </p>
+    <button class="btn-join" onclick="joinNow()">Join Now</button>
+    <button class="btn-joined" onclick="already()">Already Joined</button>
   </div>
+</div>
 
-  <!-- MAIN CONTENT -->
-  <div id="main">
-    <div class="header">
-      <img src="your-logo.png" alt="Logo">
-      <div class="title">ALLROUNDER</div>
-    </div>
+<!-- Video Section -->
+<div id="video-box">
+  <button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
+  <div id="qualityMenu" class="quality-menu"></div>
+  <video id="video" playsinline controls></video>
+</div>
 
-    <div class="video-container">
-      <iframe id="liveStream" src="https://yourvideolink.com/embed" allowfullscreen></iframe>
-    </div>
-
-    <div class="quality">
-      <label for="quality">Choose Video Quality: </label>
-      <select id="quality" onchange="changeQuality()">
-        <option value="low">Low (480p)</option>
-        <option value="medium" selected>Medium (720p)</option>
-        <option value="high">High (1080p)</option>
-      </select>
-    </div>
-
-    <div class="button-box">
-      <h3>🔔 Follow us for Updates!</h3>
-      <a href="https://t.me/yourchannel" class="btn" target="_blank">Click Here To Join Telegram</a>
-    </div>
-
-    <div class="button-box">
-      <h3>🔗 Copy Link & Share</h3>
-      <a href="#" class="btn" onclick="copyLink()">Click Here To Share This Page Link</a>
-    </div>
-
-    <a href="allstreams.html" class="back-link">← Back to All Streams</a>
-  </div>
-
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-  // Hide popup and show main after 4 seconds
-  setTimeout(() => {
-    document.getElementById('popup').style.display = 'none';
-    document.getElementById('main').style.display = 'block';
-    document.body.style.overflow = 'auto';
-  }, 4000);
 
-  // Copy page link
-  function copyLink() {
-    navigator.clipboard.writeText(window.location.href);
-    alert("Page link copied!");
-  }
+// ✅ Your Stream Link (multi-quality)
+const stream = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
 
-  // Change video quality
-  function changeQuality() {
-    const quality = document.getElementById('quality').value;
-    const iframe = document.getElementById('liveStream');
-    if (quality === "low") {
-      iframe.src = "https://yourvideolink.com/embed480";
-    } else if (quality === "medium") {
-      iframe.src = "https://yourvideolink.com/embed720";
-    } else {
-      iframe.src = "https://yourvideolink.com/embed1080";
-    }
+function showQualityMenu(levels, hls) {
+  const menu = document.getElementById("qualityMenu");
+  menu.innerHTML = "";
+
+  levels.forEach((level, i) => {
+    const opt = document.createElement("div");
+    opt.className = "quality-item";
+    opt.innerText = level.height + "p";
+    opt.onclick = () => { 
+      hls.currentLevel = i; 
+      menu.style.display = "none"; 
+    };
+    menu.appendChild(opt);
+  });
+
+  // Auto Mode
+  const auto = document.createElement("div");
+  auto.className = "quality-item";
+  auto.innerText = "Auto";
+  auto.onclick = () => { hls.currentLevel = -1; menu.style.display = "none"; };
+  menu.appendChild(auto);
+}
+
+function toggleQuality(){
+  let menu = document.getElementById("qualityMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function initPlayer(){
+  const v = document.getElementById("video");
+  if(Hls.isSupported()){
+    const hls = new Hls();
+    hls.loadSource(stream);
+    hls.attachMedia(v);
+    hls.on(Hls.Events.MANIFEST_PARSED, function(_, data){
+      showQualityMenu(data.levels, hls);
+    });
+  } else { 
+    v.src = stream; 
   }
+}
+
+function joinNow(){
+  window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
+}
+
+function already(){
+  document.getElementById("popup").style.display="none";
+  document.getElementById("video-box").style.display="block";
+  initPlayer();
+}
 </script>
 
 </body>
