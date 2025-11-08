@@ -13,45 +13,40 @@ body {
   text-align: center;
 }
 
-/* Header Logo */
-.header {
-  background: #000;
-  padding: 15px 0;
-  border-bottom: 2px solid #00bfff;
-}
-.header img {
-  height: 50px;
-}
-
-/* Video Box */
-.video-box {
-  width: 100%;
-  background: black;
-  position: relative;
-}
-video {
-  width: 100%;
-  height: 240px;
-  background: black;
-  object-fit: cover;
+/* Popup */
+#popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
-/* Card Box */
-.card {
+.popup-box {
+  width: 85%;
+  max-width: 400px;
   background: #111;
-  border-radius: 12px;
-  margin: 15px auto;
-  width: 90%;
-  max-width: 500px;
-  padding: 20px 15px;
-  box-shadow: 0 0 10px rgba(0,191,255,0.3);
+  padding: 25px 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(0,191,255,0.6);
+  border: 1px solid #00bfff;
 }
 
-/* Headings */
-.card h3 {
-  font-size: 18px;
-  color: #d1d1d1;
-  margin-bottom: 10px;
+.popup-box h2 {
+  color: #fff;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.popup-box p {
+  color: #bfbfbf;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 /* Buttons */
@@ -69,8 +64,40 @@ video {
   cursor: pointer;
   transition: 0.3s;
 }
-.btn:hover {
-  background: #0099cc;
+.btn:hover { background: #0099cc; }
+
+/* Video Box */
+#video-section {
+  display: none;
+}
+
+.video-box {
+  width: 100%;
+  background: black;
+  position: relative;
+}
+video {
+  width: 100%;
+  height: 240px;
+  background: black;
+  object-fit: cover;
+}
+
+/* Cards */
+.card {
+  background: #111;
+  border-radius: 12px;
+  margin: 15px auto;
+  width: 90%;
+  max-width: 500px;
+  padding: 20px 15px;
+  box-shadow: 0 0 10px rgba(0,191,255,0.3);
+}
+
+.card h3 {
+  font-size: 18px;
+  color: #d1d1d1;
+  margin-bottom: 10px;
 }
 
 /* Back Link */
@@ -80,49 +107,56 @@ video {
   display: inline-block;
   margin: 20px 0 30px;
 }
-.back-link:hover {
-  color: #00bfff;
-}
-
-/* Icons */
-.icon {
-  margin-right: 8px;
-}
+.back-link:hover { color: #00bfff; }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <img src="https://i.ibb.co/9y3rqgN/allrounder-logo.png" alt="AllRounder Logo">
+<!-- Popup -->
+<div id="popup">
+  <div class="popup-box">
+    <h2>📢 Join Telegram Channel Chandrakar</h2>
+    <p>Get instant updates, highlights, and exclusive live stream links.</p>
+    <button class="btn" onclick="joinTelegram()">👉 Join Now</button>
+    <button class="btn" style="background:#222;border:1px solid #444;" onclick="alreadyJoined()">Already Joined</button>
+  </div>
 </div>
 
-<!-- Video -->
-<div class="video-box">
-  <video id="liveVideo" playsinline controls></video>
+<!-- Main Section -->
+<div id="video-section">
+
+  <!-- Logo -->
+  <div class="header">
+    <img src="https://i.ibb.co/9y3rqgN/allrounder-logo.png" alt="AllRounder Logo" style="height:60px;margin:15px 0;">
+  </div>
+
+  <!-- Video -->
+  <div class="video-box">
+    <video id="liveVideo" playsinline controls></video>
+  </div>
+
+  <!-- Follow Card -->
+  <div class="card">
+    <h3>🔔 Follow us for Updates!</h3>
+    <button class="btn" onclick="joinTelegram()">📲 Click Here To Join Telegram Channel Chandrakar</button>
+  </div>
+
+  <!-- Share Card -->
+  <div class="card">
+    <h3>🔗 Copy Link & Share</h3>
+    <button class="btn" onclick="copyLink()">📤 Click Here To Share This Page Link</button>
+  </div>
+
+  <!-- Back -->
+  <a href="index.html" class="back-link">⬅ Back to All Streams</a>
+
 </div>
 
-<!-- Follow Card -->
-<div class="card">
-  <h3>🔔 Follow us for Updates!</h3>
-  <button class="btn" onclick="joinTelegram()">📲 Click Here To Join Telegram Channel Chandrakar</button>
-</div>
-
-<!-- Share Card -->
-<div class="card">
-  <h3>🔗 Copy Link & Share</h3>
-  <button class="btn" onclick="copyLink()">📤 Click Here To Share This Page Link</button>
-</div>
-
-<!-- Back -->
-<a href="index.html" class="back-link">⬅ Back to All Streams</a>
-
-<!-- HLS Script -->
+<!-- HLS Player Script -->
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-// Your Live Stream Link
 const streamLink = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
-const websiteLink = "https://yourwebsite.com/live"; // <-- Replace with your site link
+const websiteLink = "https://yourwebsite.com/live"; // replace with your actual site link
 
 function initPlayer() {
   const video = document.getElementById("liveVideo");
@@ -135,20 +169,21 @@ function initPlayer() {
   }
 }
 
-// Telegram Button
 function joinTelegram() {
   window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
 }
 
-// Copy Link
-function copyLink() {
-  navigator.clipboard.writeText(websiteLink).then(() => {
-    alert("✅ Page link copied! Share it with your friends.");
-  });
+function alreadyJoined() {
+  document.getElementById("popup").style.display = "none";
+  document.getElementById("video-section").style.display = "block";
+  initPlayer();
 }
 
-// Auto-start player
-window.onload = initPlayer;
+function copyLink() {
+  navigator.clipboard.writeText(websiteLink).then(() => {
+    alert("✅ Page link copied successfully!");
+  });
+}
 </script>
 
 </body>
