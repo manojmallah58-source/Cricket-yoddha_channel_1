@@ -1,208 +1,136 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AllRounder Live TV</title>
+<title>AllRounder Live Stream</title>
 <style>
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #0b0b0b;
-  color: white;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
   text-align: center;
 }
 
-/* Popup */
-#popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95);
+/* Header */
+.header {
+  background-color: #000;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+}
+.header img {
+  height: 70px;
 }
 
-.popup-box {
-  width: 85%;
-  max-width: 400px;
-  background: #111;
-  padding: 25px 20px;
-  text-align: center;
-  border-radius: 20px;
-  color: #fff;
-  box-shadow: 0 0 25px rgba(0,191,255,0.6);
-  border: 1px solid #00bfff;
+/* Video Section */
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
 }
-
-.popup-box h2 {
-  color: #fff;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.popup-box p {
-  color: #bfbfbf;
-  font-size: 16px;
-  margin-bottom: 20px;
+video {
+  width: 100%;
+  height: auto;
+  border: none;
 }
 
 /* Buttons */
 .btn {
   display: block;
-  width: 100%;
-  background: #00bfff;
-  color: white;
-  font-size: 17px;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 0;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn:hover { background: #0099cc; }
-
-/* Header Bar */
-.header {
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-  border-bottom: 2px solid #00bfff;
-}
-.menu-icon {
-  font-size: 26px;
+  background-color: #009fe3;
   color: #fff;
-  cursor: pointer;
-}
-.header img {
-  height: 45px;
-}
-
-/* Video Box */
-#video-section {
-  display: none;
-}
-.video-box {
-  width: 100%;
-  background: black;
-  position: relative;
-}
-video {
-  width: 100%;
-  height: 240px;
-  background: black;
-  object-fit: cover;
-}
-
-/* Cards */
-.card {
-  background: #111;
-  border-radius: 12px;
+  text-decoration: none;
   margin: 15px auto;
+  padding: 12px 20px;
+  width: 80%;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.btn:hover {
+  background-color: #007bb8;
+}
+
+/* Box */
+.box {
+  background-color: #111;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 10px;
   width: 90%;
   max-width: 500px;
-  padding: 20px 15px;
-  box-shadow: 0 0 10px rgba(0,191,255,0.3);
+  box-shadow: 0 0 10px rgba(255,255,255,0.1);
 }
 
-.card h3 {
+/* Telegram Popup */
+#telegramPopup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  flex-direction: column;
+}
+#telegramPopup button {
+  background: #009fe3;
+  color: white;
+  border: none;
+  padding: 12px 25px;
   font-size: 18px;
-  color: #d1d1d1;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
 }
-
-/* Back Link */
-.back-link {
-  color: #bbb;
-  text-decoration: none;
-  display: inline-block;
-  margin: 20px 0 30px;
+#telegramPopup h2 {
+  margin-bottom: 20px;
 }
-.back-link:hover { color: #00bfff; }
 </style>
 </head>
 <body>
 
-<!-- Popup -->
-<div id="popup">
-  <div class="popup-box">
-    <h2>📢 Join Telegram Channel Chandrakar</h2>
-    <p>Get instant updates, highlights, and exclusive live stream links.</p>
-    <button class="btn" onclick="joinTelegram()">👉 Join Now</button>
-    <button class="btn" style="background:#222;border:1px solid #444;" onclick="alreadyJoined()">Already Joined</button>
-  </div>
+<!-- Header -->
+<div class="header">
+  <img src="https://i.ibb.co/8mPVy3R/allrounder-logo.png" alt="AllRounder Logo">
 </div>
 
-<!-- Main Section -->
-<div id="video-section">
-
-  <!-- Header -->
-  <div class="header">
-    <div class="menu-icon">☰</div>
-    <img src="https://i.ibb.co/9y3rqgN/allrounder-logo.png" alt="AllRounder Logo">
-    <div style="width:26px;"></div> <!-- spacer to balance layout -->
-  </div>
-
-  <!-- Video -->
-  <div class="video-box">
-    <video id="liveVideo" playsinline controls></video>
-  </div>
-
-  <!-- Follow Card -->
-  <div class="card">
-    <h3>🔔 Follow us for Updates!</h3>
-    <button class="btn" onclick="joinTelegram()">📲 Click Here To Join Telegram Channel Chandrakar</button>
-  </div>
-
-  <!-- Share Card -->
-  <div class="card">
-    <h3>🔗 Copy Link & Share</h3>
-    <button class="btn" onclick="copyLink()">📤 Click Here To Share This Page Link</button>
-  </div>
-
-  <!-- Back -->
-  <a href="index.html" class="back-link">⬅ Back to All Streams</a>
-
+<!-- Telegram Popup -->
+<div id="telegramPopup">
+  <h2>Join our Telegram Channel for Updates!</h2>
+  <button onclick="joinTelegram()">Join Telegram</button>
 </div>
 
-<!-- HLS Player Script -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<!-- Video Section -->
+<div class="video-container">
+  <video id="matchVideo" controls poster="">
+    <source src="your-video-file.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<!-- Buttons Section -->
+<div class="box">
+  <p>🔔 Follow us for Updates!</p>
+  <a class="btn" href="https://t.me/Chandrakar" target="_blank">Click Here To Join Telegram</a>
+</div>
+
+<div class="box">
+  <p>🔗 Copy Link & Share</p>
+  <a class="btn" href="https://yourwebsite.com" target="_blank">Click Here To Share This Page Link</a>
+</div>
+
+<p><a href="#" style="color:#aaa;">← Back to All Streams</a></p>
+
 <script>
-const streamLink = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
-const websiteLink = "https://yourwebsite.com/live"; // replace with your own link
-
-function initPlayer() {
-  const video = document.getElementById("liveVideo");
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(streamLink);
-    hls.attachMedia(video);
-  } else {
-    video.src = streamLink;
-  }
-}
-
 function joinTelegram() {
-  window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
-}
-
-function alreadyJoined() {
-  document.getElementById("popup").style.display = "none";
-  document.getElementById("video-section").style.display = "block";
-  initPlayer();
-}
-
-function copyLink() {
-  navigator.clipboard.writeText(websiteLink).then(() => {
-    alert("✅ Page link copied successfully!");
-  });
+  window.open("https://t.me/Chandrakar", "_blank");
+  document.getElementById('telegramPopup').style.display = 'none';
+  document.getElementById('matchVideo').play();
 }
 </script>
 
