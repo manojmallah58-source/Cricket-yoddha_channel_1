@@ -1,202 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AllRounder Live TV</title>
+<title>Cricket Yoddha Live</title>
 <style>
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #0b0b0b;
-  color: white;
-  text-align: center;
-}
-
-/* 🔰 Header Logo Bar */
-.header {
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 2px solid #111;
-}
-.header img {
-  height: 55px;
-}
-
-/* 🔷 Popup */
-#popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.popup-box {
-  width: 85%;
-  max-width: 400px;
-  background: #111;
-  padding: 25px 20px;
-  text-align: center;
-  border-radius: 20px;
-  color: #fff;
-  box-shadow: 0 0 25px rgba(0,191,255,0.6);
-  border: 1px solid #00bfff;
-}
-
-.popup-box h2 {
-  color: #fff;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.popup-box p {
-  color: #bfbfbf;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
-/* 🔘 Buttons */
-.btn {
-  display: block;
-  width: 100%;
-  background: #00bfff;
-  color: white;
-  font-size: 17px;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 0;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn:hover { background: #0099cc; }
-
-/* 🎥 Video Section */
-#video-section {
-  display: none;
-}
-
-.video-box {
-  width: 100%;
-  background: black;
-  position: relative;
-}
-video {
-  width: 100%;
-  height: 240px;
-  background: black;
-  object-fit: cover;
-}
-
-/* 🧱 Cards */
-.card {
-  background: #111;
-  border-radius: 12px;
-  margin: 15px auto;
-  width: 90%;
-  max-width: 500px;
-  padding: 20px 15px;
-  box-shadow: 0 0 10px rgba(0,191,255,0.3);
-}
-
-.card h3 {
-  font-size: 18px;
-  color: #d1d1d1;
-  margin-bottom: 10px;
-}
-
-/* 🔙 Back Link */
-.back-link {
-  color: #bbb;
-  text-decoration: none;
-  display: inline-block;
-  margin: 20px 0 30px;
-}
-.back-link:hover { color: #00bfff; }
+    body {
+        margin: 0;
+        background-color: #000;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+    }
+    header {
+        background-color: #000;
+        padding: 20px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 2px solid #222;
+    }
+    header h1 {
+        color: gold;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    video {
+        width: 100%;
+        max-width: 800px;
+        height: auto;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+    .button-box {
+        margin: 25px auto;
+        background-color: #111;
+        width: 90%;
+        max-width: 500px;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    .btn {
+        display: block;
+        width: 100%;
+        background-color: #00aaff;
+        color: #fff;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .btn:hover {
+        background-color: #0090e0;
+    }
+    footer {
+        color: #ccc;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    /* Popup Style */
+    #popup {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.9);
+        color: white;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    #popup a {
+        background: #00aaff;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 600;
+    }
 </style>
 </head>
 <body>
 
-<!-- 🟡 Logo Header -->
-<div class="header">
-  <img src="https://i.ibb.co/9y3rqgN/allrounder-logo.png" alt="AllRounder Logo">
-</div>
-
-<!-- 💬 Popup -->
+<!-- Popup -->
 <div id="popup">
-  <div class="popup-box">
-    <h2>📢 Join Telegram Channel Chandrakar</h2>
-    <p>Get instant updates, highlights, and exclusive live stream links.</p>
-    <button class="btn" onclick="joinTelegram()">👉 Join Now</button>
-    <button class="btn" style="background:#222;border:1px solid #444;" onclick="alreadyJoined()">Already Joined</button>
-  </div>
+    <h2>Join Our Telegram Channel for Updates!</h2>
+    <a href="https://t.me/Chandrakar" target="_blank">Join Telegram</a>
 </div>
 
-<!-- 🎥 Main Video Section -->
-<div id="video-section">
+<header>
+    <h1>🏏 Cricket Yoddha</h1>
+</header>
 
-  <div class="video-box">
-    <video id="liveVideo" playsinline controls></video>
-  </div>
+<main>
+    <video id="liveVideo" controls poster="https://upload.wikimedia.org/wikipedia/commons/1/14/Cricket_pic.png">
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support HTML video.
+    </video>
 
-  <!-- 🔔 Follow Section -->
-  <div class="card">
-    <h3>🔔 Follow us for Updates!</h3>
-    <button class="btn" onclick="joinTelegram()">📲 Click Here To Join Telegram Channel Chandrakar</button>
-  </div>
+    <div class="button-box">
+        <h3>📢 Follow us for Updates!</h3>
+        <a class="btn" href="https://t.me/Chandrakar" target="_blank">Click Here To Join Telegram</a>
 
-  <!-- 🔗 Share Section -->
-  <div class="card">
-    <h3>🔗 Copy Link & Share</h3>
-    <button class="btn" onclick="copyLink()">📤 Click Here To Share This Page Link</button>
-  </div>
+        <h3>🔗 Copy Link & Share</h3>
+        <a class="btn" href="https://yourwebsite.com" target="_blank">Click Here To Share This Page Link</a>
+    </div>
+</main>
 
-  <!-- ⬅ Back -->
-  <a href="index.html" class="back-link">⬅ Back to All Streams</a>
+<footer>
+    ← Back to All Streams
+</footer>
 
-</div>
-
-<!-- 🎞 HLS Player Script -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-const streamLink = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
-const websiteLink = "https://yourwebsite.com/live"; // replace with your actual site link
+    window.onload = function() {
+        const popup = document.getElementById("popup");
+        const video = document.getElementById("liveVideo");
+        
+        // Show popup on page load
+        popup.style.display = "flex";
 
-function initPlayer() {
-  const video = document.getElementById("liveVideo");
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(streamLink);
-    hls.attachMedia(video);
-  } else {
-    video.src = streamLink;
-  }
-}
-
-function joinTelegram() {
-  window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
-}
-
-function alreadyJoined() {
-  document.getElementById("popup").style.display = "none";
-  document.getElementById("video-section").style.display = "block";
-  initPlayer();
-}
-
-function copyLink() {
-  navigator.clipboard.writeText(websiteLink).then(() => {
-    alert("✅ Page link copied successfully!");
-  });
-}
+        // Hide popup after user clicks Join
+        popup.querySelector("a").addEventListener("click", () => {
+            popup.style.display = "none";
+            video.play();
+        });
+    };
 </script>
 
 </body>
