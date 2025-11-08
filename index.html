@@ -1,213 +1,220 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AllRounder Live TV</title>
+<title>AllRounder Live</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
 <style>
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #0b0b0b;
-  color: white;
-  text-align: center;
-}
+  body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background-color: #000;
+    color: white;
+    text-align: center;
+  }
 
-/* ---------- HEADER ---------- */
-.header {
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-  border-bottom: 2px solid #222;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-.menu-icon {
-  font-size: 28px;
-  color: #fff;
-  cursor: pointer;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;
-}
-.logo img {
-  height: 40px;
-}
-.logo-text {
-  color: #FFD700;
-  font-size: 22px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #000 0%, #111 100%);
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+  }
 
-/* ---------- POPUP ---------- */
-#popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-.popup-box {
-  width: 85%;
-  max-width: 400px;
-  background: #111;
-  padding: 25px 20px;
-  text-align: center;
-  border-radius: 20px;
-  color: #fff;
-  box-shadow: 0 0 25px rgba(0,191,255,0.6);
-  border: 1px solid #00bfff;
-}
-.popup-box h2 {
-  color: #fff;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-.popup-box p {
-  color: #bfbfbf;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-.btn {
-  display: block;
-  width: 100%;
-  background: #00bfff;
-  color: white;
-  font-size: 17px;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 0;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn:hover { background: #0099cc; }
+  .menu-icon {
+    width: 28px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+  }
 
-/* ---------- MAIN SECTION ---------- */
-#video-section {
-  display: none;
-}
-.video-box {
-  width: 100%;
-  background: black;
-  position: relative;
-}
-video {
-  width: 100%;
-  height: 240px;
-  background: black;
-  object-fit: cover;
-}
+  .menu-icon span {
+    height: 3px;
+    background: #fff;
+    border-radius: 3px;
+  }
 
-/* ---------- CARD ---------- */
-.card {
-  background: #111;
-  border-radius: 12px;
-  margin: 15px auto;
-  width: 90%;
-  max-width: 500px;
-  padding: 20px 15px;
-  box-shadow: 0 0 10px rgba(0,191,255,0.3);
-}
-.card h3 {
-  font-size: 18px;
-  color: #d1d1d1;
-  margin-bottom: 10px;
-}
-.back-link {
-  color: #bbb;
-  text-decoration: none;
-  display: inline-block;
-  margin: 20px 0 30px;
-}
-.back-link:hover { color: #00bfff; }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .logo-text {
+    font-size: 1.7rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ffd700, #ffb800, #fff08a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    letter-spacing: 1px;
+  }
+
+  /* Video */
+  .video-container {
+    margin-top: 10px;
+  }
+
+  video {
+    width: 95%;
+    max-width: 800px;
+    border-radius: 10px;
+    border: 2px solid #222;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  }
+
+  /* Buttons */
+  .button-box {
+    margin: 30px auto;
+    width: 90%;
+    max-width: 450px;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
+    transform: scale(1.03);
+  }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ccc;
+    margin-bottom: 8px;
+  }
+
+  /* Popup */
+  .popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 999;
+  }
+
+  .popup-content {
+    background: #111;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid gold;
+  }
+
+  .popup h2 {
+    color: gold;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .popup a {
+    display: inline-block;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .close-btn {
+    margin-top: 15px;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
 </style>
 </head>
 <body>
 
-<!-- 🔹 HEADER -->
-<div class="header">
-  <div class="menu-icon">☰</div>
-  <div class="logo">
-    <img src="https://i.ibb.co/9y3rqgN/allrounder-logo.png" alt="AllRounder Logo">
-    <span class="logo-text">ALLROUNDER</span>
-  </div>
-  <div style="width:28px;"></div> <!-- spacing for right balance -->
-</div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="menu-icon">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Biohazard_symbol.svg/2048px-Biohazard_symbol.svg.png" alt="AllRounder">
+      <div class="logo-text">ALLROUNDER</div>
+    </div>
+  </header>
 
-<!-- 🔹 POPUP -->
-<div id="popup">
-  <div class="popup-box">
-    <h2>📢 Join Telegram Channel Chandrakar</h2>
-    <p>Get instant updates, highlights, and exclusive live stream links.</p>
-    <button class="btn" onclick="joinTelegram()">👉 Join Now</button>
-    <button class="btn" style="background:#222;border:1px solid #444;" onclick="alreadyJoined()">Already Joined</button>
-  </div>
-</div>
-
-<!-- 🔹 MAIN SECTION -->
-<div id="video-section">
-  <div class="video-box">
-    <video id="liveVideo" playsinline controls></video>
+  <!-- POPUP -->
+  <div class="popup" id="telegramPopup">
+    <div class="popup-content">
+      <h2>Join Our Telegram Channel For Live Updates!</h2>
+      <a href="https://t.me/Chandrakar" target="_blank">Join Telegram</a>
+      <div class="close-btn" onclick="closePopup()">Skip & Continue</div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>🔔 Follow us for Updates!</h3>
-    <button class="btn" onclick="joinTelegram()">📲 Click Here To Join Telegram Channel Chandrakar</button>
+  <!-- VIDEO -->
+  <div class="video-container">
+    <video id="liveVideo" controls poster="" preload="none">
+      <source src="your-video-link.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
 
-  <div class="card">
-    <h3>🔗 Copy Link & Share</h3>
-    <button class="btn" onclick="copyLink()">📤 Click Here To Share This Page Link</button>
+  <!-- BUTTONS -->
+  <div class="button-box">
+    <div class="section-title">🔔 Follow us for Updates!</div>
+    <a href="https://t.me/Chandrakar" target="_blank" class="btn">Click Here To Join Telegram</a>
+
+    <div class="section-title">🔗 Copy Link & Share</div>
+    <a href="https://yourwebsite.com" target="_blank" class="btn">Click Here To Share This Page Link</a>
+
+    <div class="section-title">
+      <a href="#" style="color:#ccc; text-decoration:none;">⬅ Back to All Streams</a>
+    </div>
   </div>
 
-  <a href="index.html" class="back-link">⬅ Back to All Streams</a>
-</div>
+  <!-- SCRIPT -->
+  <script>
+    // Show popup when page loads
+    window.onload = function() {
+      document.getElementById('telegramPopup').style.display = 'flex';
+    }
 
-<!-- 🔹 HLS SCRIPT -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-const streamLink = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
-const websiteLink = "https://yourwebsite.com/live"; // replace with your real website link
-
-function initPlayer() {
-  const video = document.getElementById("liveVideo");
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(streamLink);
-    hls.attachMedia(video);
-  } else {
-    video.src = streamLink;
-  }
-}
-
-function joinTelegram() {
-  window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
-}
-
-function alreadyJoined() {
-  document.getElementById("popup").style.display = "none";
-  document.getElementById("video-section").style.display = "block";
-  initPlayer();
-}
-
-function copyLink() {
-  navigator.clipboard.writeText(websiteLink).then(() => {
-    alert("✅ Page link copied successfully!");
-  });
-}
-</script>
+    // Close popup and start video
+    function closePopup() {
+      document.getElementById('telegramPopup').style.display = 'none';
+      document.getElementById('liveVideo').play();
+    }
+  </script>
 
 </body>
 </html>
