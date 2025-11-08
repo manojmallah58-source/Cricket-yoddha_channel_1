@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,11 +67,28 @@ body {
 }
 .btn:hover { background: #0099cc; }
 
+/* Header Bar */
+.header {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 2px solid #00bfff;
+}
+.menu-icon {
+  font-size: 26px;
+  color: #fff;
+  cursor: pointer;
+}
+.header img {
+  height: 45px;
+}
+
 /* Video Box */
 #video-section {
   display: none;
 }
-
 .video-box {
   width: 100%;
   background: black;
@@ -125,9 +143,11 @@ video {
 <!-- Main Section -->
 <div id="video-section">
 
-  <!-- Logo -->
+  <!-- Header -->
   <div class="header">
-    <img src="https://i.ibb.co/9y3rqgN/allrounder-logo.png" alt="AllRounder Logo" style="height:60px;margin:15px 0;">
+    <div class="menu-icon">☰</div>
+    <img src="https://i.ibb.co/9y3rqgN/allrounder-logo.png" alt="AllRounder Logo">
+    <div style="width:26px;"></div> <!-- spacer to balance layout -->
   </div>
 
   <!-- Video -->
@@ -156,7 +176,7 @@ video {
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
 const streamLink = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
-const websiteLink = "https://yourwebsite.com/live"; // replace with your actual site link
+const websiteLink = "https://yourwebsite.com/live"; // replace with your own link
 
 function initPlayer() {
   const video = document.getElementById("liveVideo");
