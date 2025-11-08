@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,44 +11,83 @@
     color: white;
     font-family: 'Poppins', sans-serif;
     text-align: center;
+    overflow: hidden;
   }
 
-  /* Header */
+  /* POPUP (Intro) */
+  #popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeOut 1s ease 3s forwards;
+  }
+
+  #popup img {
+    width: 120px;
+    height: 120px;
+    animation: zoomIn 1.5s ease;
+  }
+
+  #popup h1 {
+    color: gold;
+    font-size: 32px;
+    margin-top: 15px;
+    letter-spacing: 3px;
+  }
+
+  @keyframes zoomIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    to { opacity: 0; visibility: hidden; }
+  }
+
+  /* Main Page */
+  #main {
+    display: none;
+    animation: fadeIn 1s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   .header {
     background-color: #0a0a0a;
     padding: 15px 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
   }
 
   .header img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
 
   .title {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: bold;
     color: gold;
     margin-top: 8px;
     letter-spacing: 2px;
   }
 
-  /* Video Player */
-  .video-container {
-    width: 100%;
-    background-color: #111;
-  }
-
-  iframe {
+  .video-container iframe {
     width: 100%;
     height: 220px;
     border: none;
   }
 
-  /* Quality Selector */
   .quality {
     margin: 15px 0;
   }
@@ -63,7 +101,6 @@
     font-size: 15px;
   }
 
-  /* Buttons */
   .button-box {
     background-color: #111;
     margin: 15px auto;
@@ -108,43 +145,53 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="header">
+  <!-- POPUP -->
+  <div id="popup">
     <img src="your-logo.png" alt="Logo">
-    <div class="title">ALLROUNDER</div>
+    <h1>ALLROUNDER</h1>
   </div>
 
-  <!-- Video -->
-  <div class="video-container">
-    <iframe id="liveStream" src="https://yourvideolink.com/embed" allowfullscreen></iframe>
-  </div>
+  <!-- MAIN CONTENT -->
+  <div id="main">
+    <div class="header">
+      <img src="your-logo.png" alt="Logo">
+      <div class="title">ALLROUNDER</div>
+    </div>
 
-  <!-- Quality Selector -->
-  <div class="quality">
-    <label for="quality">Choose Video Quality: </label>
-    <select id="quality" onchange="changeQuality()">
-      <option value="low">Low (480p)</option>
-      <option value="medium" selected>Medium (720p)</option>
-      <option value="high">High (1080p)</option>
-    </select>
-  </div>
+    <div class="video-container">
+      <iframe id="liveStream" src="https://yourvideolink.com/embed" allowfullscreen></iframe>
+    </div>
 
-  <!-- Telegram Button -->
-  <div class="button-box">
-    <h3>🔔 Follow us for Updates!</h3>
-    <a href="https://t.me/yourchannel" class="btn" target="_blank">Click Here To Join Telegram</a>
-  </div>
+    <div class="quality">
+      <label for="quality">Choose Video Quality: </label>
+      <select id="quality" onchange="changeQuality()">
+        <option value="low">Low (480p)</option>
+        <option value="medium" selected>Medium (720p)</option>
+        <option value="high">High (1080p)</option>
+      </select>
+    </div>
 
-  <!-- Share Button -->
-  <div class="button-box">
-    <h3>🔗 Copy Link & Share</h3>
-    <a href="#" class="btn" onclick="copyLink()">Click Here To Share This Page Link</a>
-  </div>
+    <div class="button-box">
+      <h3>🔔 Follow us for Updates!</h3>
+      <a href="https://t.me/yourchannel" class="btn" target="_blank">Click Here To Join Telegram</a>
+    </div>
 
-  <!-- Back Link -->
-  <a href="allstreams.html" class="back-link">← Back to All Streams</a>
+    <div class="button-box">
+      <h3>🔗 Copy Link & Share</h3>
+      <a href="#" class="btn" onclick="copyLink()">Click Here To Share This Page Link</a>
+    </div>
+
+    <a href="allstreams.html" class="back-link">← Back to All Streams</a>
+  </div>
 
 <script>
+  // Hide popup and show main after 4 seconds
+  setTimeout(() => {
+    document.getElementById('popup').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+    document.body.style.overflow = 'auto';
+  }, 4000);
+
   // Copy page link
   function copyLink() {
     navigator.clipboard.writeText(window.location.href);
