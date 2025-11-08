@@ -1,220 +1,281 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AllRounder Live</title>
-
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-
 <style>
   body {
+    background: #000;
     margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    background-color: #000;
-    color: white;
-    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #fff;
   }
 
   /* Header */
   .header {
+    background: #000;
+    padding: 15px 10px;
+    text-align: center;
+    border-bottom: 1px solid #222;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+  }
+
+  .header img {
+    width: 60px;
+    height: 60px;
+    vertical-align: middle;
+  }
+
+  .header h1 {
+    display: inline-block;
+    font-size: 26px;
+    font-weight: bold;
+    color: #ffd700;
+    margin: 0 10px;
+    vertical-align: middle;
+  }
+
+  /* Popup */
+  #popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.92);
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(180deg, #000 0%, #111 100%);
-    padding: 12px 20px;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+    z-index: 10;
   }
 
-  .menu-icon {
-    width: 28px;
-    height: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
+  .popup-box {
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    width: 85%;
+    max-width: 400px;
+    border: 1px solid #ff0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
   }
 
-  .menu-icon span {
-    height: 3px;
-    background: #fff;
-    border-radius: 3px;
+  .popup-box h2 {
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 10px;
   }
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .logo img {
-    width: 45px;
-    height: 45px;
-  }
-
-  .logo-text {
-    font-size: 1.7rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, #ffd700, #ffb800, #fff08a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    letter-spacing: 1px;
-  }
-
-  /* Video */
-  .video-container {
-    margin-top: 10px;
-  }
-
-  video {
-    width: 95%;
-    max-width: 800px;
-    border-radius: 10px;
-    border: 2px solid #222;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-  }
-
-  /* Buttons */
-  .button-box {
-    margin: 30px auto;
-    width: 90%;
-    max-width: 450px;
+  .popup-box p {
+    color: #bfbfbf;
+    font-size: 16px;
+    margin-bottom: 20px;
   }
 
   .btn {
     display: block;
     width: 100%;
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 14px;
-    margin: 12px 0;
+    background: #ff0000;
+    color: white;
     border: none;
+    padding: 12px;
     border-radius: 8px;
+    font-size: 18px;
     cursor: pointer;
-    text-decoration: none;
-    transition: 0.3s;
+    margin-bottom: 10px;
   }
 
   .btn:hover {
-    opacity: 0.85;
-    transform: scale(1.03);
+    background: #e60000;
   }
 
-  .section-title {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #ccc;
-    margin-bottom: 8px;
+  .btn-secondary {
+    background: #222;
+    border: 1px solid #444;
   }
 
-  /* Popup */
-  .popup {
+  .btn-secondary:hover {
+    background: #333;
+  }
+
+  /* Video Section */
+  #video-box {
     display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    position: relative;
+    height: 100vh;
+    background: black;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    background: black;
+  }
+
+  /* Quality button */
+  #qualityBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     z-index: 999;
+    background: #000;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    border: 1px solid #ff0000;
+    font-size: 14px;
   }
 
-  .popup-content {
-    background: #111;
-    padding: 25px;
-    border-radius: 10px;
+  .quality-menu {
+    position: absolute;
+    top: 45px;
+    right: 10px;
+    background: #000;
+    border: 1px solid #ff0000;
+    border-radius: 8px;
+    padding: 8px;
+    display: none;
+    z-index: 1000;
+  }
+
+  .quality-item {
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+
+  .quality-item:hover {
+    background: #222;
+  }
+
+  /* Footer Section */
+  .footer {
+    background: #000;
+    padding: 20px;
     text-align: center;
-    border: 2px solid gold;
+    border-top: 1px solid #222;
   }
 
-  .popup h2 {
-    color: gold;
-    font-size: 1.3rem;
-    margin-bottom: 15px;
+  .footer h3 {
+    margin: 0 0 8px;
+    color: #ddd;
   }
 
-  .popup a {
-    display: inline-block;
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
-    color: white;
-    padding: 12px 25px;
-    border-radius: 6px;
-    text-decoration: none;
+  .footer .btn {
+    background: #00bfff;
+    color: #000;
     font-weight: bold;
   }
 
-  .close-btn {
-    margin-top: 15px;
-    color: #aaa;
-    cursor: pointer;
-    font-size: 0.9rem;
+  .footer a {
+    text-decoration: none;
   }
 
+  .back-link {
+    display: block;
+    color: #ccc;
+    margin-top: 15px;
+    font-size: 16px;
+  }
 </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="menu-icon">
-      <span></span><span></span><span></span>
-    </div>
-    <div class="logo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Biohazard_symbol.svg/2048px-Biohazard_symbol.svg.png" alt="AllRounder">
-      <div class="logo-text">ALLROUNDER</div>
-    </div>
-  </header>
+<!-- Header -->
+<div class="header">
+  <img src="https://i.ibb.co/7rT2vT4/cricket-logo.png" alt="Logo">
+  <h1>ALLROUNDER</h1>
+  <img src="https://i.ibb.co/7rT2vT4/cricket-logo.png" alt="Logo">
+</div>
 
-  <!-- POPUP -->
-  <div class="popup" id="telegramPopup">
-    <div class="popup-content">
-      <h2>Join Our Telegram Channel For Live Updates!</h2>
-      <a href="https://t.me/Chandrakar" target="_blank">Join Telegram</a>
-      <div class="close-btn" onclick="closePopup()">Skip & Continue</div>
-    </div>
+<!-- Popup -->
+<div id="popup">
+  <div class="popup-box">
+    <h2>📢 Join Our Telegram!</h2>
+    <p>For live match links, updates & highlights — join our channel <b>Cricket Yodha</b>.</p>
+    <button class="btn" onclick="joinNow()">Join Telegram</button>
+    <button class="btn btn-secondary" onclick="alreadyJoined()">Already Joined</button>
   </div>
+</div>
 
-  <!-- VIDEO -->
-  <div class="video-container">
-    <video id="liveVideo" controls poster="" preload="none">
-      <source src="your-video-link.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
+<!-- Video Player -->
+<div id="video-box">
+  <button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
+  <div id="qualityMenu" class="quality-menu"></div>
+  <video id="video" playsinline controls></video>
+</div>
 
-  <!-- BUTTONS -->
-  <div class="button-box">
-    <div class="section-title">🔔 Follow us for Updates!</div>
-    <a href="https://t.me/Chandrakar" target="_blank" class="btn">Click Here To Join Telegram</a>
+<!-- Footer -->
+<div class="footer">
+  <h3>🔔 Follow us for Updates!</h3>
+  <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank">
+    <button class="btn">Click Here To Join Telegram</button>
+  </a>
+  
+  <h3>🔗 Copy Link & Share</h3>
+  <a href="https://yourwebsite.com" target="_blank">
+    <button class="btn">Click Here To Share This Page Link</button>
+  </a>
 
-    <div class="section-title">🔗 Copy Link & Share</div>
-    <a href="https://yourwebsite.com" target="_blank" class="btn">Click Here To Share This Page Link</a>
+  <a href="#" class="back-link">← Back to All Streams</a>
+</div>
 
-    <div class="section-title">
-      <a href="#" style="color:#ccc; text-decoration:none;">⬅ Back to All Streams</a>
-    </div>
-  </div>
+<!-- HLS Player Script -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+  const stream = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
 
-  <!-- SCRIPT -->
-  <script>
-    // Show popup when page loads
-    window.onload = function() {
-      document.getElementById('telegramPopup').style.display = 'flex';
+  function showQualityMenu(levels, hls) {
+    const menu = document.getElementById("qualityMenu");
+    menu.innerHTML = "";
+    levels.forEach((level, i) => {
+      const opt = document.createElement("div");
+      opt.className = "quality-item";
+      opt.innerText = level.height + "p";
+      opt.onclick = () => {
+        hls.currentLevel = i;
+        menu.style.display = "none";
+      };
+      menu.appendChild(opt);
+    });
+    const auto = document.createElement("div");
+    auto.className = "quality-item";
+    auto.innerText = "Auto";
+    auto.onclick = () => {
+      hls.currentLevel = -1;
+      menu.style.display = "none";
+    };
+    menu.appendChild(auto);
+  }
+
+  function toggleQuality() {
+    const menu = document.getElementById("qualityMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  function initPlayer() {
+    const v = document.getElementById("video");
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(stream);
+      hls.attachMedia(v);
+      hls.on(Hls.Events.MANIFEST_PARSED, function(_, data) {
+        showQualityMenu(data.levels, hls);
+      });
+    } else {
+      v.src = stream;
     }
+  }
 
-    // Close popup and start video
-    function closePopup() {
-      document.getElementById('telegramPopup').style.display = 'none';
-      document.getElementById('liveVideo').play();
-    }
-  </script>
+  function joinNow() {
+    window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
+  }
+
+  function alreadyJoined() {
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("video-box").style.display = "block";
+    initPlayer();
+  }
+</script>
 
 </body>
 </html>
