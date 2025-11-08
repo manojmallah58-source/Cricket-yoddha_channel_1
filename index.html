@@ -1,279 +1,167 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AllRounder Live</title>
+<title>ALLROUNDER Live Stream</title>
 <style>
   body {
-    background: #000;
     margin: 0;
-    font-family: Arial, sans-serif;
-    color: #fff;
+    background-color: #000;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
   }
 
   /* Header */
   .header {
-    background: #000;
-    padding: 15px 10px;
-    text-align: center;
-    border-bottom: 1px solid #222;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-  }
-
-  .header img {
-    width: 60px;
-    height: 60px;
-    vertical-align: middle;
-  }
-
-  .header h1 {
-    display: inline-block;
-    font-size: 26px;
-    font-weight: bold;
-    color: #ffd700;
-    margin: 0 10px;
-    vertical-align: middle;
-  }
-
-  /* Popup */
-  #popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.92);
+    background-color: #0a0a0a;
+    padding: 15px 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    flex-direction: column;
   }
 
-  .popup-box {
-    background: #111;
-    padding: 25px;
-    border-radius: 15px;
-    text-align: center;
-    width: 85%;
-    max-width: 400px;
-    border: 1px solid #ff0000;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  .header img {
+    width: 80px;
+    height: 80px;
   }
 
-  .popup-box h2 {
-    color: #fff;
-    font-size: 22px;
-    margin-bottom: 10px;
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    color: gold;
+    margin-top: 8px;
+    letter-spacing: 2px;
   }
 
-  .popup-box p {
-    color: #bfbfbf;
+  /* Video Player */
+  .video-container {
+    width: 100%;
+    background-color: #111;
+  }
+
+  iframe {
+    width: 100%;
+    height: 220px;
+    border: none;
+  }
+
+  /* Quality Selector */
+  .quality {
+    margin: 15px 0;
+  }
+
+  select {
+    background-color: #222;
+    color: white;
+    border: 1px solid #555;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 15px;
+  }
+
+  /* Buttons */
+  .button-box {
+    background-color: #111;
+    margin: 15px auto;
+    width: 90%;
+    border-radius: 12px;
+    padding: 15px;
+  }
+
+  .button-box h3 {
+    color: #ccc;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
   }
 
   .btn {
-    display: block;
-    width: 100%;
-    background: #ff0000;
+    display: inline-block;
+    width: 90%;
+    background: linear-gradient(90deg, #00b4db, #0083b0);
     color: white;
-    border: none;
+    text-decoration: none;
     padding: 12px;
+    font-weight: 600;
     border-radius: 8px;
-    font-size: 18px;
-    cursor: pointer;
-    margin-bottom: 10px;
+    transition: 0.3s;
   }
 
   .btn:hover {
-    background: #e60000;
-  }
-
-  .btn-secondary {
-    background: #222;
-    border: 1px solid #444;
-  }
-
-  .btn-secondary:hover {
-    background: #333;
-  }
-
-  /* Video Section */
-  #video-box {
-    display: none;
-    position: relative;
-    height: 100vh;
-    background: black;
-  }
-
-  video {
-    width: 100%;
-    height: 100%;
-    background: black;
-  }
-
-  /* Quality button */
-  #qualityBtn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 999;
-    background: #000;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 7px;
-    cursor: pointer;
-    border: 1px solid #ff0000;
-    font-size: 14px;
-  }
-
-  .quality-menu {
-    position: absolute;
-    top: 45px;
-    right: 10px;
-    background: #000;
-    border: 1px solid #ff0000;
-    border-radius: 8px;
-    padding: 8px;
-    display: none;
-    z-index: 1000;
-  }
-
-  .quality-item {
-    padding: 6px 10px;
-    cursor: pointer;
-  }
-
-  .quality-item:hover {
-    background: #222;
-  }
-
-  /* Footer Section */
-  .footer {
-    background: #000;
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid #222;
-  }
-
-  .footer h3 {
-    margin: 0 0 8px;
-    color: #ddd;
-  }
-
-  .footer .btn {
-    background: #00bfff;
-    color: #000;
-    font-weight: bold;
-  }
-
-  .footer a {
-    text-decoration: none;
+    opacity: 0.8;
   }
 
   .back-link {
     display: block;
-    color: #ccc;
     margin-top: 15px;
-    font-size: 16px;
+    color: #aaa;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: #fff;
   }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <img src="https://i.ibb.co/7rT2vT4/cricket-logo.png" alt="Logo">
-  <h1>ALLROUNDER</h1>
-  <img src="https://i.ibb.co/7rT2vT4/cricket-logo.png" alt="Logo">
-</div>
-
-<!-- Popup -->
-<div id="popup">
-  <div class="popup-box">
-    <h2>📢 Join Our Telegram!</h2>
-    <p>For live match links, updates & highlights — join our channel <b>Cricket Yodha</b>.</p>
-    <button class="btn" onclick="joinNow()">Join Telegram</button>
-    <button class="btn btn-secondary" onclick="alreadyJoined()">Already Joined</button>
+  <!-- Header -->
+  <div class="header">
+    <img src="your-logo.png" alt="Logo">
+    <div class="title">ALLROUNDER</div>
   </div>
-</div>
 
-<!-- Video Player -->
-<div id="video-box">
-  <button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
-  <div id="qualityMenu" class="quality-menu"></div>
-  <video id="video" playsinline controls></video>
-</div>
+  <!-- Video -->
+  <div class="video-container">
+    <iframe id="liveStream" src="https://yourvideolink.com/embed" allowfullscreen></iframe>
+  </div>
 
-<!-- Footer -->
-<div class="footer">
-  <h3>🔔 Follow us for Updates!</h3>
-  <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank">
-    <button class="btn">Click Here To Join Telegram</button>
-  </a>
-  
-  <h3>🔗 Copy Link & Share</h3>
-  <a href="https://yourwebsite.com" target="_blank">
-    <button class="btn">Click Here To Share This Page Link</button>
-  </a>
+  <!-- Quality Selector -->
+  <div class="quality">
+    <label for="quality">Choose Video Quality: </label>
+    <select id="quality" onchange="changeQuality()">
+      <option value="low">Low (480p)</option>
+      <option value="medium" selected>Medium (720p)</option>
+      <option value="high">High (1080p)</option>
+    </select>
+  </div>
 
-  <a href="#" class="back-link">← Back to All Streams</a>
-</div>
+  <!-- Telegram Button -->
+  <div class="button-box">
+    <h3>🔔 Follow us for Updates!</h3>
+    <a href="https://t.me/yourchannel" class="btn" target="_blank">Click Here To Join Telegram</a>
+  </div>
 
-<!-- HLS Player Script -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <!-- Share Button -->
+  <div class="button-box">
+    <h3>🔗 Copy Link & Share</h3>
+    <a href="#" class="btn" onclick="copyLink()">Click Here To Share This Page Link</a>
+  </div>
+
+  <!-- Back Link -->
+  <a href="allstreams.html" class="back-link">← Back to All Streams</a>
+
 <script>
-  const stream = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
-
-  function showQualityMenu(levels, hls) {
-    const menu = document.getElementById("qualityMenu");
-    menu.innerHTML = "";
-    levels.forEach((level, i) => {
-      const opt = document.createElement("div");
-      opt.className = "quality-item";
-      opt.innerText = level.height + "p";
-      opt.onclick = () => {
-        hls.currentLevel = i;
-        menu.style.display = "none";
-      };
-      menu.appendChild(opt);
-    });
-    const auto = document.createElement("div");
-    auto.className = "quality-item";
-    auto.innerText = "Auto";
-    auto.onclick = () => {
-      hls.currentLevel = -1;
-      menu.style.display = "none";
-    };
-    menu.appendChild(auto);
+  // Copy page link
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Page link copied!");
   }
 
-  function toggleQuality() {
-    const menu = document.getElementById("qualityMenu");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
-  }
-
-  function initPlayer() {
-    const v = document.getElementById("video");
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(stream);
-      hls.attachMedia(v);
-      hls.on(Hls.Events.MANIFEST_PARSED, function(_, data) {
-        showQualityMenu(data.levels, hls);
-      });
+  // Change video quality
+  function changeQuality() {
+    const quality = document.getElementById('quality').value;
+    const iframe = document.getElementById('liveStream');
+    if (quality === "low") {
+      iframe.src = "https://yourvideolink.com/embed480";
+    } else if (quality === "medium") {
+      iframe.src = "https://yourvideolink.com/embed720";
     } else {
-      v.src = stream;
+      iframe.src = "https://yourvideolink.com/embed1080";
     }
-  }
-
-  function joinNow() {
-    window.open("https://t.me/+rwZKMV0-L8wyOTll", "_blank");
-  }
-
-  function alreadyJoined() {
-    document.getElementById("popup").style.display = "none";
-    document.getElementById("video-box").style.display = "block";
-    initPlayer();
   }
 </script>
 
