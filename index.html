@@ -3,48 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRICKET YODDHA - Live Cricket Stream</title>
+<title>Live TV</title>
 <style>
-body {
-  margin: 0;
-  background: #000;
-  font-family: "Poppins", Arial, sans-serif;
-  color: #fff;
-  text-align: center;
+body { 
+  background: black; 
+  margin: 0; 
+  font-family: Arial, sans-serif; 
+  color: white; 
 }
 
-/* Header */
-.header {
-  background: #061a12;
-  color: #00ffb3;
-  padding: 15px 0;
-  font-size: 26px;
-  font-weight: bold;
+/* Popup */
+#popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.popup-box {
+  width: 85%;
+  max-width: 400px;
+  background: #111;
+  padding: 25px 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+  border: 1px solid #ff0000;
+}
+
+/* Heading */
+.popup-box h2 {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  box-shadow: 0 0 20px rgba(0,255,179,0.3);
-}
-.header-icon {
-  width: 28px;
-  height: 28px;
-  border: 2px solid #00ffb3;
-  border-radius: 50%;
+  gap: 8px;
 }
 
-/* Video Box */
-.video-container {
-  position: relative;
-  width: 100%;
-  height: 50vh;
-  background: #000;
+/* Paragraph */
+.popup-box p {
+  color: #bfbfbf;
+  font-size: 16px;
+  margin-bottom: 20px;
+  line-height: 1.4;
 }
-video {
+
+/* Buttons */
+.btn-join {
   width: 100%;
-  height: 100%;
-  background: black;
+  background: #ff0000;
   border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.3s;
+}
+
+.btn-join:hover {
+  background: #e60000;
+}
+
+.btn-joined {
+  width: 100%;
+  background: #222;
+  border: 1px solid #444;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-joined:hover {
+  background: #333;
+}
+
+/* Video box */
+#video-box { 
+  display: none; 
+  position: relative; 
+  height: 100vh; 
+  background: black; 
+}
+
+video { 
+  width: 100%; 
+  height: 100%; 
+  background: black; 
 }
 
 /* Quality Button */
@@ -54,132 +111,36 @@ video {
   right: 10px; 
   z-index: 999;
   background: #000; 
-  color: #00ffb3; 
+  color: #fff; 
   padding: 8px 12px; 
-  border-radius: 8px; 
+  border-radius: 7px; 
   cursor: pointer;
-  border: 1px solid #00ffb3;
-  box-shadow: 0 0 10px rgba(0,255,179,0.5);
+  border: 1px solid #ff0000;
+  box-shadow: 0 0 10px rgba(255,0,0,0.5);
 }
+
+/* Quality Menu */
 .quality-menu {
   position: absolute; 
   top: 50px; 
   right: 10px; 
-  background: #061a12; 
+  background: #000; 
   color: #fff; 
   padding: 10px; 
   border-radius: 8px; 
   display: none; 
   z-index: 1000;
-  border: 1px solid #00ffb3;
-  box-shadow: 0 0 15px rgba(0,255,179,0.5);
+  border: 1px solid #ff0000;
+  box-shadow: 0 0 15px rgba(255,0,0,0.5);
 }
+
 .quality-item { 
   padding: 6px 12px; 
   cursor: pointer; 
 }
+
 .quality-item:hover { 
-  background: #00ffb31a; 
-}
-
-/* Sections */
-.section {
-  margin: 20px auto;
-  width: 90%;
-  max-width: 400px;
-  background: #061a12;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 0 25px rgba(0,255,179,0.2);
-}
-.section h3 {
-  font-size: 18px;
-  color: #00ffb3;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-/* Buttons */
-.btn {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(90deg, #00ffb3, #0099ff);
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn:hover {
-  transform: scale(1.03);
-}
-
-/* Modern Popup */
-#popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-.popup-box {
-  width: 85%;
-  max-width: 380px;
-  background: #0a0a0a;
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0,255,179,0.4), 0 0 40px rgba(0,255,255,0.2);
-  padding: 25px 20px;
-  text-align: center;
-  border: 1px solid rgba(0,255,179,0.5);
-}
-.popup-box h2 {
-  font-size: 24px;
-  color: #fff;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-.popup-box p {
-  color: #ccc;
-  font-size: 15px;
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-.popup-btn {
-  display: block;
-  width: 100%;
-  border: none;
-  border-radius: 10px;
-  font-size: 17px;
-  font-weight: bold;
-  padding: 12px 0;
-  cursor: pointer;
-  margin-bottom: 12px;
-  transition: 0.3s;
-}
-.popup-btn:first-child {
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
-  color: #fff;
-}
-.popup-btn:first-child:hover {
-  transform: scale(1.05);
-}
-.popup-btn:last-child {
-  background: #1a1a1a;
-  border: 1px solid #00ffb3;
-  color: #fff;
-}
-.popup-btn:last-child:hover {
-  background: #222;
-  transform: scale(1.05);
+  background: #222; 
 }
 </style>
 </head>
@@ -189,48 +150,55 @@ video {
 <!-- Popup -->
 <div id="popup">
   <div class="popup-box">
-    <h2>💬 Support Us!</h2>
-    <p>Join our Telegram channel <strong style="color:#00ffb3;">CRICKET YODDHA</strong> for instant updates, highlights, and exclusive links.</p>
-    <button class="popup-btn" onclick="joinNow()">Join Now</button>
-    <button class="popup-btn" onclick="already()">Already Joined</button>
+    <h2>📣 Support Us!</h2>
+    <p>
+      Join our Telegram channel <b>Cricket Yodha</b> for instant updates, highlights, and exclusive links.
+    </p>
+    <button class="btn-join" onclick="joinNow()">Join Now</button>
+    <button class="btn-joined" onclick="already()">Already Joined</button>
   </div>
 </div>
 
-<!-- Main Page -->
-<div id="main-content" style="display:none;">
-
-  <!-- Header -->
-  <div class="header">
-    <div class="header-icon"></div>
-    CRICKET YODDHA
-  </div>
-
-<!-- Video -->
-  <div class="video-container">
-    <button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
-    <div id="qualityMenu" class="quality-menu"></div>
-    <video id="video" playsinline controls></video>
-  </div>
-
-  <!-- Follow Section -->
-  <div class="section">
-    <h3>🔔 Follow Us for Updates</h3>
-    <button class="btn" onclick="joinNow()">Join Telegram Channel</button>
-  </div>
-
-  <!-- Share Section -->
-  <div class="section">
-    <h3>🔗 Share This Page</h3>
-    <button class="btn" onclick="sharePage()">Copy & Share This Page</button>
-  </div>
+<!-- Video Section -->
+<div id="video-box">
+  <button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
+  <div id="qualityMenu" class="quality-menu"></div>
+  <video id="video" playsinline controls></video>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-// 🔗 Stream URL
-const stream = "https://mini.allinonereborn.fun/jiotv-in/app/ts_live_1984.m3u8";
 
-// 🎥 Initialize Player with Quality Options
+// ✅ Updated Stream Link
+const stream = "https://sonydaimenew.akamaized.net/hls/live/2037140/DAI20-criclive/std_lrh-800300010.m3u8?hdnea=exp=1763760228~acl=/*~id=91078442534039262086205216994991~hmac=14f68e5758df3c89a6452138295383d1e420d8b0c6b35594527d41d6b2bc4e64";
+
+function showQualityMenu(levels, hls) {
+  const menu = document.getElementById("qualityMenu");
+  menu.innerHTML = "";
+
+  levels.forEach((level, i) => {
+    const opt = document.createElement("div");
+    opt.className = "quality-item";
+    opt.innerText = level.height + "p";
+    opt.onclick = () => { 
+      hls.currentLevel = i; 
+      menu.style.display = "none"; 
+    };
+    menu.appendChild(opt);
+  });
+
+  const auto = document.createElement("div");
+  auto.className = "quality-item";
+  auto.innerText = "Auto";
+  auto.onclick = () => { hls.currentLevel = -1; menu.style.display = "none"; };
+  menu.appendChild(auto);
+}
+
+function toggleQuality(){
+  let menu = document.getElementById("qualityMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
 function initPlayer(){
   const v = document.getElementById("video");
   if(Hls.isSupported()){
@@ -240,70 +208,19 @@ function initPlayer(){
     hls.on(Hls.Events.MANIFEST_PARSED, function(_, data){
       showQualityMenu(data.levels, hls);
     });
-  } else {
-    v.src = stream;
+  } else { 
+    v.src = stream; 
   }
 }
 
-// 🎛️ Quality Menu
-function showQualityMenu(levels, hls){
-  const menu = document.getElementById("qualityMenu");
-  menu.innerHTML = "";
-
-  levels.forEach((level, i) => {
-    const opt = document.createElement("div");
-    opt.className = "quality-item";
-    opt.innerText = level.height + "p";
-    opt.onclick = () => {
-      hls.currentLevel = i;
-      menu.style.display = "none";
-    };
-    menu.appendChild(opt);
-  });
-
-  const auto = document.createElement("div");
-  auto.className = "quality-item";
-  auto.innerText = "Auto";
-  auto.onclick = () => {
-    hls.currentLevel = -1;
-    menu.style.display = "none";
-  };
-  menu.appendChild(auto);
-}
-
-function toggleQuality(){
-  let menu = document.getElementById("qualityMenu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
-// 🔘 Telegram
 function joinNow(){
   window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
 }
 
-// 📺 Show Main Page
 function already(){
-  document.getElementById("popup").style.display = "none";
-  document.getElementById("main-content").style.display = "block";
+  document.getElementById("popup").style.display="none";
+  document.getElementById("video-box").style.display="block";
   initPlayer();
-}
-
-// 🔗 Share Function
-function sharePage(){
-  const shareData = {
-    title: "CRICKET YODDHA Live",
-    text: "Watch Live Cricket on CRICKET YODDHA!",
-    url: window.location.href
-  };
-
-  if (navigator.share) {
-    navigator.share(shareData)
-      .then(() => console.log("Shared successfully"))
-      .catch((error) => console.log("Share failed:", error));
-  } else {
-    navigator.clipboard.writeText(window.location.href);
-    alert("✅ Link copied! Share it manually.");
-  }
 }
 </script>
 
