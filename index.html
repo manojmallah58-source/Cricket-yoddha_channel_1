@@ -36,15 +36,10 @@ body {
   border: 1px solid #ff0000;
 }
 
-/* Heading */
 .popup-box h2 {
   color: #ffffff;
   font-size: 24px;
   margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 }
 
 /* Paragraph */
@@ -56,38 +51,26 @@ body {
 }
 
 /* Buttons */
-.btn-join {
+.btn-join, .btn-joined {
   width: 100%;
-  background: #ff0000;
-  border: none;
   padding: 12px;
   border-radius: 10px;
   font-size: 18px;
-  color: #fff;
-  font-weight: bold;
   cursor: pointer;
+  font-weight: bold;
   margin-bottom: 10px;
-  transition: 0.3s;
 }
 
-.btn-join:hover {
-  background: #e60000;
+.btn-join {
+  background: #ff0000;
+  border: none;
+  color: #fff;
 }
 
 .btn-joined {
-  width: 100%;
   background: #222;
   border: 1px solid #444;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 18px;
   color: #fff;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-joined:hover {
-  background: #333;
 }
 
 /* Video box */
@@ -116,7 +99,6 @@ video {
   border-radius: 7px; 
   cursor: pointer;
   border: 1px solid #ff0000;
-  box-shadow: 0 0 10px rgba(255,0,0,0.5);
 }
 
 /* Quality Menu */
@@ -131,17 +113,13 @@ video {
   display: none; 
   z-index: 1000;
   border: 1px solid #ff0000;
-  box-shadow: 0 0 15px rgba(255,0,0,0.5);
 }
 
 .quality-item { 
   padding: 6px 12px; 
   cursor: pointer; 
 }
-
-.quality-item:hover { 
-  background: #222; 
-}
+.quality-item:hover { background: #222; }
 </style>
 </head>
 
@@ -151,65 +129,79 @@ video {
 <div id="popup">
   <div class="popup-box">
     <h2>📣 Support Us!</h2>
-    <p>
-      Join our Telegram channel <b>Cricket Yodha</b> for instant updates, highlights, and exclusive links.
-    </p>
+    <p>Join our Telegram channel <b>Cricket Yodha</b> for instant updates.</p>
     <button class="btn-join" onclick="joinNow()">Join Now</button>
     <button class="btn-joined" onclick="already()">Already Joined</button>
   </div>
 </div>
 
-<!-- Video Section -->
+<!-- Video Player -->
 <div id="video-box">
   <button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
   <div id="qualityMenu" class="quality-menu"></div>
-  <video id="video" playsinline controls></video>
+  <video id="video" playsinline controls autoplay></video>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
 <script>
 
-// ✅ Updated Stream Link
+// 🔥 Your Sony Stream Link
 const stream = "https://sonydaimenew.akamaized.net/hls/live/2037140/DAI20-criclive/std_lrh-800300010.m3u8?hdnea=exp=1763760228~acl=/*~id=91078442534039262086205216994991~hmac=14f68e5758df3c89a6452138295383d1e420d8b0c6b35594527d41d6b2bc4e64";
 
-function showQualityMenu(levels, hls) {
+function toggleQuality(){
+  let q = document.getElementById("qualityMenu");
+  q.style.display = q.style.display === "block" ? "none" : "block";
+}
+
+function showQualityMenu(levels, hls){
   const menu = document.getElementById("qualityMenu");
   menu.innerHTML = "";
 
   levels.forEach((level, i) => {
-    const opt = document.createElement("div");
-    opt.className = "quality-item";
-    opt.innerText = level.height + "p";
-    opt.onclick = () => { 
-      hls.currentLevel = i; 
-      menu.style.display = "none"; 
-    };
-    menu.appendChild(opt);
+    let d = document.createElement("div");
+    d.className = "quality-item";
+    d.innerText = level.height + "p";
+    d.onclick = () => { hls.currentLevel = i; menu.style.display = "none"; };
+    menu.appendChild(d);
   });
 
-  const auto = document.createElement("div");
+  let auto = document.createElement("div");
   auto.className = "quality-item";
   auto.innerText = "Auto";
   auto.onclick = () => { hls.currentLevel = -1; menu.style.display = "none"; };
   menu.appendChild(auto);
 }
 
-function toggleQuality(){
-  let menu = document.getElementById("qualityMenu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
+// ⭐ FIXED PLAYER — Runs even if HLS.js fails
 function initPlayer(){
-  const v = document.getElementById("video");
-  if(Hls.isSupported()){
-    const hls = new Hls();
+  const video = document.getElementById("video");
+
+  if (Hls.isSupported()) {
+    const hls = new Hls({
+      xhrSetup: function(xhr){
+        xhr.withCredentials = false;
+      }
+    });
+
     hls.loadSource(stream);
-    hls.attachMedia(v);
+    hls.attachMedia(video);
+
     hls.on(Hls.Events.MANIFEST_PARSED, function(_, data){
       showQualityMenu(data.levels, hls);
+      video.play();
     });
-  } else { 
-    v.src = stream; 
+
+    // ❗ If HLS.js fails → fallback to native player
+    hls.on(Hls.Events.ERROR, function(){
+      video.src = stream;
+      video.play();
+    });
+
+  } else {
+    // Native browser support
+    video.src = stream;
+    video.play();
   }
 }
 
@@ -222,6 +214,7 @@ function already(){
   document.getElementById("video-box").style.display="block";
   initPlayer();
 }
+
 </script>
 
 </body>
