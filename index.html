@@ -11,7 +11,6 @@ body {
   font-family: "Poppins", Arial, sans-serif;
   color: #fff;
   text-align: center;
-  overflow-x: hidden;
 }
 
 /* Header */
@@ -34,21 +33,53 @@ body {
   border-radius: 50%;
 }
 
-/* Video Section */
+/* Video Box */
 .video-container {
   position: relative;
   width: 100%;
-  height: 240px;
+  height: 50vh;
   background: #000;
-  overflow: hidden;
 }
-iframe {
-  position: absolute;
-  top: 0; left: 0;
+video {
   width: 100%;
   height: 100%;
+  background: black;
   border: none;
-  background-color: #000;
+}
+
+/* Quality Button */
+#qualityBtn {
+  position: absolute; 
+  top: 10px; 
+  right: 10px; 
+  z-index: 999;
+  background: #000; 
+  color: #00ffb3; 
+  padding: 8px 12px; 
+  border-radius: 8px; 
+  cursor: pointer;
+  border: 1px solid #00ffb3;
+  box-shadow: 0 0 10px rgba(0,255,179,0.5);
+}
+.quality-menu {
+  position: absolute; 
+  top: 50px; 
+  right: 10px; 
+  background: #061a12; 
+  color: #fff; 
+  padding: 10px; 
+  border-radius: 8px; 
+  display: none; 
+  z-index: 1000;
+  border: 1px solid #00ffb3;
+  box-shadow: 0 0 15px rgba(0,255,179,0.5);
+}
+.quality-item { 
+  padding: 6px 12px; 
+  cursor: pointer; 
+}
+.quality-item:hover { 
+  background: #00ffb31a; 
 }
 
 /* Sections */
@@ -89,7 +120,7 @@ iframe {
   transform: scale(1.03);
 }
 
-/* Popup */
+/* Modern Popup */
 #popup {
   position: fixed;
   top: 0; left: 0;
@@ -174,12 +205,11 @@ iframe {
     CRICKET YODDHA
   </div>
 
-  <!-- Video Section -->
+<!-- Video -->
   <div class="video-container">
-    <iframe id="iframe" src="https://tvgotk.github.io/p3/?mpd=https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Andpictures/default/manifest.mpd&keyId=8dea532cabfe4f71ba20f62310e7949f&key=7a214a974e4f4d1d9bb66364d5f0cb92"
-      allow="autoplay; encrypted-media; picture-in-picture"
-      webkitAllowFullScreen mozallowfullscreen allowfullscreen
-      loading="lazy"></iframe>
+    <button id="qualityBtn" onclick="toggleQuality()">⚙ Quality</button>
+    <div id="qualityMenu" class="quality-menu"></div>
+    <video id="video" playsinline controls></video>
   </div>
 
   <!-- Follow Section -->
@@ -195,19 +225,70 @@ iframe {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-// Telegram
+// 🔗 Stream URL
+const stream = "https://mini.allinonereborn.fun/jiotv-in/app/ts_live_1984.m3u8";
+
+// 🎥 Initialize Player with Quality Options
+function initPlayer(){
+  const v = document.getElementById("video");
+  if(Hls.isSupported()){
+    const hls = new Hls();
+    hls.loadSource(stream);
+    hls.attachMedia(v);
+    hls.on(Hls.Events.MANIFEST_PARSED, function(_, data){
+      showQualityMenu(data.levels, hls);
+    });
+  } else {
+    v.src = stream;
+  }
+}
+
+// 🎛️ Quality Menu
+function showQualityMenu(levels, hls){
+  const menu = document.getElementById("qualityMenu");
+  menu.innerHTML = "";
+
+  levels.forEach((level, i) => {
+    const opt = document.createElement("div");
+    opt.className = "quality-item";
+    opt.innerText = level.height + "p";
+    opt.onclick = () => {
+      hls.currentLevel = i;
+      menu.style.display = "none";
+    };
+    menu.appendChild(opt);
+  });
+
+  const auto = document.createElement("div");
+  auto.className = "quality-item";
+  auto.innerText = "Auto";
+  auto.onclick = () => {
+    hls.currentLevel = -1;
+    menu.style.display = "none";
+  };
+  menu.appendChild(auto);
+}
+
+function toggleQuality(){
+  let menu = document.getElementById("qualityMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+// 🔘 Telegram
 function joinNow(){
   window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
 }
 
-// Hide popup, show page
+// 📺 Show Main Page
 function already(){
   document.getElementById("popup").style.display = "none";
   document.getElementById("main-content").style.display = "block";
+  initPlayer();
 }
 
-// Share Page
+// 🔗 Share Function
 function sharePage(){
   const shareData = {
     title: "CRICKET YODDHA Live",
