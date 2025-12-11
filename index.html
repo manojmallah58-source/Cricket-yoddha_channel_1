@@ -1,233 +1,211 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRICKET YODDHA - Live Cricket Stream</title>
-<style>
-body {
-  margin: 0;
-  background: #000;
-  font-family: "Poppins", Arial, sans-serif;
-  color: #fff;
-  text-align: center;
-  overflow-x: hidden;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRICKET YODDHA - Live Cricket Stream</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      font-family: "Poppins", Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+    }
 
-/* Header */
-.header {
-  background: #061a12;
-  color: #00ffb3;
-  padding: 15px 0;
-  font-size: 26px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: 0 0 20px rgba(0,255,179,0.3);
-}
-.header-icon {
-  width: 28px;
-  height: 28px;
-  border: 2px solid #00ffb3;
-  border-radius: 50%;
-}
+    .header {
+      background: #061a12;
+      color: #00ffb3;
+      padding: 15px 0;
+      font-size: 26px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 20px rgba(0,255,179,0.3);
+    }
+    .header-icon {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #00ffb3;
+      border-radius: 50%;
+    }
 
-/* Video Section */
-.video-container {
-  position: relative;
-  width: 100%;
-  height: 240px;
-  background: #000;
-  overflow: hidden;
-}
-video {
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  border: none;
-}
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 50vh;
+      background: #000;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      background: black;
+      border: none;
+    }
 
-/* Sections */
-.section {
-  margin: 20px auto;
-  width: 90%;
-  max-width: 400px;
-  background: #061a12;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 0 25px rgba(0,255,179,0.2);
-}
-.section h3 {
-  font-size: 18px;
-  color: #00ffb3;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
+    .section {
+      margin: 20px auto;
+      width: 90%;
+      max-width: 400px;
+      background: #061a12;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 25px rgba(0,255,179,0.2);
+    }
+    .section h3 {
+      font-size: 18px;
+      color: #00ffb3;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
-/* Buttons */
-.btn {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(90deg, #00ffb3, #0099ff);
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn:hover {
-  transform: scale(1.03);
-}
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(90deg, #00ffb3, #0099ff);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      transform: scale(1.03);
+    }
 
-/* Popup */
-#popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-.popup-box {
-  width: 85%;
-  max-width: 380px;
-  background: #0a0a0a;
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0,255,179,0.4), 0 0 40px rgba(0,255,255,0.2);
-  padding: 25px 20px;
-  text-align: center;
-  border: 1px solid rgba(0,255,179,0.5);
-}
-.popup-box h2 {
-  font-size: 24px;
-  color: #fff;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-.popup-box p {
-  color: #ccc;
-  font-size: 15px;
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-.popup-btn {
-  display: block;
-  width: 100%;
-  border: none;
-  border-radius: 10px;
-  font-size: 17px;
-  font-weight: bold;
-  padding: 12px 0;
-  cursor: pointer;
-  margin-bottom: 12px;
-  transition: 0.3s;
-}
-.popup-btn:first-child {
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
-  color: #fff;
-}
-.popup-btn:last-child {
-  background: #1a1a1a;
-  border: 1px solid #00ffb3;
-  color: #fff;
-}
-</style>
+    #popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .popup-box {
+      width: 85%;
+      max-width: 380px;
+      background: #0a0a0a;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,255,179,0.4), 0 0 40px rgba(0,255,255,0.2);
+      padding: 25px 20px;
+      text-align: center;
+      border: 1px solid rgba(0,255,179,0.5);
+    }
+    .popup-box h2 {
+      font-size: 24px;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .popup-box p {
+      color: #ccc;
+      font-size: 15px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .popup-btn {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: bold;
+      padding: 12px 0;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: 0.3s;
+    }
+    .popup-btn:first-child {
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: #fff;
+    }
+    .popup-btn:first-child:hover {
+      transform: scale(1.05);
+    }
+    .popup-btn:last-child {
+      background: #1a1a1a;
+      border: 1px solid #00ffb3;
+      color: #fff;
+    }
+    .popup-btn:last-child:hover {
+      background: #222;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- Popup -->
-<div id="popup">
-  <div class="popup-box">
-    <h2>💬 Support Us!</h2>
-    <p>Join our Telegram channel <strong style="color:#00ffb3;">CRICKET YODDHA</strong> for instant updates, highlights, and exclusive links.</p>
-    <button class="popup-btn" onclick="joinNow()">Join Now</button>
-    <button class="popup-btn" onclick="already()">Already Joined</button>
-  </div>
-</div>
-
-<!-- Main Page -->
-<div id="main-content" style="display:none;">
-
-  <!-- Header -->
-  <div class="header">
-    <div class="header-icon"></div>
-    CRICKET YODDHA
+  <div id="popup">
+    <div class="popup-box">
+      <h2>💬 Support Us!</h2>
+      <p>Join our Telegram channel <strong style="color:#00ffb3;">CRICKET YODDHA</strong> for instant updates, highlights, and exclusive links.</p>
+      <button class="popup-btn" onclick="joinNow()">Join Now</button>
+      <button class="popup-btn" onclick="already()">Already Joined</button>
+    </div>
   </div>
 
-  <!-- Video Section -->
-  <div class="video-container">
-    <video id="video" playsinline controls></video>
+  <div id="main-content" style="display:none;">
+
+    <div class="header">
+      <div class="header-icon"></div>
+      CRICKET YODDHA
+    </div>
+
+    <div class="video-container">
+      <video id="video" playsinline controls>
+        <source src="https://cricketstan.github.io/Channel-13" />
+        <!-- Agar ye URL video playable na ho, fallback ya error message yahan add kar sakte hain -->
+      </video>
+    </div>
+
+    <div class="section">
+      <h3>🔔 Follow Us for Updates</h3>
+      <button class="btn" onclick="joinNow()">Join Telegram Channel</button>
+    </div>
+
+    <div class="section">
+      <h3>🔗 Share This Page</h3>
+      <button class="btn" onclick="sharePage()">Copy & Share This Page</button>
+    </div>
+
   </div>
 
-  <!-- Follow Section -->
-  <div class="section">
-    <h3>🔔 Follow Us for Updates</h3>
-    <button class="btn" onclick="joinNow()">Join Telegram Channel</button>
-  </div>
-
-  <!-- Share Section -->
-  <div class="section">
-    <h3>🔗 Share This Page</h3>
-    <button class="btn" onclick="sharePage()">Copy & Share This Page</button>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-// Stream URL
-const stream = "https://smart.bengaldigital.live/AstroCricket/index.m3u8";
-
-// Initialize HLS Player
-function initPlayer(){
-  const video = document.getElementById("video");
-
-  if(Hls.isSupported()){
-    const hls = new Hls();
-    hls.loadSource(stream);
-    hls.attachMedia(video);
-  } else {
-    video.src = stream; 
+  function joinNow(){
+    window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
   }
-}
-
-// Telegram button
-function joinNow(){
-  window.open("https://t.me/+rwZKMV0-L8wyOTll","_blank");
-}
-
-// Hide popup, show page
-function already(){
-  document.getElementById("popup").style.display = "none";
-  document.getElementById("main-content").style.display = "block";
-  initPlayer();
-}
-
-// Share
-function sharePage(){
-  const shareData = {
-    title: "CRICKET YODDHA Live",
-    text: "Watch Live Cricket on CRICKET YODDHA!",
-    url: window.location.href
-  };
-
-  if (navigator.share) {
-    navigator.share(shareData);
-  } else {
-    navigator.clipboard.writeText(window.location.href);
-    alert("✅ Link copied! Share it manually.");
+  function already(){
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+    // Autoplay video when ready
+    document.getElementById("video").play().catch(e => { /* ignore autoplay error */ });
   }
-}
+  function sharePage(){
+    const shareData = {
+      title: "CRICKET YODDHA Live",
+      text: "Watch Live Cricket on CRICKET YODDHA!",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch(error => console.log("Share failed:", error));
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("✅ Link copied! Share it manually.");
+    }
+  }
 </script>
 
 </body>
