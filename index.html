@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Allrounder</title>
+  <title></title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -121,6 +122,35 @@
     .close-btn:hover {
       color: #ff00cc;
     }
+
+    /* Floating Telegram Button */
+    #floatingTelegramBtn {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      padding: 0.8rem 1.2rem;
+      background: linear-gradient(135deg, #00eaff, #9c00ff);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 14px;
+      text-decoration: none;
+      z-index: 10003; /* above modal */
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #floatingTelegramBtn:hover {
+      background: linear-gradient(135deg, #00ffff, #c000ff);
+      box-shadow: 0 0 16px rgba(0, 255, 255, 0.6);
+    }
+
+    .material-icons {
+      font-size: 1.4rem;
+    }
   </style>
 </head>
 <body>
@@ -133,8 +163,13 @@
           allow="encrypted-media"
           allowfullscreen="true"
           scrolling="no"
-          src="https://cricketstan.github.io/Willow-Cricbuzz-/">
+          src="https://cricketstan.github.io/Channel-13">
   </iframe>
+
+  <!-- Floating Telegram Button -->
+  <a href="https://t.me/+i9R276shLS81MGM1" target="_blank" id="floatingTelegramBtn">
+    <span class="material-icons">send</span> Join Telegram
+  </a>
 
   <!-- Telegram Modal -->
   <div class="popup-overlay" id="telegramPopup">
@@ -143,7 +178,7 @@
       <div class="popup-header">Support Us!</div>
       <div class="popup-subtitle">Join our Telegram for latest updates.</div>
       <div class="popup-buttons">
-        <a href="https://t.me/+9LmqJs-Te9ozYzhl" target="_blank" class="join-btn">Join Now</a>
+        <a href="https://t.me/+i9R276shLS81MGM1" target="_blank" class="join-btn">Join Now</a>
         <button class="already-btn" onclick="closePopup()">Already Joined</button>
       </div>
     </div>
