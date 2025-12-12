@@ -41,7 +41,7 @@
     }
 
     header:hover img {
-      filter: drop_shadow(0 0 12px rgba(29, 185, 84, 0.5));
+      filter: drop-shadow(0 0 12px rgba(29, 185, 84, 0.5));
     }
 /* 🔔 Telegram Join Popup Styles */
 .popup-overlay {
@@ -395,31 +395,6 @@
 </div>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-  <div class="tabs">
-    <button class="tab-button active" onclick="switchTab('chat')" data-tab="chat">
-      <span class="material-icons">chat</span>
-      <span>Live Chat</span>
-    </button>
-    <button class="tab-button" onclick="switchTab('scoreboard')" data-tab="scoreboard">
-      <span class="material-icons">leaderboard</span>
-      <span>Scoreboard</span>
-    </button>
-    <button class="tab-button" onclick="switchTab('highlights')" data-tab="highlights">
-      <span class="material-icons">movie</span>
-      <span>Highlights</span>
-    </button>
-  </div>
-
-  <div id="chat" class="tab-content active">
-    <iframe src="https://cricketstan.github.io/Live-Chat/"></iframe>
-  </div>
-  <div id="scoreboard" class="tab-content">
-    <iframe src="https://live-scoreboard.pages.dev/"></iframe>
-  </div>
-  <div id="highlights" class="tab-content">
-<iframe src="https://cricketstan.github.io/Top-moments-/" allowfullscreen></iframe> 
-  </div>
-
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   <script>
@@ -429,14 +404,7 @@
       .then(res => res.json())
       .then(data => {
         const m3u8Url = data.stream_url;
-        // Note: The original code for the video player used a <video id="player"> 
-        // but the HTML was changed to use an <iframe> in the video-container.
-        // I'm keeping the HLS/Plyr code here for future use if you switch back 
-        // to a native <video> element.
-
-        // If you decide to use <video> instead of <iframe>, uncomment the following block:
-        /*
-        const video = document.getElementById('player'); 
+        const video = document.getElementById('player');
 
         if (Hls.isSupported()) {
           const hls = new Hls();
@@ -446,7 +414,8 @@
             const qualities = hls.levels.map(l => l.height).filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => b - a);
             new Plyr(video, {
               controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
-              settings: ['quality', 'speed'],
+
+settings: ['quality', 'speed'],
               quality: {
                 default: qualities[0],
                 options: qualities,
@@ -471,23 +440,12 @@
         } else {
           alert("Your browser does not support HLS.");
         }
-        */
       })
       .catch(err => {
         console.error('Failed to load stream:', err);
-        // alert('Failed to load stream.'); // Commented out to prevent popup on load
+        alert('Failed to load stream.');
       });
 
-    // CORRECTED switchTab FUNCTION (uses data-tab selector)
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-      // Find the button using the new 'data-tab' attribute
-      document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-    }
-    
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
     document.getElementById('overlay').classList.toggle('show');
