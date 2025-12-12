@@ -257,7 +257,7 @@
         align-items:center;
         margin-bottom:25px;
     ">
-        <h2 style="margin:0;font-size:24px;font-weight:600;">Jio Hotstar</h2>
+        <h2 style="margin:0;font-size:24px;font-weight:600;">Star Sports Hindi</h2>
 
         <div style="
             background:#d1001f;
@@ -284,10 +284,10 @@
             font-weight:600;
             color:#c9c9c9;
         ">
-            🔔 Follow us for Updates!
+            📣 Follow us for more Updates
         </p>
 
-        <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" style="
+<a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" style="
             display:block;
             background:linear-gradient(to right, #ff1a1a, #d60000);
             padding:15px;
@@ -299,7 +299,7 @@
             font-weight:700;
             box-shadow:0 0 12px rgba(255,0,0,0.28);
         ">
-            🚀 Click Here To Join Telegram
+            🚀  Join Telegram
         </a>
     </div>
 
@@ -314,7 +314,7 @@
             font-weight:600;
             color:#c9c9c9;
         ">
-            🔗 Copy Link & Share
+            🔗 Share Stream
         </p>
 
         <button onclick="sharePageLink()" style="
@@ -332,7 +332,7 @@
             font-weight:700;
             box-shadow:0 0 12px rgba(255,0,0,0.28);
         ">
-            📤 Click Here To Share This Page Link
+            📤  Share This Page Link
         </button>
     </div>
 </div>
@@ -404,7 +404,8 @@ async function sharePageLink() {
         } else {
             // Fallback for older browsers: Copy link to clipboard
             await navigator.clipboard.writeText(shareData.text + '\n\nLink: ' + shareData.url);
-            // English Translation of the alert message
+
+// English Translation of the alert message
             alert("Link and sharing text copied! You can now share it anywhere.");
         }
     } catch (err) {
