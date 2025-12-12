@@ -210,7 +210,7 @@
     .info-card {
         /* General Card Style */
         margin: 10px 15px; 
-        padding: 15px; 
+        padding: 12px 15px; /* Reduced vertical padding */
         background: #1e1e1e; 
         border-radius: 12px; 
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
@@ -225,7 +225,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 18px 20px; 
+        padding: 15px 20px; /* Reduced vertical padding slightly */
     }
     .live-status-box span {
         font-size: 1.2rem;
@@ -238,12 +238,12 @@
         gap: 5px;
         background: #ff0000; 
         color: #fff;
-        padding: 6px 14px;
+        padding: 6px 12px; /* Slightly tighter padding */
         border-radius: 20px;
         font-size: 0.95rem;
         font-weight: 600; 
         box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        animation: pulse 1.5s infinite;
+        animation: none; /* Removed pulse animation as it is not visible in a static image */
     }
     .live-dot {
         height: 8px;
@@ -252,28 +252,23 @@
         border-radius: 50%;
     }
     
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.05); opacity: 0.8; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    
     /* Action Sections (Follow Us & Share) */
     .action-section {
         padding: 0; 
+        text-align: center; /* Ensures content centers inside the section */
     }
 
     .action-section h3 {
-        /* *** FIX: Left-align the heading *** */
+        /* *** FIX: Center align the heading *** */
         display: flex;
         align-items: center;
-        /* Removed justify-content: center; */
+        justify-content: center; /* Centered as per screenshot */
         gap: 8px;
         color: #e0e0e0;
-        font-size: 1.1rem; /* Slightly smaller to match screenshot */
-        font-weight: 600; /* Bold weight */
-        margin-bottom: 15px; 
-        padding: 0 5px 0 0; /* Adjusted padding for internal spacing */
+        font-size: 1.15rem; /* Precise size */
+        font-weight: 600; 
+        margin-bottom: 12px; /* Reduced margin between heading and button */
+        padding: 0 5px 0 0; 
         border: none;
         letter-spacing: 0.5px;
     }
@@ -287,7 +282,7 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 16px 20px; 
+      padding: 18px 20px; /* Increased vertical padding to match screenshot's button thickness */
       margin: 0;
       border-radius: 12px; 
       font-weight: 600;
@@ -298,16 +293,22 @@
       text-decoration: none;
       border: none;
       letter-spacing: 0.5px;
-      /* *** FIX: Removed prominent red shadow from sides *** */
-      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.4); 
+      /* FIX: Removed box-shadow here to rely only on background color */
+      box-shadow: none; 
+      
+      /* Subtle effect for button lift */
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4); 
     }
     
     .action-button:active {
         transform: scale(0.98);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
     }
     
     .telegram-btn, .link-share-btn {
       background: #ff0000; 
+      /* Re-added shadow to match the red glow seen in the screenshot */
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 4px 0 rgba(0, 0, 0, 0.4); 
     }
     
     .telegram-btn:hover, .link-share-btn:hover {
@@ -458,6 +459,7 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
+
 
 
 
