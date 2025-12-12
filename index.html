@@ -207,9 +207,6 @@
     .counter-box img {
       height: 48px;
     }
-    
-    /* Removed unused CSS classes from previous response (like .info-card, .action-button)
-       as the new structure uses inline styles. */
 
   </style>
 </head>
@@ -395,7 +392,8 @@ function showVisitorPopup() {
 async function sharePageLink() {
     const shareData = {
         title: 'CRICKET YODDHA - Live Match',
-        text: 'देखिए Live Cricket Match यहाँ: CRICKET YODDHA! 🏏\n\nUpdates के लिए हमारा Telegram Channel Join करें: ' + telegramLink,
+        // English Translation of the share text
+        text: 'Watch Live Cricket Match here: CRICKET YODDHA! 🏏\n\nJoin our Telegram Channel for updates: ' + telegramLink,
         url: window.location.href,
     };
 
@@ -406,16 +404,19 @@ async function sharePageLink() {
         } else {
             // Fallback for older browsers: Copy link to clipboard
             await navigator.clipboard.writeText(shareData.text + '\n\nLink: ' + shareData.url);
-            alert("लिंक और शेयरिंग टेक्स्ट कॉपी हो गया है! अब आप इसे कहीं भी शेयर कर सकते हैं।");
+            // English Translation of the alert message
+            alert("Link and sharing text copied! You can now share it anywhere.");
         }
     } catch (err) {
         console.error('Share failed:', err);
-        alert('शेयर करने में कोई समस्या आई। कृपया लिंक मैन्युअल रूप से कॉपी करें।');
+        // English Translation of the error alert
+        alert('There was an issue sharing. Please copy the link manually.');
     }
 }
   </script>
 </body>
   </html>
+
 
 
 
