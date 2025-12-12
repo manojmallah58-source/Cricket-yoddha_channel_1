@@ -242,7 +242,8 @@
         border-radius: 20px;
         font-size: 0.95rem;
         font-weight: 600; 
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        /* FINAL: Stronger shadow for the LIVE badge itself */
+        box-shadow: 0 0 12px rgba(255, 0, 0, 0.7); 
     }
     .live-dot {
         height: 8px;
@@ -266,7 +267,7 @@
         color: #e0e0e0;
         font-size: 1.1rem; 
         font-weight: 600; 
-        margin-bottom: 10px; /* *** FINAL FIX: Reduced margin further to 10px *** */
+        margin-bottom: 10px; 
         padding: 5px 0 0; 
         border: none;
         letter-spacing: 0.5px;
@@ -284,8 +285,8 @@
       padding: 18px 20px; 
       margin: 0;
       border-radius: 12px; 
-      font-weight: 700; /* *** FINAL FIX: Using 700 for exact match, combined with size *** */
-      font-size: 1.1rem; /* Matched size */
+      font-weight: 700; 
+      font-size: 1.15rem; /* Slightly larger text for emphasis */
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
@@ -293,8 +294,9 @@
       border: none;
       letter-spacing: 0.5px;
       background: #ff0000; 
-      /* FINAL FIX: Stronger, more focused red glow and bottom shadow */
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 0 5px 0 rgba(0, 0, 0, 0.5); 
+      /* *** FINAL FIX: Most important change for the button look *** */
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), /* Strong red glow */
+                  0 5px 0 rgba(0, 0, 0, 0.5); /* Deep bottom shadow */
     }
     
     .action-button:active {
@@ -450,9 +452,6 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
-
-
-
 
 
 
