@@ -11,7 +11,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: #111; /* Slightly less harsh black background to match the screenshot overall feel */
+      background: #0a0a0a;
       font-family: 'Poppins', sans-serif;
       overflow-x: hidden;
       color: #e0e0e0;
@@ -23,33 +23,148 @@
       left: 0;
       right: 0;
       height: 70px;
-      background: #0a0a0a; /* Solid black header like screenshot */
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       display: flex;
       align-items: center;
       justify-content: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       z-index: 9999;
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
     }
 
     header img {
       height: 65%;
-      filter: drop-shadow(0 0 5px rgba(29, 185, 84, 0.3));
-    }
-    
-    .menu-icon {
-      position: absolute; left: 16px; color: #fff; font-size: 30px; cursor: pointer;
+      filter: drop-shadow(0 0 8px rgba(29, 185, 84, 0.3));
+      transition: filter 0.3s ease;
     }
 
-    /* POPUP Styles (Keeping original for functionality, not critical to screenshot design) */
-    .popup-overlay { z-index: 10002; }
-    .popup-box { background: rgba(20, 20, 30, 0.9); border: 1px solid rgba(173, 216, 230, 0.25); }
+    header:hover img {
+      filter: drop-shadow(0 0 12px rgba(29, 185, 84, 0.5));
+    }
 
+    /* 🔔 Telegram Join Popup Styles */
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10002;
+    }
+
+    .popup-box {
+      width: 320px;
+      background: rgba(20, 20, 30, 0.6);
+      border: 1px solid rgba(173, 216, 230, 0.25);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.4), 0 0 80px rgba(173, 216, 230, 0.15);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      animation: fadeIn 0.5s ease forwards;
+      position: relative;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup-header {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, #00eaff, #bd00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    }
+
+    .popup-subtitle {
+      font-size: 1rem;
+      color: #aaa;
+      margin-bottom: 1.2rem;
+    }
+
+    .popup-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .popup-buttons a {
+      text-decoration: none;
+    }
+
+    .popup-btn {
+      padding: 0.8rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .popup-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(0,255,255,0.3), rgba(255,0,255,0.2));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .popup-btn:hover::after {
+      opacity: 1;
+    }
+
+    .join-btn {
+      background: linear-gradient(135deg, #00eaff, #9c00ff);
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+    }
+
+    .join-btn:hover {
+      background: linear-gradient(135deg, #00ffff, #c000ff);
+      box-shadow: 0 0 16px rgba(0, 255, 255, 0.6);
+    }
+
+    .already-btn {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .already-btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 1.3rem;
+      color: #00eaff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close-btn:hover {
+      color: #ff00cc;
+    }
     .video-container {
       width: 100vw;
       aspect-ratio: 16/9;
       background: #000;
-      margin-top: 70px; 
+      margin-top: 70px; /* Space for fixed header */
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
     }
 
@@ -60,35 +175,78 @@
       display: block;
     }
     
-    /* Sidebar Styles - simplified to match the basic dark menu look */
+    .menu-icon {
+      position: absolute; left: 16px; color: #fff; font-size: 30px; cursor: pointer;
+    }
+    
+    .menu-header {
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      display: none;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+    
+    /* Sidebar Styles - Premium Glassmorphic */
     .sidebar {
       position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
-      background: #1e1e1e; 
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
       border-right: 1px solid rgba(255,255,255,0.2);
       color: #fff; z-index: 10001; transition: left 0.5s ease;
       padding-top: 80px; box-shadow: 4px 0 15px rgba(0,0,0,0.4);
+      border-top-right-radius: 12px; border-bottom-right-radius: 12px;
     }
     .sidebar.open { left: 0; }
     .sidebar a {
       display: block; padding: 15px 24px; color: #fff; text-decoration: none;
       border-bottom: 1px solid rgba(255,255,255,0.1);
       font-weight: 500; font-size: 16px;
-      transition: background 0.3s;
+      transition: background 0.3s, padding-left 0.3s;
     }
     .sidebar a:hover {
-      background: #333;
+      background: rgba(255,255,255,0.15);
+      padding-left: 32px;
+    }
+    .counter-box {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+      margin-top: 1rem;
     }
     
-    /* JIO HOTSTAR LIVE BOX - EXACT MATCH */
+    .counter-box img {
+      height: 48px;
+    }
+    
+    /* JIO HOTSTAR LIVE BOX - Matching the screenshot style */
     .live-status-box {
-        margin: 15px 10px 10px 10px; /* Top margin adjusted to match screenshot distance from video */
+        margin: 10px;
         padding: 15px;
-        background: #1a1a1a; /* Dark background */
-        border-radius: 8px; /* Slightly less rounded, matching screenshot */
+        background: #1e1e1e; /* Dark background color from screenshot */
+        border-radius: 10px; /* Rounded corners */
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        border: 1px solid #333;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     }
     .live-status-box span {
         font-size: 1.2rem;
@@ -101,12 +259,18 @@
         gap: 5px;
         background: #ff0000;
         color: #fff;
-        padding: 5px 12px; /* Adjusted padding to match size */
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.8rem; /* Smaller font size */
+        font-size: 0.9rem;
         font-weight: 700;
-        box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         animation: pulse 1.5s infinite;
+    }
+    .live-dot {
+        height: 8px;
+        width: 8px;
+        background: #fff;
+        border-radius: 50%;
     }
     
     @keyframes pulse {
@@ -115,11 +279,11 @@
         100% { transform: scale(1); opacity: 1; }
     }
     
-    /* ACTION SECTIONS - EXACT MATCH */
+    /* NEW STYLES FOR ACTION BUTTONS - Matching the screenshot */
     .action-section {
       padding: 0;
       background: transparent;
-      margin: 20px 0; /* Increased vertical margin between sections */
+      margin: 15px 0; /* Vertical spacing between sections */
     }
     
     .action-section h3 {
@@ -128,9 +292,10 @@
         gap: 8px;
         color: #fff;
         font-size: 1rem;
-        font-weight: 500; /* Matching screenshot's heading lightness */
+        font-weight: 500;
         margin-bottom: 12px;
         padding: 0 10px; 
+        border: none;
     }
     .action-section h3 .material-icons {
         font-size: 20px;
@@ -142,9 +307,9 @@
       align-items: center;
       justify-content: center;
       width: calc(100% - 20px);
-      padding: 18px 20px; /* Height matching screenshot */
+      padding: 18px 20px; /* Matching the height of the button in the screenshot */
       margin: 0 10px;
-      border-radius: 8px; /* Slightly squarer corners matching screenshot */
+      border-radius: 10px;
       font-weight: 600;
       font-size: 1.05rem;
       color: #fff;
@@ -159,15 +324,14 @@
         transform: scale(0.98);
     }
     
-    /* Red buttons for both */
     .telegram-btn, .link-share-btn {
-      background: #ff0000; 
-      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.5);
+      background: #ff0000; /* Red color matching the screenshot */
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
     }
     
     .telegram-btn:hover, .link-share-btn:hover {
       background: #d60000;
-      box-shadow: 0 6px 15px rgba(255, 0, 0, 0.7);
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
     }
     
     .action-button .material-icons {
@@ -249,8 +413,7 @@
     const jsonUrl = 'https://raw.githubusercontent.com/StmpupCricket/Star-Sports-Hindi-json/refs/heads/main/data.json';
     const telegramLink = 'https://t.me/+rwZKMV0-L8wyOTll';
 
-    // The HLS/Plyr code is kept for potential video player implementation, 
-    // though the main player is currently an iframe.
+    // The HLS/Plyr code is left here in the script for completeness.
     /*
     fetch(jsonUrl)
       .then(res => res.json())
@@ -310,6 +473,7 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
+
 
 
 
