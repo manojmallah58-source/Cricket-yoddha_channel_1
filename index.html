@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -210,15 +209,15 @@
     /* ********** FINAL CARD/BOX STYLING FIX ********** */
     .info-card {
         /* General Card Style */
-        margin: 10px 15px; /* Added horizontal margin to match screenshot spacing */
+        margin: 10px 15px; 
         padding: 15px; 
         background: #1e1e1e; /* Dark background color */
-        border-radius: 12px; /* Smoother, squarer corners like the screenshot */
+        border-radius: 12px; 
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
     }
     
     .info-card:not(:first-of-type) {
-        margin-top: 15px; /* Space between cards */
+        margin-top: 15px; 
     }
 
     /* Jio Hotstar Live Box */
@@ -226,7 +225,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 18px 20px; /* Increase padding for a taller look */
+        padding: 18px 20px; 
     }
     .live-status-box span {
         font-size: 1.2rem;
@@ -265,20 +264,21 @@
     }
 
     .action-section h3 {
+        /* *** TEXT WEIGHT AND SIZE FIX *** */
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
         color: #e0e0e0;
-        font-size: 1.1rem; /* Slightly reduced font size */
-        font-weight: 500;
+        font-size: 1.15rem; /* Increased size to match screenshot prominence */
+        font-weight: 600; /* Increased weight for boldness */
         margin-bottom: 15px; 
         padding: 0; 
         border: none;
         letter-spacing: 0.5px;
     }
     .action-section h3 .material-icons {
-        font-size: 22px; /* Adjusted icon size */
+        font-size: 24px; /* Slightly larger icon */
         color: #e0e0e0;
     }
     
@@ -287,11 +287,11 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 15px 20px; /* Precise vertical padding to match height */
+      padding: 16px 20px; /* Adjusted padding for better height/thickness */
       margin: 0;
       border-radius: 12px; 
       font-weight: 600;
-      font-size: 1.05rem; 
+      font-size: 1.1rem; /* Clear and bold text */
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
@@ -458,6 +458,7 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
+
 
 
 
