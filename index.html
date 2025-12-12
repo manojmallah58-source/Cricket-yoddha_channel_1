@@ -266,7 +266,7 @@
         color: #e0e0e0;
         font-size: 1.1rem; 
         font-weight: 600; 
-        margin-bottom: 12px; 
+        margin-bottom: 10px; /* *** FINAL FIX: Reduced margin further to 10px *** */
         padding: 5px 0 0; 
         border: none;
         letter-spacing: 0.5px;
@@ -281,11 +281,11 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 18px 20px; /* Matched button height */
+      padding: 18px 20px; 
       margin: 0;
       border-radius: 12px; 
-      font-weight: 800; /* *** FINAL FIX: Changed to 800 for extra boldness *** */
-      font-size: 1.15rem; /* Slightly larger text size */
+      font-weight: 700; /* *** FINAL FIX: Using 700 for exact match, combined with size *** */
+      font-size: 1.1rem; /* Matched size */
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
@@ -293,13 +293,13 @@
       border: none;
       letter-spacing: 0.5px;
       background: #ff0000; 
-      /* Apply red glow and subtle bottom shadow */
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 4px 0 rgba(0, 0, 0, 0.4); 
+      /* FINAL FIX: Stronger, more focused red glow and bottom shadow */
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 0 5px 0 rgba(0, 0, 0, 0.5); 
     }
     
     .action-button:active {
         transform: scale(0.98);
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
     }
     
     .action-button:hover {
@@ -450,6 +450,8 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
+
+
 
 
 
