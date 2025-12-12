@@ -281,7 +281,7 @@
     
     /* Action Section Fix - Using separate dark containers to mimic the distinct boxes */
     .action-container {
-        margin: 10px; /* Space between the live box and action sections */
+        margin: 10px; /* Space around the entire card */
         padding: 15px;
         background: #1e1e1e; /* Dark background for the card/box */
         border-radius: 10px;
@@ -290,9 +290,13 @@
     }
 
     .action-container + .action-container {
-        margin-top: 15px; /* Extra space between the two action boxes */
+        margin-top: 15px; /* Space between the two action boxes */
     }
     
+    .action-section {
+        padding: 0; /* Remove internal padding, use container padding */
+    }
+
     .action-section h3 {
         display: flex;
         align-items: center;
@@ -314,9 +318,9 @@
       align-items: center;
       justify-content: center;
       width: 100%; /* Button takes full width of its container */
-      padding: 18px 20px; 
+      padding: 18px 20px; /* Matching the height of the button in the screenshot */
       margin: 0;
-      border-radius: 8px; /* Slightly more aggressive rounding */
+      border-radius: 8px; 
       font-weight: 600;
       font-size: 1.05rem;
       color: #fff;
