@@ -3,158 +3,147 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CRICKET YODDHA</title>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
+  <title>Live Page</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
-      background: #0a0a0a;
+      background: #000;
       font-family: 'Poppins', sans-serif;
-      overflow-x: hidden;
-      color: #e0e0e0;
+      color: #fff;
     }
 
-    /* ----------------- LIVE STATUS BOX ----------------- */
-    .info-card {
-        background: #1a1a1a;
-        margin: 15px;
-        padding: 18px 20px;
-        border-radius: 16px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    /* MAIN TITLE + LIVE BOX */
+    .top-box {
+      background: #141414;
+      margin: 18px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .live-status-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .top-title {
+      font-size: 1.6rem;
+      font-weight: 700;
     }
 
-    .live-status-box span {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #ffffff;
-    }
-
-    /* RED LIVE BADGE */
-    .live-indicator {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        background: #ff0000;
-        color: #fff;
-        padding: 6px 16px;
-        border-radius: 40px;
-        font-size: 0.95rem;
-        font-weight: 700;
-        box-shadow: 0 0 15px rgba(255,0,0,0.8);
+    .live-btn {
+      background: #ff0000;
+      padding: 8px 22px;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 15px rgba(255,0,0,0.6);
     }
 
     .live-dot {
-        width: 9px;
-        height: 9px;
-        background: #fff;
-        border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
     }
 
-    /* ----------------- HEADING WITH ICON ----------------- */
-    .action-section h3 {
-        text-align: center;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #c6c6c6;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 14px;
+    /* ALL CARDS SAME */
+    .card {
+      background: #1c1c1c;
+      margin: 18px;
+      padding: 25px 20px;
+      border-radius: 22px;
     }
 
-    .action-section h3 .material-icons {
-        font-size: 22px;
+    /* HEADING */
+    .card h3 {
+      margin: 0 0 18px 0;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c9c9c9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    /* ----------------- RED BUTTONS ----------------- */
-    .action-button {
-        width: 100%;
-        padding: 18px;
-        border-radius: 14px;
-        background: linear-gradient(90deg, #ff1a1a, #d60000);
-        color: white;
-        font-size: 1.05rem;
-        font-weight: 700;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        cursor: pointer;
-        box-shadow: 0 5px 18px rgba(255,0,0,0.45);
-        text-decoration: none;
+    /* MAIN BUTTON (RED) */
+    .main-btn {
+      width: 100%;
+      padding: 18px;
+      border-radius: 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff1c1c, #d40000);
+      color: #fff;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255,0,0,0.5);
+      text-decoration: none;
     }
 
-    .action-button:active {
-        transform: scale(0.97);
-    }
   </style>
 </head>
 
 <body>
 
-<!-- 🔴 LIVE STATUS BOX -->
-<div class="info-card live-status-box">
-    <span>Jio Hotstar</span>
-    <div class="live-indicator">
-        <span class="live-dot"></span>
-        LIVE
-    </div>
+<!-- 🔴 TOP LIVE BOX -->
+<div class="top-box">
+  <div class="top-title">Jio Hotstar</div>
+  <div class="live-btn">
+    <div class="live-dot"></div>
+    LIVE
+  </div>
 </div>
 
-<!-- 🔔 FOLLOW US BOX -->
-<div class="info-card">
-    <div class="action-section">
-        <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
-        <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="action-button">
-            <span class="material-icons">send</span>
-            Click Here To Join Telegram
-        </a>
-    </div>
+<!-- 🔔 TELEGRAM BOX -->
+<div class="card">
+  <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
+
+  <a class="main-btn" href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank">
+    <span class="material-icons">send</span>
+    Click Here To Join Telegram
+  </a>
 </div>
 
 <!-- 🔗 SHARE BOX -->
-<div class="info-card">
-    <div class="action-section">
-        <h3><span class="material-icons">link</span> Copy Link & Share</h3>
-        <button class="action-button" onclick="sharePageLink()">
-            <span class="material-icons">share</span>
-            Click Here To Share This Page Link
-        </button>
-    </div>
+<div class="card">
+  <h3><span class="material-icons">link</span> Copy Link & Share</h3>
+
+  <button class="main-btn" onclick="shareNow()">
+    <span class="material-icons">share</span>
+    Click Here To Share This Page Link
+  </button>
 </div>
 
 <script>
-async function sharePageLink() {
-    const shareData = {
-        title: 'CRICKET YODDHA',
-        text: 'Join Cricket Yoddha for Live Updates!',
-        url: window.location.href
-    };
-
-    if (navigator.share) {
-        await navigator.share(shareData);
-    } else {
-        await navigator.clipboard.writeText(window.location.href);
-        alert("Link Copied!");
-    }
+function shareNow(){
+  if(navigator.share){
+    navigator.share({
+      title: "Live Match",
+      text: "Watch Live Now",
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Link Copied!");
+  }
 }
 </script>
 
 </body>
 </html>
-
 
 
 
