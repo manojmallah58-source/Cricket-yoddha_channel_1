@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ALLROUNDER</title>
+  <title>CRICKET YODDHA</title>
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
     }
 
     header:hover img {
-      filter: drop-shadow(0 0 12px rgba(29, 185, 84, 0.5));
+      filter: drop_shadow(0 0 12px rgba(29, 185, 84, 0.5));
     }
 /* 🔔 Telegram Join Popup Styles */
 .popup-overlay {
@@ -346,13 +346,12 @@
       background: #1db954;
     }
 
-    .plyr__menu__container .plyr__control[role=menuitemradio][aria-checked=true]::before {
+.plyrmenucontainer .plyr__control[role=menuitemradio][aria-checked=true]::before {
       background: #1db954;
     }
   </style>
 </head>
 <body>
-<!-- Visitor Counter Popup -->
 <div class="popup-overlay" id="visitorPopup" style="display:none;">
   <div class="popup-box">
     <button class="close-btn" onclick="closeVisitorPopup()">×</button>
@@ -363,14 +362,13 @@
     </div>
   </div>
 </div>
-<!-- Telegram Join Popup -->
 <div class="popup-overlay" id="popup">
   <div class="popup-box">
     <button class="close-btn" onclick="closePopup()">×</button>
     <div class="popup-header">Support Us!</div>
     <div class="popup-subtitle">Join our Telegram for latest updates.</div>
     <div class="popup-buttons">
-      <a href="https://t.me/+RPa_8c-ENCszYjk1" target="_blank" class="popup-btn join-btn">Join Now</a>
+      <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="popup-btn join-btn">Join Now</a>
       <button class="popup-btn already-btn" onclick="closePopup()">Already Joined</button>
     </div>
   </div>
@@ -390,23 +388,23 @@
 </div>
 <div class="sidebar" id="sidebar">
   <div class="menu-header">MENU</div>
-  <a href="https://t.me/+RPa_8c-ENCszYjk1" target="_blank"> Join Our Telegram</a>
-  <a href="https://t.me/+RPa_8c-ENCszYjk1" target="_blank"> Contact Us</a>
-  <a href="https://t.me/+RPa_8c-ENCszYjk1" target="_blank">Copyright</a>
+  <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"> Join Our Telegram</a>
+  <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"> Contact Us</a>
+  <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank">Copyright</a>
 <a href="#" onclick="showVisitorPopup()">Total Visitor</a>
 </div>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
   <div class="tabs">
-    <button class="tab-button active" onclick="switchTab('chat')">
+    <button class="tab-button active" onclick="switchTab('chat')" data-tab="chat">
       <span class="material-icons">chat</span>
       <span>Live Chat</span>
     </button>
-    <button class="tab-button" onclick="switchTab('scoreboard')">
+    <button class="tab-button" onclick="switchTab('scoreboard')" data-tab="scoreboard">
       <span class="material-icons">leaderboard</span>
       <span>Scoreboard</span>
     </button>
-    <button class="tab-button" onclick="switchTab('highlights')">
+    <button class="tab-button" onclick="switchTab('highlights')" data-tab="highlights">
       <span class="material-icons">movie</span>
       <span>Highlights</span>
     </button>
@@ -431,7 +429,14 @@
       .then(res => res.json())
       .then(data => {
         const m3u8Url = data.stream_url;
-        const video = document.getElementById('player');
+        // Note: The original code for the video player used a <video id="player"> 
+        // but the HTML was changed to use an <iframe> in the video-container.
+        // I'm keeping the HLS/Plyr code here for future use if you switch back 
+        // to a native <video> element.
+
+        // If you decide to use <video> instead of <iframe>, uncomment the following block:
+        /*
+        const video = document.getElementById('player'); 
 
         if (Hls.isSupported()) {
           const hls = new Hls();
@@ -466,19 +471,23 @@
         } else {
           alert("Your browser does not support HLS.");
         }
+        */
       })
       .catch(err => {
         console.error('Failed to load stream:', err);
-        alert('Failed to load stream.');
+        // alert('Failed to load stream.'); // Commented out to prevent popup on load
       });
 
+    // CORRECTED switchTab FUNCTION (uses data-tab selector)
     function switchTab(tabId) {
       document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-      document.querySelector(`.tab-button[onclick*="${tabId}"]`).classList.add('active');
+      // Find the button using the new 'data-tab' attribute
+      document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
       document.getElementById(tabId).classList.add('active');
     }
+    
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
     document.getElementById('overlay').classList.toggle('show');
@@ -504,3 +513,4 @@ function showVisitorPopup() {
   </script>
 </body>
   </html>
+
