@@ -210,9 +210,9 @@
     .info-card {
         /* General Card Style */
         margin: 10px 15px; 
-        padding: 12px 15px; /* Matched screenshot vertical padding */
+        padding: 12px 15px; 
         background: #1e1e1e; 
-        border-radius: 12px; /* Consistent corner radius */
+        border-radius: 12px; 
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
     }
     
@@ -225,7 +225,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 18px 20px; /* Taller padding for this card */
+        padding: 18px 20px; 
     }
     .live-status-box span {
         font-size: 1.2rem;
@@ -249,7 +249,6 @@
         width: 8px;
         background: #fff;
         border-radius: 50%;
-        /* Removed animation for static screenshot match */
     }
     
     /* Action Sections (Follow Us & Share) */
@@ -259,16 +258,16 @@
     }
 
     .action-section h3 {
-        /* FIX: Ensure content centers and uses the correct style */
+        /* Center align icon and text */
         display: flex;
         align-items: center;
-        justify-content: center; /* Center align both icon and text */
+        justify-content: center;
         gap: 8px;
         color: #e0e0e0;
         font-size: 1.1rem; 
         font-weight: 600; 
-        margin-bottom: 12px; /* Minimal margin above button */
-        padding: 5px 0 0; /* Slight padding above text */
+        margin-bottom: 12px; 
+        padding: 5px 0 0; 
         border: none;
         letter-spacing: 0.5px;
     }
@@ -282,11 +281,11 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 16px 20px; /* Match height/thickness */
+      padding: 18px 20px; /* Matched button height */
       margin: 0;
       border-radius: 12px; 
-      font-weight: 600;
-      font-size: 1.1rem; 
+      font-weight: 800; /* *** FINAL FIX: Changed to 800 for extra boldness *** */
+      font-size: 1.15rem; /* Slightly larger text size */
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
@@ -294,7 +293,7 @@
       border: none;
       letter-spacing: 0.5px;
       background: #ff0000; 
-      /* FIX: Apply the red glow and subtle bottom shadow from screenshot */
+      /* Apply red glow and subtle bottom shadow */
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 4px 0 rgba(0, 0, 0, 0.4); 
     }
     
