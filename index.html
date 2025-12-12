@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,12 +210,11 @@
     /* ********** FINAL CARD/BOX STYLING FIX ********** */
     .info-card {
         /* General Card Style */
-        margin: 10px; 
-        padding: 12px 15px; /* Adjust vertical padding */
-        background: #1e1e1e; 
-        border-radius: 15px; /* Slightly more rounded */
-        /* border: 1px solid #333; /* Removed border to match screenshot's smooth look */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Deeper shadow */
+        margin: 10px 15px; /* Added horizontal margin to match screenshot spacing */
+        padding: 15px; 
+        background: #1e1e1e; /* Dark background color */
+        border-radius: 12px; /* Smoother, squarer corners like the screenshot */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
     }
     
     .info-card:not(:first-of-type) {
@@ -226,10 +226,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px; /* Increase padding for this card */
+        padding: 18px 20px; /* Increase padding for a taller look */
     }
     .live-status-box span {
-        font-size: 1.15rem; /* Slightly smaller/finer font */
+        font-size: 1.2rem;
         font-weight: 600; 
         color: #fff;
     }
@@ -241,8 +241,8 @@
         color: #fff;
         padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 600; /* Slightly lighter weight */
+        font-size: 0.95rem;
+        font-weight: 600; 
         box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         animation: pulse 1.5s infinite;
     }
@@ -265,13 +265,12 @@
     }
 
     .action-section h3 {
-        /* This style block ensures the h3 (icon + text) is aligned like in the screenshot */
         display: flex;
         align-items: center;
-        justify-content: center; /* Center the text/icon block */
+        justify-content: center;
         gap: 8px;
-        color: #e0e0e0; /* Match text color of screenshot */
-        font-size: 1.15rem; /* Match font size/weight of screenshot */
+        color: #e0e0e0;
+        font-size: 1.1rem; /* Slightly reduced font size */
         font-weight: 500;
         margin-bottom: 15px; 
         padding: 0; 
@@ -279,7 +278,7 @@
         letter-spacing: 0.5px;
     }
     .action-section h3 .material-icons {
-        font-size: 24px; /* Larger icon size */
+        font-size: 22px; /* Adjusted icon size */
         color: #e0e0e0;
     }
     
@@ -288,11 +287,11 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 16px 20px; /* Adjusted padding for better height */
+      padding: 15px 20px; /* Precise vertical padding to match height */
       margin: 0;
-      border-radius: 12px; /* Smoother corners */
+      border-radius: 12px; 
       font-weight: 600;
-      font-size: 1.1rem; /* Slightly larger text */
+      font-size: 1.05rem; 
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
@@ -459,9 +458,6 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
-
-
-
 
 
 
