@@ -236,12 +236,12 @@
       height: 48px;
     }
     
-    /* JIO HOTSTAR LIVE BOX - Replicating image style */
+    /* JIO HOTSTAR LIVE BOX - Matching the screenshot style */
     .live-status-box {
         margin: 10px;
         padding: 15px;
-        background: #1e1e1e; /* Slightly darker background */
-        border-radius: 12px; /* Smoother corners */
+        background: #1e1e1e;
+        border-radius: 12px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -249,18 +249,18 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     }
     .live-status-box span {
-        font-size: 1.15rem;
-        font-weight: 700; /* Bold */
+        font-size: 1.2rem; /* Slightly larger */
+        font-weight: 700;
         color: #fff;
     }
     .live-indicator {
         display: flex;
         align-items: center;
         gap: 5px;
-        background: #ff0000; /* Bright red */
+        background: #ff0000;
         color: #fff;
         padding: 6px 14px;
-        border-radius: 20px; /* Pill shape */
+        border-radius: 20px;
         font-size: 0.9rem;
         font-weight: 700;
         box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
@@ -281,42 +281,43 @@
     
     /* NEW STYLES FOR ACTION BUTTONS - Matching the screenshot */
     .action-section {
-      padding: 15px 10px;
-      background: transparent; /* Remove section background */
-      margin: 0 10px 15px 10px; /* Spacing */
+      padding: 0 10px; /* Removed vertical padding from section */
+      background: transparent;
+      margin: 15px 0; /* Only vertical margin */
     }
     
     .action-section h3 {
         display: flex;
         align-items: center;
         gap: 8px;
-        color: #b0b0b0; /* Lighter grey for heading */
+        color: #fff; /* White color like the screenshot */
         font-size: 1rem;
         font-weight: 500;
-        margin-bottom: 15px;
-        padding: 0;
+        margin-bottom: 12px; /* Closer to the button */
+        padding: 0 10px; /* Padding for the H3 inside the section */
         border: none;
     }
     .action-section h3 .material-icons {
         font-size: 20px;
-        color: #e0e0e0;
+        color: #fff;
     }
     
     .action-button {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      padding: 18px 20px; /* Taller button */
-      margin-bottom: 0;
-      border-radius: 12px; /* Rounded corners */
+      width: calc(100% - 20px); /* Adjust width for 10px margin on both sides */
+      padding: 18px 20px;
+      margin: 0 10px; /* Apply margin here */
+      border-radius: 10px; /* Slightly less rounded */
       font-weight: 600;
-      font-size: 1.1rem; /* Slightly larger text */
+      font-size: 1.05rem;
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
       text-decoration: none;
       border: none;
+      letter-spacing: 0.5px;
     }
     
     .action-button:active {
@@ -333,44 +334,20 @@
       box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
     }
     
-    .share-btn {
-      background: #363636; /* Dark grey background */
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-      border: 1px solid #444;
+    .link-share-btn {
+        background: #ff0000; /* Solid Red/Orange for the Share button too */
+        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
     }
-    
-    .share-btn:hover {
-      background: #444;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    .link-share-btn:hover {
+        background: #d60000;
+        box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
     }
     
     .action-button .material-icons {
       margin-right: 10px;
       font-size: 24px;
     }
-    /* Separate style for the link share button to match the image */
-    .link-share-btn {
-        background: #ff0000;
-        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
-        margin-top: 10px; /* Space between Copy Link H3 and the actual button */
-    }
-    .link-share-btn:hover {
-        background: #d60000;
-        box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
-    }
-    .link-share-container {
-        margin-top: 20px; /* Space between Telegram section and Share section */
-        background: #1e1e1e; /* Dark container for share section */
-        border-radius: 12px;
-        padding: 15px;
-        border: 1px solid #333;
-    }
-    .telegram-container {
-        background: #1e1e1e; /* Dark container for telegram section */
-        border-radius: 12px;
-        padding: 15px;
-        border: 1px solid #333;
-    }
+
   </style>
 </head>
 <body>
@@ -416,14 +393,14 @@
         LIVE
     </div>
 </div>
-<div class="action-section telegram-container">
+<div class="action-section">
     <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
     <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="action-button telegram-btn">
         <span class="material-icons">send</span>
         Click Here To Join Telegram
     </a>
 </div>
-<div class="action-section link-share-container">
+<div class="action-section">
     <h3><span class="material-icons">link</span> Copy Link & Share</h3>
     <button class="action-button link-share-btn" onclick="sharePageLink()">
         <span class="material-icons">share</span>
@@ -445,28 +422,19 @@
     const jsonUrl = 'https://raw.githubusercontent.com/StmpupCricket/Star-Sports-Hindi-json/refs/heads/main/data.json';
     const telegramLink = 'https://t.me/+rwZKMV0-L8wyOTll';
 
-    // Note: The video setup using Plyr/Hls.js is complex when an iframe is used for the main player. 
-    // Since the video is an iframe, the Hls/Plyr setup below might not fully initialize unless 
-    // the iframe content uses an <video id="player"> tag. I am keeping the original Hls/Plyr logic 
-    // but the visible player is the iframe.
-
-    /* fetch(jsonUrl)
+    // Video Player Logic (Kept for completeness, though the main player is the iframe)
+    /*
+    fetch(jsonUrl)
       .then(res => res.json())
       .then(data => {
         const m3u8Url = data.stream_url;
-        const video = document.getElementById('player'); // This element doesn't exist in the current HTML
-
+        const video = document.getElementById('player');
         if (Hls.isSupported()) {
-          // HLS logic here...
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-          // Fallback logic here...
-        } else {
-          // alert("Your browser does not support HLS.");
+          // HLS logic...
         }
       })
       .catch(err => {
         console.error('Failed to load stream:', err);
-        // alert('Failed to load stream.');
       });
     */
 
@@ -493,7 +461,7 @@ function showVisitorPopup() {
     }, 300);
   }
 
-// NEW SHARE FUNCTION
+// SHARE FUNCTION
 async function sharePageLink() {
     const shareData = {
         title: 'CRICKET YODDHA - Live Match',
@@ -507,7 +475,6 @@ async function sharePageLink() {
             await navigator.share(shareData);
         } else {
             // Fallback for older browsers: Copy link to clipboard
-            // Fallback text includes the Telegram link as well
             await navigator.clipboard.writeText(shareData.text + '\n\nLink: ' + shareData.url);
             alert("लिंक और शेयरिंग टेक्स्ट कॉपी हो गया है! अब आप इसे कहीं भी शेयर कर सकते हैं।");
         }
@@ -519,6 +486,7 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
+
 
 
 
