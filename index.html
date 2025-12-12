@@ -206,13 +206,13 @@
       height: 48px;
     }
     
-    /* ********** FINAL CARD/BOX STYLING FIX ********** */
+    /* ********** FINAL SCREENSHOT DESIGN FIX ********** */
     .info-card {
         /* General Card Style */
         margin: 10px 15px; 
-        padding: 12px 15px; /* Reduced vertical padding */
+        padding: 12px 15px; /* Matched screenshot vertical padding */
         background: #1e1e1e; 
-        border-radius: 12px; 
+        border-radius: 12px; /* Consistent corner radius */
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
     }
     
@@ -225,7 +225,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 20px; /* Reduced vertical padding slightly */
+        padding: 18px 20px; /* Taller padding for this card */
     }
     .live-status-box span {
         font-size: 1.2rem;
@@ -238,37 +238,37 @@
         gap: 5px;
         background: #ff0000; 
         color: #fff;
-        padding: 6px 12px; /* Slightly tighter padding */
+        padding: 6px 12px; 
         border-radius: 20px;
         font-size: 0.95rem;
         font-weight: 600; 
         box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        animation: none; /* Removed pulse animation as it is not visible in a static image */
     }
     .live-dot {
         height: 8px;
         width: 8px;
         background: #fff;
         border-radius: 50%;
+        /* Removed animation for static screenshot match */
     }
     
     /* Action Sections (Follow Us & Share) */
     .action-section {
         padding: 0; 
-        text-align: center; /* Ensures content centers inside the section */
+        text-align: center; 
     }
 
     .action-section h3 {
-        /* *** FIX: Center align the heading *** */
+        /* FIX: Ensure content centers and uses the correct style */
         display: flex;
         align-items: center;
-        justify-content: center; /* Centered as per screenshot */
+        justify-content: center; /* Center align both icon and text */
         gap: 8px;
         color: #e0e0e0;
-        font-size: 1.15rem; /* Precise size */
+        font-size: 1.1rem; 
         font-weight: 600; 
-        margin-bottom: 12px; /* Reduced margin between heading and button */
-        padding: 0 5px 0 0; 
+        margin-bottom: 12px; /* Minimal margin above button */
+        padding: 5px 0 0; /* Slight padding above text */
         border: none;
         letter-spacing: 0.5px;
     }
@@ -282,22 +282,20 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 18px 20px; /* Increased vertical padding to match screenshot's button thickness */
+      padding: 16px 20px; /* Match height/thickness */
       margin: 0;
       border-radius: 12px; 
       font-weight: 600;
       font-size: 1.1rem; 
       color: #fff;
       cursor: pointer;
-      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      transition: background 0.3s, transform 0.2s;
       text-decoration: none;
       border: none;
       letter-spacing: 0.5px;
-      /* FIX: Removed box-shadow here to rely only on background color */
-      box-shadow: none; 
-      
-      /* Subtle effect for button lift */
-      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4); 
+      background: #ff0000; 
+      /* FIX: Apply the red glow and subtle bottom shadow from screenshot */
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 4px 0 rgba(0, 0, 0, 0.4); 
     }
     
     .action-button:active {
@@ -305,13 +303,7 @@
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
     }
     
-    .telegram-btn, .link-share-btn {
-      background: #ff0000; 
-      /* Re-added shadow to match the red glow seen in the screenshot */
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 4px 0 rgba(0, 0, 0, 0.4); 
-    }
-    
-    .telegram-btn:hover, .link-share-btn:hover {
+    .action-button:hover {
       background: #d60000;
     }
     
