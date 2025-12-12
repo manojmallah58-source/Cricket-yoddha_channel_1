@@ -44,7 +44,7 @@
       filter: drop-shadow(0 0 12px rgba(29, 185, 84, 0.5));
     }
 
-    /* 🔔 Telegram Join Popup Styles (Original) */
+    /* 🔔 Popup Styles */
     .popup-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -114,35 +114,13 @@
       overflow: hidden;
     }
 
-    .popup-btn::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, rgba(0,255,255,0.3), rgba(255,0,255,0.2));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .popup-btn:hover::after {
-      opacity: 1;
-    }
-
     .join-btn {
       background: linear-gradient(135deg, #00eaff, #9c00ff);
       box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
     }
 
-    .join-btn:hover {
-      background: linear-gradient(135deg, #00ffff, #c000ff);
-      box-shadow: 0 0 16px rgba(0, 255, 255, 0.6);
-    }
-
     .already-btn {
       background: rgba(255,255,255,0.05);
-    }
-
-    .already-btn:hover {
-      background: rgba(255,255,255,0.15);
     }
 
     .close-btn {
@@ -154,17 +132,13 @@
       background: none;
       border: none;
       cursor: pointer;
-      transition: color 0.3s;
     }
 
-    .close-btn:hover {
-      color: #ff00cc;
-    }
     .video-container {
       width: 100vw;
       aspect-ratio: 16/9;
       background: #000;
-      margin-top: 70px; /* Space for fixed header */
+      margin-top: 70px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
     }
 
@@ -219,34 +193,26 @@
       font-weight: 500; font-size: 16px;
       transition: background 0.3s, padding-left 0.3s;
     }
-    .sidebar a:hover {
-      background: rgba(255,255,255,0.15);
-      padding-left: 32px;
-    }
-    .counter-box {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 12px;
-      border-radius: 16px;
-      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
-      margin-top: 1rem;
-    }
-    
-    .counter-box img {
-      height: 48px;
-    }
-    
-    /* Jio Hotstar Live Box FIX - Matching the screenshot exactly */
-    .live-status-box {
-        margin: 10px;
+
+    /* ********** NEW CARD/BOX STYLING FIX ********** */
+    .info-card {
+        margin: 10px; /* Space around the entire card, matching screenshot spacing */
         padding: 15px;
-        background: #1e1e1e; /* Dark background color */
-        border-radius: 10px; 
+        background: #1e1e1e; /* Dark background for the card/box */
+        border-radius: 10px; /* Matching rounded corners */
+        border: 1px solid #333; /* Subtle border */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+    
+    .info-card + .info-card {
+        margin-top: 15px; /* Extra space between cards (Live Box, Follow Us, Share) */
+    }
+
+    /* Jio Hotstar Live Box */
+    .live-status-box {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border: 1px solid #333;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     }
     .live-status-box span {
         font-size: 1.2rem;
@@ -257,7 +223,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        background: #ff0000; /* Red color */
+        background: #ff0000;
         color: #fff;
         padding: 6px 14px;
         border-radius: 20px;
@@ -279,24 +245,7 @@
         100% { transform: scale(1); opacity: 1; }
     }
     
-    /* Action Section Fix - Using separate dark containers to mimic the distinct boxes */
-    .action-container {
-        margin: 10px; /* Space around the entire card */
-        padding: 15px;
-        background: #1e1e1e; /* Dark background for the card/box */
-        border-radius: 10px;
-        border: 1px solid #333;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    }
-
-    .action-container + .action-container {
-        margin-top: 15px; /* Space between the two action boxes */
-    }
-    
-    .action-section {
-        padding: 0; /* Remove internal padding, use container padding */
-    }
-
+    /* Action Sections (Follow Us & Share) */
     .action-section h3 {
         display: flex;
         align-items: center;
@@ -317,8 +266,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%; /* Button takes full width of its container */
-      padding: 18px 20px; /* Matching the height of the button in the screenshot */
+      width: 100%; 
+      padding: 18px 20px; /* Matching the height/padding of the button in the screenshot */
       margin: 0;
       border-radius: 8px; 
       font-weight: 600;
@@ -388,14 +337,14 @@
   ></iframe>
 </div>
 
-<div class="live-status-box">
+<div class="info-card live-status-box">
     <span>Jio Hotstar</span>
     <div class="live-indicator">
         <span class="live-dot"></span>
         LIVE
     </div>
 </div>
-<div class="action-container">
+<div class="info-card">
     <div class="action-section">
         <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
         <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="action-button telegram-btn">
@@ -404,7 +353,7 @@
         </a>
     </div>
 </div>
-<div class="action-container">
+<div class="info-card">
     <div class="action-section">
         <h3><span class="material-icons">link</span> Copy Link & Share</h3>
         <button class="action-button link-share-btn" onclick="sharePageLink()">
@@ -489,6 +438,7 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
+
 
 
 
