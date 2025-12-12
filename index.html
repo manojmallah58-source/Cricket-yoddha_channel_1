@@ -349,6 +349,112 @@
 .plyrmenucontainer .plyr__control[role=menuitemradio][aria-checked=true]::before {
       background: #1db954;
     }
+    
+    /* NEW STYLES FOR ACTION BUTTONS */
+    .action-section {
+      padding: 15px;
+      background: #0f0f0f;
+      margin-top: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin: 10px 10px; /* Added margin for better mobile look */
+    }
+    
+    .action-section h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .action-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 20px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s;
+      text-decoration: none; /* For the Telegram link */
+      border: none;
+    }
+    
+    .telegram-btn {
+      background: linear-gradient(90deg, #e43f3f, #ff5757);
+      box-shadow: 0 4px 15px rgba(255, 87, 87, 0.4);
+    }
+    
+    .telegram-btn:hover {
+      background: linear-gradient(90deg, #ff5757, #e43f3f);
+      box-shadow: 0 4px 20px rgba(255, 87, 87, 0.6);
+    }
+    
+    .share-btn {
+      background: linear-gradient(90deg, #1db954, #2cd46c);
+      box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4);
+    }
+    
+    .share-btn:hover {
+      background: linear-gradient(90deg, #2cd46c, #1db954);
+      box-shadow: 0 4px 20px rgba(29, 185, 84, 0.6);
+    }
+    
+    .action-button .material-icons {
+      margin-right: 8px;
+      font-size: 24px;
+    }
+    /* JIO HOTSTAR LIVE BOX - Replicating image style */
+    .live-status-box {
+        margin: 10px 10px;
+        padding: 15px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .live-status-box span {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #e0e0e0;
+    }
+    .live-indicator {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: #f00;
+        color: #fff;
+        padding: 5px 12px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        animation: pulse 1.5s infinite;
+    }
+    .live-dot {
+        height: 8px;
+        width: 8px;
+        background: #fff;
+        border-radius: 50%;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -386,6 +492,29 @@
     sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
   ></iframe>
 </div>
+
+<div class="live-status-box">
+    <span>Jio Hotstar</span>
+    <div class="live-indicator">
+        <span class="live-dot"></span>
+        LIVE
+    </div>
+</div>
+<div class="action-section">
+    <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
+    <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="action-button telegram-btn">
+        <span class="material-icons">send</span>
+        Click Here To Join Telegram
+    </a>
+</div>
+
+<div class="action-section">
+    <h3><span class="material-icons">link</span> Copy Link & Share</h3>
+    <button class="action-button share-btn" onclick="sharePageLink()">
+        <span class="material-icons">share</span>
+        Click Here To Share This Page Link
+    </button>
+</div>
 <div class="sidebar" id="sidebar">
   <div class="menu-header">MENU</div>
   <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"> Join Our Telegram</a>
@@ -399,6 +528,7 @@
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   <script>
     const jsonUrl = 'https://raw.githubusercontent.com/StmpupCricket/Star-Sports-Hindi-json/refs/heads/main/data.json';
+    const telegramLink = 'https://t.me/+rwZKMV0-L8wyOTll';
 
     fetch(jsonUrl)
       .then(res => res.json())
@@ -438,12 +568,13 @@ settings: ['quality', 'speed'],
             video.play();
           });
         } else {
-          alert("Your browser does not support HLS.");
+          // This alert is currently commented out as the player is an iframe, but kept for completeness
+          // alert("Your browser does not support HLS.");
         }
       })
       .catch(err => {
         console.error('Failed to load stream:', err);
-        alert('Failed to load stream.');
+        // alert('Failed to load stream.');
       });
 
 function toggleSidebar() {
@@ -468,7 +599,31 @@ function showVisitorPopup() {
       popup.style.display = "none";
     }, 300);
   }
+
+// NEW SHARE FUNCTION ADDED HERE
+async function sharePageLink() {
+    const shareData = {
+        title: 'CRICKET YODDHA - Live Stream',
+        text: 'देखिए Live Cricket Match यहाँ: CRICKET YODDHA! 🏏\n\nUpdates के लिए हमारा Telegram Channel Join करें: ' + telegramLink,
+        url: window.location.href,
+    };
+
+    try {
+        if (navigator.share) {
+            // Use Web Share API for modern browsers
+            await navigator.share(shareData);
+        } else {
+            // Fallback for older browsers: Copy link to clipboard
+            await navigator.clipboard.writeText(shareData.text + '\n' + shareData.url);
+            alert("Link और Sharing Text कॉपी हो गया है! अब आप इसे कहीं भी शेयर कर सकते हैं।");
+        }
+    } catch (err) {
+        console.error('Share failed:', err);
+        alert('शेयर करने में कोई समस्या आई। कृपया लिंक मैन्युअल रूप से कॉपी करें।');
+    }
+}
   </script>
 </body>
   </html>
+
 
