@@ -208,12 +208,13 @@
     
     /* ********** FINAL CARD/BOX STYLING FIX ********** */
     .info-card {
-        margin: 10px; /* Space around the entire card */
-        padding: 15px;
-        background: #1e1e1e; /* Dark background color */
-        border-radius: 10px; /* Matching rounded corners */
-        border: 1px solid #333; 
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        /* General Card Style */
+        margin: 10px; 
+        padding: 12px 15px; /* Adjust vertical padding */
+        background: #1e1e1e; 
+        border-radius: 15px; /* Slightly more rounded */
+        /* border: 1px solid #333; /* Removed border to match screenshot's smooth look */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Deeper shadow */
     }
     
     .info-card:not(:first-of-type) {
@@ -225,9 +226,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 15px; /* Increase padding for this card */
     }
     .live-status-box span {
-        font-size: 1.2rem;
+        font-size: 1.15rem; /* Slightly smaller/finer font */
         font-weight: 600; 
         color: #fff;
     }
@@ -240,7 +242,7 @@
         padding: 6px 14px;
         border-radius: 20px;
         font-size: 0.9rem;
-        font-weight: 700;
+        font-weight: 600; /* Slightly lighter weight */
         box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         animation: pulse 1.5s infinite;
     }
@@ -263,19 +265,22 @@
     }
 
     .action-section h3 {
+        /* This style block ensures the h3 (icon + text) is aligned like in the screenshot */
         display: flex;
         align-items: center;
+        justify-content: center; /* Center the text/icon block */
         gap: 8px;
-        color: #fff;
-        font-size: 1rem;
+        color: #e0e0e0; /* Match text color of screenshot */
+        font-size: 1.15rem; /* Match font size/weight of screenshot */
         font-weight: 500;
-        margin-bottom: 15px; /* Space between H3 and button */
+        margin-bottom: 15px; 
         padding: 0; 
         border: none;
+        letter-spacing: 0.5px;
     }
     .action-section h3 .material-icons {
-        font-size: 20px;
-        color: #fff;
+        font-size: 24px; /* Larger icon size */
+        color: #e0e0e0;
     }
     
     .action-button {
@@ -283,11 +288,11 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 18px 20px; /* Exact height matching screenshot */
+      padding: 16px 20px; /* Adjusted padding for better height */
       margin: 0;
-      border-radius: 8px; 
+      border-radius: 12px; /* Smoother corners */
       font-weight: 600;
-      font-size: 1.05rem;
+      font-size: 1.1rem; /* Slightly larger text */
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
@@ -301,7 +306,7 @@
     }
     
     .telegram-btn, .link-share-btn {
-      background: #ff0000; /* Primary Red color */
+      background: #ff0000; 
       box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
     }
     
@@ -454,6 +459,7 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
+
 
 
 
