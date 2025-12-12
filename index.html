@@ -240,17 +240,17 @@
     .live-status-box {
         margin: 10px;
         padding: 15px;
-        background: #1e1e1e;
-        border-radius: 12px;
+        background: #1e1e1e; /* Dark background color from screenshot */
+        border-radius: 10px; /* Rounded corners */
         display: flex;
         justify-content: space-between;
         align-items: center;
         border: 1px solid #333;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     }
     .live-status-box span {
-        font-size: 1.2rem; /* Slightly larger */
-        font-weight: 700;
+        font-size: 1.2rem;
+        font-weight: 600; /* Slightly less bold for "Jio Hotstar" text */
         color: #fff;
     }
     .live-indicator {
@@ -281,20 +281,20 @@
     
     /* NEW STYLES FOR ACTION BUTTONS - Matching the screenshot */
     .action-section {
-      padding: 0 10px; /* Removed vertical padding from section */
+      padding: 0;
       background: transparent;
-      margin: 15px 0; /* Only vertical margin */
+      margin: 15px 0; /* Vertical spacing between sections */
     }
     
     .action-section h3 {
         display: flex;
         align-items: center;
         gap: 8px;
-        color: #fff; /* White color like the screenshot */
+        color: #fff;
         font-size: 1rem;
         font-weight: 500;
-        margin-bottom: 12px; /* Closer to the button */
-        padding: 0 10px; /* Padding for the H3 inside the section */
+        margin-bottom: 12px;
+        padding: 0 10px; 
         border: none;
     }
     .action-section h3 .material-icons {
@@ -306,10 +306,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: calc(100% - 20px); /* Adjust width for 10px margin on both sides */
+      width: calc(100% - 20px);
       padding: 18px 20px;
-      margin: 0 10px; /* Apply margin here */
-      border-radius: 10px; /* Slightly less rounded */
+      margin: 0 10px;
+      border-radius: 10px;
       font-weight: 600;
       font-size: 1.05rem;
       color: #fff;
@@ -324,23 +324,14 @@
         transform: scale(0.98);
     }
     
-    .telegram-btn {
-      background: #ff0000; /* Solid Red/Orange from the photo */
+    .telegram-btn, .link-share-btn {
+      background: #ff0000; /* Red color matching the screenshot */
       box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
     }
     
-    .telegram-btn:hover {
+    .telegram-btn:hover, .link-share-btn:hover {
       background: #d60000;
       box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
-    }
-    
-    .link-share-btn {
-        background: #ff0000; /* Solid Red/Orange for the Share button too */
-        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
-    }
-    .link-share-btn:hover {
-        background: #d60000;
-        box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
     }
     
     .action-button .material-icons {
@@ -422,16 +413,12 @@
     const jsonUrl = 'https://raw.githubusercontent.com/StmpupCricket/Star-Sports-Hindi-json/refs/heads/main/data.json';
     const telegramLink = 'https://t.me/+rwZKMV0-L8wyOTll';
 
-    // Video Player Logic (Kept for completeness, though the main player is the iframe)
+    // The HLS/Plyr code is left here in the script, though the main player is the iframe.
     /*
     fetch(jsonUrl)
       .then(res => res.json())
       .then(data => {
-        const m3u8Url = data.stream_url;
-        const video = document.getElementById('player');
-        if (Hls.isSupported()) {
-          // HLS logic...
-        }
+        // ... HLS/Plyr logic
       })
       .catch(err => {
         console.error('Failed to load stream:', err);
@@ -461,7 +448,7 @@ function showVisitorPopup() {
     }, 300);
   }
 
-// SHARE FUNCTION
+// SHARE FUNCTIONALITY
 async function sharePageLink() {
     const shareData = {
         title: 'CRICKET YODDHA - Live Match',
