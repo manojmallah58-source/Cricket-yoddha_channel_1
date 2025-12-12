@@ -1,168 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CRICKET YODDHA</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CRICKET YODDHA</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #0a0a0a;
-      font-family: 'Poppins', sans-serif;
-      color: #fff;
-    }
+<style>
+/* RESET */
+body {
+  margin: 0;
+  background: #000;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+  color: #fff;
+}
 
-    /* --- TOP LIVE CARD --- */
-    .live-card {
-      margin: 15px;
-      padding: 20px;
-      border-radius: 22px;
-      background: #1c1c1c;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 22px;
-      font-weight: 600;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
-    }
+/* HEADER */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 70px;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-bottom: 1px solid #111;
+}
 
-    .live-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #ff0000;
-      padding: 6px 18px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 700;
-      box-shadow: 0 0 12px rgba(255,0,0,0.6);
-    }
+header img {
+  height: 60%;
+}
 
-    .live-circle {
-      width: 10px;
-      height: 10px;
-      background: #fff;
-      border-radius: 50%;
-      animation: blink 1s infinite;
-    }
+.menu-icon {
+  position: absolute;
+  left: 15px;
+  font-size: 32px;
+  cursor: pointer;
+}
 
-    @keyframes blink {
-      0% {opacity: 1;}
-      50% {opacity: 0.4;}
-      100% {opacity: 1;}
-    }
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 240px;
+  height: 100%;
+  background: rgba(40, 40, 40, 0.95);
+  backdrop-filter: blur(10px);
+  padding-top: 80px;
+  transition: 0.4s ease;
+  z-index: 999;
+}
 
-    /* --- INFO CARDS --- */
-    .info-card {
-      background: #1c1c1c;
-      margin: 20px 15px;
-      padding: 20px;
-      border-radius: 22px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
-    }
+.sidebar.open {
+  left: 0;
+}
 
-    .info-card h3 {
-      margin: 0 0 18px 0;
-      font-size: 18px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #bfc5d2;
-    }
+.sidebar a {
+  display: block;
+  padding: 14px 20px;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
 
-    .info-card h3 .material-icons {
-      font-size: 22px;
-    }
+.menu-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 18px 0;
+  text-align: center;
+  background: #222;
+  font-weight: 600;
+}
 
-    /* --- RED BUTTONS (MATCHING SCREENSHOT) --- */
-    .red-btn {
-      width: 100%;
-      padding: 18px 20px;
-      background: linear-gradient(135deg, #ff0000, #d60000);
-      border: none;
-      border-radius: 14px;
-      color: white;
-      font-size: 17px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      box-shadow: 0 0 18px rgba(255,0,0,0.8);
-      transition: transform 0.2s;
-    }
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  z-index: 998;
+}
 
-    .red-btn:active {
-      transform: scale(0.96);
-    }
-  </style>
+.overlay.show {
+  display: block;
+}
+
+/* VIDEO BOX */
+.video-container {
+  width: 100%;
+  margin-top: 70px;
+  aspect-ratio: 16/9;
+  background: #000;
+}
+
+.video-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* CARD BOXES */
+.info-card {
+  background: #1a1a1a;
+  margin: 18px 15px;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+}
+
+/* LIVE HEADER */
+.live-status-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  background: red;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  box-shadow: 0 0 15px red;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* SECTION HEADINGS */
+.action-section h3 {
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* BUTTONS */
+.action-button {
+  width: 100%;
+  padding: 18px;
+  background: #ff0000;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 0 15px red, 0 4px 0 rgba(0,0,0,0.6);
+}
+
+.action-button:active {
+  transform: scale(0.97);
+}
+
+.action-button:hover {
+  background: #d60000;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- TOP LIVE STATUS BOX -->
-  <div class="live-card">
-    <span>Jio Hotstar</span>
-    <div class="live-badge">
-      <div class="live-circle"></div>
-      LIVE
-    </div>
+<!-- HEADER -->
+<header>
+  <span class="material-icons menu-icon" onclick="toggleSidebar()">menu</span>
+  <img src="https://i.ibb.co/HLkW7zJV/ei-1765534270242-removebg-preview.png" />
+</header>
+
+<!-- VIDEO BOX -->
+<div class="video-container">
+  <iframe src="https://cricketstan.github.io/channel-10"></iframe>
+</div>
+
+<!-- JIO HOTSTAR LIVE -->
+<div class="info-card live-status-box">
+  <span>Jio Hotstar</span>
+  <div class="live-indicator">
+    <span class="live-dot"></span> LIVE
   </div>
+</div>
 
-  <!-- TELEGRAM FOLLOW BOX -->
-  <div class="info-card">
-    <h3>
-      <span class="material-icons">notifications_active</span> 
-      Follow us for Updates!
-    </h3>
+<!-- TELEGRAM -->
+<div class="info-card">
+  <div class="action-section">
+    <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
 
-    <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" style="text-decoration:none;">
-      <button class="red-btn">
-        <span class="material-icons">send</span>
-        Click Here To Join Telegram
-      </button>
+    <a href="https://t.me/+rwZKMV0-L8wyOTll" class="action-button">
+      <span class="material-icons">send</span>
+      Click Here To Join Telegram
     </a>
   </div>
+</div>
 
-  <!-- SHARE LINK BOX -->
-  <div class="info-card">
-    <h3>
-      <span class="material-icons">link</span> 
-      Copy Link & Share
-    </h3>
+<!-- SHARE BUTTON -->
+<div class="info-card">
+  <div class="action-section">
+    <h3><span class="material-icons">link</span> Copy Link & Share</h3>
 
-    <button class="red-btn" onclick="sharePage()">
+    <button class="action-button" onclick="sharePage()">
       <span class="material-icons">share</span>
       Click Here To Share This Page Link
     </button>
   </div>
+</div>
 
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="menu-header">MENU</div>
+  <a href="https://t.me/+rwZKMV0-L8wyOTll">Join Telegram</a>
+  <a href="https://t.me/+rwZKMV0-L8wyOTll">Contact</a>
+  <a href="https://t.me/+rwZKMV0-L8wyOTll">Copyright</a>
+</div>
 
-  <script>
-    async function sharePage() {
-      try {
-        await navigator.share({
-          title: "CRICKET YODDHA",
-          text: "Watch Live Cricket Match Now!",
-          url: window.location.href
-        });
-      } catch (err) {
-        navigator.clipboard.writeText(window.location.href);
-        alert("Link copied!");
-      }
-    }
-  </script>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
+}
+
+function sharePage() {
+  navigator.clipboard.writeText(window.location.href);
+  alert("Page link copied!");
+}
+</script>
 
 </body>
 </html>
-
 
 
 
