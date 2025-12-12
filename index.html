@@ -211,7 +211,7 @@
         /* General Card Style */
         margin: 10px 15px; 
         padding: 15px; 
-        background: #1e1e1e; /* Dark background color */
+        background: #1e1e1e; 
         border-radius: 12px; 
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
     }
@@ -264,21 +264,21 @@
     }
 
     .action-section h3 {
-        /* *** TEXT WEIGHT AND SIZE FIX *** */
+        /* *** FIX: Left-align the heading *** */
         display: flex;
         align-items: center;
-        justify-content: center;
+        /* Removed justify-content: center; */
         gap: 8px;
         color: #e0e0e0;
-        font-size: 1.15rem; /* Increased size to match screenshot prominence */
-        font-weight: 600; /* Increased weight for boldness */
+        font-size: 1.1rem; /* Slightly smaller to match screenshot */
+        font-weight: 600; /* Bold weight */
         margin-bottom: 15px; 
-        padding: 0; 
+        padding: 0 5px 0 0; /* Adjusted padding for internal spacing */
         border: none;
         letter-spacing: 0.5px;
     }
     .action-section h3 .material-icons {
-        font-size: 24px; /* Slightly larger icon */
+        font-size: 24px;
         color: #e0e0e0;
     }
     
@@ -287,17 +287,19 @@
       align-items: center;
       justify-content: center;
       width: 100%; 
-      padding: 16px 20px; /* Adjusted padding for better height/thickness */
+      padding: 16px 20px; 
       margin: 0;
       border-radius: 12px; 
       font-weight: 600;
-      font-size: 1.1rem; /* Clear and bold text */
+      font-size: 1.1rem; 
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
       text-decoration: none;
       border: none;
       letter-spacing: 0.5px;
+      /* *** FIX: Removed prominent red shadow from sides *** */
+      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.4); 
     }
     
     .action-button:active {
@@ -306,12 +308,10 @@
     
     .telegram-btn, .link-share-btn {
       background: #ff0000; 
-      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
     }
     
     .telegram-btn:hover, .link-share-btn:hover {
       background: #d60000;
-      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
     }
     
     .action-button .material-icons {
@@ -458,8 +458,6 @@ async function sharePageLink() {
   </script>
 </body>
   </html>
-
-
 
 
 
