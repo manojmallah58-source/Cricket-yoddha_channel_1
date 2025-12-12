@@ -1,263 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CRICKET YODDHA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRICKET YODDHA</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0a;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      color: #e0e0e0;
+    }
 
-<style>
-/* RESET */
-body {
-  margin: 0;
-  background: #000;
-  font-family: "Poppins", sans-serif;
-  overflow-x: hidden;
-  color: #fff;
-}
+    /* ----------------- LIVE STATUS BOX ----------------- */
+    .info-card {
+        background: #1a1a1a;
+        margin: 15px;
+        padding: 18px 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
 
-/* HEADER */
-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 70px;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  border-bottom: 1px solid #111;
-}
+    .live-status-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-header img {
-  height: 60%;
-}
+    .live-status-box span {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
 
-.menu-icon {
-  position: absolute;
-  left: 15px;
-  font-size: 32px;
-  cursor: pointer;
-}
+    /* RED LIVE BADGE */
+    .live-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #ff0000;
+        color: #fff;
+        padding: 6px 16px;
+        border-radius: 40px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        box-shadow: 0 0 15px rgba(255,0,0,0.8);
+    }
 
-/* SIDEBAR */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 240px;
-  height: 100%;
-  background: rgba(40, 40, 40, 0.95);
-  backdrop-filter: blur(10px);
-  padding-top: 80px;
-  transition: 0.4s ease;
-  z-index: 999;
-}
+    .live-dot {
+        width: 9px;
+        height: 9px;
+        background: #fff;
+        border-radius: 50%;
+    }
 
-.sidebar.open {
-  left: 0;
-}
+    /* ----------------- HEADING WITH ICON ----------------- */
+    .action-section h3 {
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #c6c6c6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
 
-.sidebar a {
-  display: block;
-  padding: 14px 20px;
-  color: #fff;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
+    .action-section h3 .material-icons {
+        font-size: 22px;
+    }
 
-.menu-header {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  padding: 18px 0;
-  text-align: center;
-  background: #222;
-  font-weight: 600;
-}
+    /* ----------------- RED BUTTONS ----------------- */
+    .action-button {
+        width: 100%;
+        padding: 18px;
+        border-radius: 14px;
+        background: linear-gradient(90deg, #ff1a1a, #d60000);
+        color: white;
+        font-size: 1.05rem;
+        font-weight: 700;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        cursor: pointer;
+        box-shadow: 0 5px 18px rgba(255,0,0,0.45);
+        text-decoration: none;
+    }
 
-/* OVERLAY */
-.overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  z-index: 998;
-}
-
-.overlay.show {
-  display: block;
-}
-
-/* VIDEO BOX */
-.video-container {
-  width: 100%;
-  margin-top: 70px;
-  aspect-ratio: 16/9;
-  background: #000;
-}
-
-.video-container iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-/* CARD BOXES */
-.info-card {
-  background: #1a1a1a;
-  margin: 18px 15px;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
-}
-
-/* LIVE HEADER */
-.live-status-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 20px;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.live-indicator {
-  display: flex;
-  align-items: center;
-  background: red;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-weight: 600;
-  box-shadow: 0 0 15px red;
-}
-
-.live-dot {
-  width: 8px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-/* SECTION HEADINGS */
-.action-section h3 {
-  text-align: center;
-  margin-bottom: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-/* BUTTONS */
-.action-button {
-  width: 100%;
-  padding: 18px;
-  background: #ff0000;
-  color: #fff;
-  border-radius: 12px;
-  border: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  box-shadow: 0 0 15px red, 0 4px 0 rgba(0,0,0,0.6);
-}
-
-.action-button:active {
-  transform: scale(0.97);
-}
-
-.action-button:hover {
-  background: #d60000;
-}
-</style>
+    .action-button:active {
+        transform: scale(0.97);
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header>
-  <span class="material-icons menu-icon" onclick="toggleSidebar()">menu</span>
-  <img src="https://i.ibb.co/HLkW7zJV/ei-1765534270242-removebg-preview.png" />
-</header>
-
-<!-- VIDEO BOX -->
-<div class="video-container">
-  <iframe src="https://cricketstan.github.io/channel-10"></iframe>
-</div>
-
-<!-- JIO HOTSTAR LIVE -->
+<!-- 🔴 LIVE STATUS BOX -->
 <div class="info-card live-status-box">
-  <span>Jio Hotstar</span>
-  <div class="live-indicator">
-    <span class="live-dot"></span> LIVE
-  </div>
+    <span>Jio Hotstar</span>
+    <div class="live-indicator">
+        <span class="live-dot"></span>
+        LIVE
+    </div>
 </div>
 
-<!-- TELEGRAM -->
+<!-- 🔔 FOLLOW US BOX -->
 <div class="info-card">
-  <div class="action-section">
-    <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
-
-    <a href="https://t.me/+rwZKMV0-L8wyOTll" class="action-button">
-      <span class="material-icons">send</span>
-      Click Here To Join Telegram
-    </a>
-  </div>
+    <div class="action-section">
+        <h3><span class="material-icons">notifications_active</span> Follow us for Updates!</h3>
+        <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="action-button">
+            <span class="material-icons">send</span>
+            Click Here To Join Telegram
+        </a>
+    </div>
 </div>
 
-<!-- SHARE BUTTON -->
+<!-- 🔗 SHARE BOX -->
 <div class="info-card">
-  <div class="action-section">
-    <h3><span class="material-icons">link</span> Copy Link & Share</h3>
-
-    <button class="action-button" onclick="sharePage()">
-      <span class="material-icons">share</span>
-      Click Here To Share This Page Link
-    </button>
-  </div>
+    <div class="action-section">
+        <h3><span class="material-icons">link</span> Copy Link & Share</h3>
+        <button class="action-button" onclick="sharePageLink()">
+            <span class="material-icons">share</span>
+            Click Here To Share This Page Link
+        </button>
+    </div>
 </div>
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <div class="menu-header">MENU</div>
-  <a href="https://t.me/+rwZKMV0-L8wyOTll">Join Telegram</a>
-  <a href="https://t.me/+rwZKMV0-L8wyOTll">Contact</a>
-  <a href="https://t.me/+rwZKMV0-L8wyOTll">Copyright</a>
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
 <script>
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("open");
-  document.getElementById("overlay").classList.toggle("show");
-}
+async function sharePageLink() {
+    const shareData = {
+        title: 'CRICKET YODDHA',
+        text: 'Join Cricket Yoddha for Live Updates!',
+        url: window.location.href
+    };
 
-function sharePage() {
-  navigator.clipboard.writeText(window.location.href);
-  alert("Page link copied!");
+    if (navigator.share) {
+        await navigator.share(shareData);
+    } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Link Copied!");
+    }
 }
 </script>
 
 </body>
 </html>
-
-
-
-
 
 
 
