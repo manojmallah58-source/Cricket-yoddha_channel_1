@@ -74,16 +74,30 @@
         }  
       });  
   
-      // ✅ NEW DRM Key + MPD URL  
-      // Key ID: f56beaac9f124616872c741c9ce4fa4e  
-      // Key:    5d40a903238f4ad98abbed1877d4e3d1  
+      // ⭐ UPDATED DRM KEY CONFIGURATION ⭐  
+      // KID: 400131994b445d8c8817202248760fda  
+      // KEY: 2d56cb6f07a75b9aff165d534ae2bfc4  
       let drmConfig = {  
         clearKeys: {  
-          "f56beaac9f124616872c741c9ce4fa4e": "5d40a903238f4ad98abbed1877d4e3d1"  
+          "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"  
         }  
       };  
   
-      let streamUrl = "https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Zeecinemahd/default/manifest.mpd";  
+      // ⭐ UPDATED STREAM URL ⭐  
+      let streamUrl = "https://jiotvbpkmob.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd";  
+  
+      // ⭐ CUSTOM HEADER REGISTRATION ⭐  
+      // This section sets the Cookie and User-agent for requests.  
+      const networkingEngine = player.getNetworkingEngine();  
+      networkingEngine.registerRequestFilter(async (type, request) => {  
+        // Only apply headers to Manifest and Segment requests  
+        if (type == shaka.net.NetworkingEngine.RequestType.MANIFEST ||  
+            type == shaka.net.NetworkingEngine.RequestType.SEGMENT) {  
+          
+          request.headers['Cookie'] = '__hdnea__=st=1765610404~exp=1765696804~acl=/*~hmac=5a4b9a0829591acd1abb8cf7aa795bb2bd78567ed8ca2a1193316793d311834d';  
+          request.headers['User-Agent'] = 'StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/70.1';  
+        }  
+      });  
   
       player.configure({  
         drm: drmConfig,  
@@ -124,4 +138,5 @@
   </script>  
 </body>  
 </html>
+
 
