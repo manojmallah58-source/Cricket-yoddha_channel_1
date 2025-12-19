@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* NOTE: The existing <style> block is kept, but the new structure below uses inline styles for the main content cards. */
     html, body {
       margin: 0;
       padding: 0;
@@ -41,11 +40,7 @@
       transition: filter 0.3s ease;
     }
 
-    header:hover img {
-      filter: drop-shadow(0 0 12px rgba(29, 185, 84, 0.5));
-    }
-
-    /* 🔔 Popup Styles */
+    /* Popup Styles */
     .popup-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -82,23 +77,12 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 0.4rem;
-      text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
     }
 
     .popup-subtitle {
       font-size: 1rem;
       color: #aaa;
       margin-bottom: 1.2rem;
-    }
-
-    .popup-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
-
-    .popup-buttons a {
-      text-decoration: none;
     }
 
     .popup-btn {
@@ -111,28 +95,14 @@
       transition: all 0.35s ease;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
+      width: 100%;
+      margin-bottom: 10px;
     }
 
     .join-btn {
       background: linear-gradient(135deg, #00eaff, #9c00ff);
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
-    }
-
-    .already-btn {
-      background: rgba(255,255,255,0.05);
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 12px;
-      right: 18px;
-      font-size: 1.3rem;
-      color: #00eaff;
-      background: none;
-      border: none;
-      cursor: pointer;
+      text-decoration: none;
+      display: block;
     }
 
     .video-container {
@@ -140,281 +110,141 @@
       aspect-ratio: 16/9;
       background: #000;
       margin-top: 70px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
     }
 
     .video-container iframe {
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
     }
     
     .menu-icon {
       position: absolute; left: 16px; color: #fff; font-size: 30px; cursor: pointer;
-
-}
-    
-    .menu-header {
-      font-size: 20px;
-      font-weight: 600;
-      text-align: center;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08);
-      color: #fff;
     }
     
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 10000;
-      display: none;
-    }
-
-    .overlay.show {
-      display: block;
-    }
-    
-    /* Sidebar Styles */
     .sidebar {
       position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(20px);
-      border-right: 1px solid rgba(255,255,255,0.2);
-      color: #fff; z-index: 10001; transition: left 0.5s ease;
-      padding-top: 80px; box-shadow: 4px 0 15px rgba(0,0,0,0.4);
-      border-top-right-radius: 12px; border-bottom-right-radius: 12px;
+      z-index: 10001; transition: left 0.5s ease;
+      padding-top: 80px;
     }
     .sidebar.open { left: 0; }
     .sidebar a {
       display: block; padding: 15px 24px; color: #fff; text-decoration: none;
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      font-weight: 500; font-size: 16px;
-      transition: background 0.3s, padding-left 0.3s;
-    }
-    .counter-box {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 12px;
-      border-radius: 16px;
-      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
-      margin-top: 1rem;
     }
     
-    .counter-box img {
-      height: 48px;
+    .overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5); z-index: 10000; display: none;
     }
+    .overlay.show { display: block; }
 
+    /* Ad Container alignment */
+    .ad-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
   </style>
 </head>
 <body>
+
 <div class="popup-overlay" id="visitorPopup" style="display:none;">
   <div class="popup-box">
-    <button class="close-btn" onclick="closeVisitorPopup()">×</button>
+    <button style="position:absolute; top:12px; right:18px; background:none; border:none; color:#00eaff; cursor:pointer; font-size:1.3rem;" onclick="closeVisitorPopup()">×</button>
     <div class="popup-header">Total Visitors</div>
     <div class="popup-subtitle">Users Live On Web</div>
-    <div class="counter-box">
-      <img src="https://visit-counter.vercel.app/counter.png?page=allrounder.com&s=40&c=00ff00&bg=00000000&no=10&ff=digi&tb=&ta=" alt="Visitor Count" />
-    </div>
+    <img src="https://visit-counter.vercel.app/counter.png?page=allrounder.com&s=40&c=00ff00&bg=00000000&no=10&ff=digi&tb=&ta=" alt="Visitor Count" />
   </div>
 </div>
+
 <div class="popup-overlay" id="popup">
   <div class="popup-box">
-    <button class="close-btn" onclick="closePopup()">×</button>
+    <button style="position:absolute; top:12px; right:18px; background:none; border:none; color:#00eaff; cursor:pointer; font-size:1.3rem;" onclick="closePopup()">×</button>
     <div class="popup-header">Support Us!</div>
     <div class="popup-subtitle">Join our Telegram for latest updates.</div>
-    <div class="popup-buttons">
-      <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="popup-btn join-btn">Join Now</a>
-      <button class="popup-btn already-btn" onclick="closePopup()">Already Joined</button>
-    </div>
+    <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="popup-btn join-btn">Join Now</a>
+    <button class="popup-btn" onclick="closePopup()">Already Joined</button>
   </div>
 </div>
-  <header>
-<span class="material-icons menu-icon" onclick="toggleSidebar()">menu</span>
-    <img src="https://i.ibb.co/HLkW7zJV/ei-1765534270242-removebg-preview.png" alt="Logo">
-  </header>
+
+<header>
+  <span class="material-icons menu-icon" onclick="toggleSidebar()">menu</span>
+  <img src="https://i.ibb.co/HLkW7zJV/ei-1765534270242-removebg-preview.png" alt="Logo">
+</header>
+
 <div class="video-container">
-  <iframe
-    src= "https://allrounderlive.pages.dev/player?url=https://d3ssd0juqbxbw.cloudfront.net/mtvsinstlive/master.m3u8"
-    frameborder="0"
-    allowfullscreen
-    allow="autoplay; encrypted-media"
-    sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
-  ></iframe>
+  <iframe src="https://cricketstan.github.io/channel-10" allowfullscreen allow="autoplay; encrypted-media"></iframe>
 </div>
 
-<div style="background:#000;padding:20px;font-family:'Poppins', sans-serif;color:#fff;">
+<div style="background:#000;padding:20px;">
 
-    <div style="
-        background:#111;
-        padding:18px 20px;
-        border-radius:18px;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-bottom:25px;
-    ">
-        <h2 style="margin:0;font-size:24px;font-weight:600;">TV 7</h2>
-
-        <div style="
-            background:#d1001f;
-            padding:6px 16px;
-            border-radius:20px;
-            font-size:14px;
-            font-weight:700;
-            display:flex;
-            align-items:center;
-        ">
-            🔴 LIVE
-        </div>
+    <div class="ad-wrapper">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : '13efb179005d71679640ac291f032628',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="https://www.highperformanceformat.com/13efb179005d71679640ac291f032628/invoke.js"></script>
     </div>
 
-    <div style="
-        background:#1a1a1a;
-        padding:20px;
-        border-radius:20px;
-        margin-bottom:25px;
-    ">
-        <p style="
-            margin:0 0 12px;
-            font-size:16px;
-            font-weight:600;
-            color:#c9c9c9;
-        ">
-            📣 Follow us for more Updates
-        </p>
-
-<a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" style="
-            display:block;
-            background:linear-gradient(to right, #ff1a1a, #d60000);
-            padding:15px;
-            text-align:center;
-            border-radius:14px;
-            text-decoration:none;
-            color:#fff;
-            font-size:17px;
-            font-weight:700;
-            box-shadow:0 0 12px rgba(255,0,0,0.28);
-        ">
+    <div style="background:#1a1a1a;padding:20px;border-radius:20px;margin-bottom:25px;">
+        <p style="margin:0 0 12px;font-size:16px;font-weight:600;color:#c9c9c9;">📣 Follow us for more Updates</p>
+        <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" style="display:block;background:linear-gradient(to right, #ff1a1a, #d60000);padding:15px;text-align:center;border-radius:14px;text-decoration:none;color:#fff;font-size:17px;font-weight:700;box-shadow:0 0 12px rgba(255,0,0,0.28);">
             🚀  Join Telegram
         </a>
     </div>
 
-    <div style="
-        background:#1a1a1a;
-        padding:20px;
-        border-radius:20px;
-    ">
-        <p style="
-            margin:0 0 12px;
-            font-size:16px;
-            font-weight:600;
-            color:#c9c9c9;
-        ">
-            🔗 Share Stream
-        </p>
-
-        <button onclick="sharePageLink()" style="
-            display:block;
-            width: 100%; /* Important for button to fill width */
-            border: none;
-            cursor: pointer;
-            background:linear-gradient(to right, #ff1a1a, #d60000);
-            padding:15px;
-            text-align:center;
-            border-radius:14px;
-            text-decoration:none;
-            color:#fff;
-            font-size:17px;
-            font-weight:700;
-            box-shadow:0 0 12px rgba(255,0,0,0.28);
-        ">
+    <div style="background:#1a1a1a;padding:20px;border-radius:20px;">
+        <p style="margin:0 0 12px;font-size:16px;font-weight:600;color:#c9c9c9;">🔗 Share Stream</p>
+        <button onclick="sharePageLink()" style="display:block;width:100%;border:none;cursor:pointer;background:linear-gradient(to right, #ff1a1a, #d60000);padding:15px;border-radius:14px;color:#fff;font-size:17px;font-weight:700;">
             📤  Share This Page Link
         </button>
     </div>
 </div>
+
 <div class="sidebar" id="sidebar">
-  <div class="menu-header">MENU</div>
+  <div style="font-size:20px;font-weight:600;text-align:center;padding:15px 0;border-bottom:1px solid rgba(255,255,255,0.2);color:#fff;">MENU</div>
   <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"> Join Our Telegram</a>
   <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"> Contact Us</a>
-  <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank">Copyright</a>
-<a href="#" onclick="showVisitorPopup()">Total Visitor</a>
+  <a href="#" onclick="showVisitorPopup()">Total Visitor</a>
 </div>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-  <script>
-    const jsonUrl = 'https://raw.githubusercontent.com/StmpupCricket/Star-Sports-Hindi-json/refs/heads/main/data.json';
-    const telegramLink = 'https://t.me/+rwZKMV0-L8wyOTll';
-
-    // Original HLS/Plyr code kept here for functional completeness, 
-    // although the main video display uses the iframe.
-    /*
-    fetch(jsonUrl)
-      .then(res => res.json())
-      .then(data => {
-        // ... HLS/Plyr logic
-      })
-      .catch(err => {
-        console.error('Failed to load stream:', err);
-      });
-    */
-
+<script>
 function toggleSidebar() {
-
-document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('overlay').classList.toggle('show');
-  }
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
 function closePopup() {
   document.getElementById('popup').style.display = 'none';
 }
 function showVisitorPopup() {
-    const popup = document.getElementById("visitorPopup");
-    popup.style.display = "flex";
-    setTimeout(() => {
-      popup.querySelector('.popup-box').style.opacity = '1';
-    }, 10);
-  }
-
-  function closeVisitorPopup() {
-    const popup = document.getElementById("visitorPopup");
-    popup.querySelector('.popup-box').style.opacity = '0';
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, 300);
-  }
-
-// SHARE FUNCTIONALITY
-async function sharePageLink() {
-    const shareData = {
-        title: 'CRICKET YODDHA - Live Match',
-        // English Translation of the share text
-        text: 'Watch Live Cricket Match here: CRICKET YODDHA! 🏏\n\nJoin our Telegram Channel for updates: ' + telegramLink,
-        url: window.location.href,
-    };
-
-    try {
-        if (navigator.share) {
-            // Use Web Share API for modern browsers
-            await navigator.share(shareData);
-        } else {
-            // Fallback for older browsers: Copy link to clipboard
-            await navigator.clipboard.writeText(shareData.text + '\n\nLink: ' + shareData.url);
-
-// English Translation of the alert message
-            alert("Link and sharing text copied! You can now share it anywhere.");
-        }
-    } catch (err) {
-        console.error('Share failed:', err);
-        // English Translation of the error alert
-        alert('There was an issue sharing. Please copy the link manually.');
-    }
+  document.getElementById("visitorPopup").style.display = "flex";
 }
-  </script>
+function closeVisitorPopup() {
+  document.getElementById("visitorPopup").style.display = "none";
+}
+async function sharePageLink() {
+  const shareData = {
+    title: 'CRICKET YODDHA',
+    text: 'Watch Live Cricket Match here! 🏏',
+    url: window.location.href,
+  };
+  try {
+    if (navigator.share) { await navigator.share(shareData); } 
+    else { alert("Link Copied!"); await navigator.clipboard.writeText(window.location.href); }
+  } catch (err) { console.log(err); }
+}
+</script>
 </body>
-  </html>
+</html>
+
 
