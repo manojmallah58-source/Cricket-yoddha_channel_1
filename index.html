@@ -3,80 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hotstar Live Final</title>
+  <title>Hotstar Fixed Player</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: sans-serif; }
-    .shaka-video-container { position: absolute; inset: 0; width: 100%; height: 100%; }
-    video { width: 100%; height: 100%; background: #000; object-fit: contain; }
+    body { background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; }
+    #video-container { width: 100%; height: 100%; }
+    video { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
-  <div class="shaka-video-container" data-shaka-player>
-    <video autoplay playsinline id="video"></video>
+  <div id="video-container" data-shaka-player-container>
+    <video autoplay playsinline id="video" data-shaka-player-client-side></video>
   </div>
 
   <script>
-    async function initPlayer() {
-      shaka.polyfill.installAll();
-      if (!shaka.Player.isBrowserSupported()) return;
+    const manifestUri = "https://livetv-push.hotstar.com/dash/live/2002466/sshindiwv/master.mpd";
+    const cookieValue = "hdntl=exp=1768274777~acl=*sshindi*~id=b103e85a75452674f96b713d7887a9fc~data=hdntl~hmac=115b8ef4c5d9ccb5eee9c8a66c657e1f5b3923d75ef622b64c5ff0cd13dc3766";
+    const uAgent = "Hotstar;in.startv.hotstar/25.02.24.8.11169 (Android/15)";
 
+    async function init() {
       const video = document.getElementById('video');
-      const container = document.querySelector('.shaka-video-container');
-      const player = new shaka.Player();
-      await player.attach(video);
-
+      const container = document.getElementById('video-container');
+      const player = new shaka.Player(video);
       const ui = new shaka.ui.Overlay(player, container, video);
 
-      // --- CONFIGURATION ---
-      const streamUrl = "https://livetv-push.hotstar.com/dash/live/2002466/sshindiwv/master.mpd";
-      const cookieData = "hdntl=exp=1768274777~acl=*sshindi*~id=b103e85a75452674f96b713d7887a9fc~data=hdntl~hmac=115b8ef4c5d9ccb5eee9c8a66c657e1f5b3923d75ef622b64c5ff0cd13dc3766";
-      const userAgent = "Hotstar;in.startv.hotstar/25.02.24.8.11169 (Android/15)";
-
+      // DRM Setup
       player.configure({
         drm: {
           clearKeys: {
-            "fe7718fbb3fb4ba78c07cc0f578744e6": "624e24b1843b459fab0a949609416f0d"
+            'fe7718fbb3fb4ba78c07cc0f578744e6': '624e24b1843b459fab0a949609416f0d'
           }
         },
-        streaming: {
-          lowLatencyMode: true,
-          bufferingGoal: 10,
-          retryParameters: { maxAttempts: 5 }
-        }
+        manifest: { retryParameters: { maxAttempts: 5 } }
       });
 
-      // Networking engine for Headers
+      // Network Filters (Ye sabse zaroori hai)
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        request.headers['User-Agent'] = userAgent;
-        request.headers['Cookie'] = cookieData;
-
-        // Hotstar requires cookie in URL as well
+        // Headers set karna
+        request.headers['User-Agent'] = uAgent;
+        request.headers['Cookie'] = cookieValue;
+        
+        // URL modification for Hotstar authentication
         if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
-          const separator = request.uris[0].includes('?') ? '&' : '?';
-          request.uris[0] += separator + cookieData;
+          const url = request.uris[0];
+          request.uris[0] = url.includes('?') ? `${url}&${cookieValue}` : `${url}?${cookieValue}`;
         }
       });
 
       try {
-        await player.load(streamUrl);
-        console.log("Success: Stream Loaded");
-      } catch (error) {
-        console.error("Error Code:", error.code, "Check Console for details");
+        await player.load(manifestUri);
+        console.log('Video playing!');
+      } catch (e) {
+        console.error('Error loading:', e);
       }
     }
 
-    document.addEventListener('shaka-ui-loaded', initPlayer);
-    document.addEventListener('shaka-polyfilled', initPlayer);
-
-    // Click to Play/Unmute for Chrome/Android
-    document.addEventListener('click', () => {
-      const v = document.getElementById('video');
-      v.muted = false;
-      v.play();
-    }, { once: true });
+    document.addEventListener('DOMContentLoaded', init);
+    
+    // User Interaction to enable sound/play
+    window.onclick = () => {
+        const v = document.getElementById('video');
+        v.muted = false;
+        v.play();
+    };
   </script>
 </body>
 </html>
+
