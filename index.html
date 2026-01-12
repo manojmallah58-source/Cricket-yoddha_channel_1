@@ -1,119 +1,78 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Prime By Cricket Yoddha</title>     
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
-  <style>  
-   * { margin: 0; padding: 0; box-sizing: border-box; }  
-    html, body {  
-      background: #000;  
-      height: 100vh;  
-      width: 100vw;  
-      overflow: hidden;  
-      font-family: system-ui, -apple-system, sans-serif;  
-    }  
-    .shaka-video-container {  
-      position: absolute;  
-      inset: 0;  
-      width: 100%;  
-      height: 100%;  
-    }  
-    video {  
-      width: 100%;  
-      height: 100%;  
-      background: #000;  
-      object-fit: contain;  
-    }  
-    /* Spinner hiding for clean look */
-    .shaka-spinner-container,  
-    .shaka-spinner,  
-    .shaka-spinner-svg {  
-      display: none !important;  
-      visibility: hidden !important;  
-      opacity: 0 !important;  
-    }  
-  </style>  
-</head>  
-<body>  
-  <div class="shaka-video-container" data-shaka-player>  
-    <video autoplay playsinline preload="metadata" poster="https://assets.tntsports.io/web/img/og/tntsports.jpg"></video>  
-  </div>  
-  
-  <script>  
-    document.addEventListener('DOMContentLoaded', async () => {  
-      shaka.polyfill.installAll();  
-  
-      if (!shaka.Player.isBrowserSupported()) {  
-        console.error('Browser not supported');  
-        return;  
-      }  
-  
-      const video = document.querySelector('video');  
-      const player = new shaka.Player();  
-      await player.attach(video);  
-  
-      const container = document.querySelector('.shaka-video-container');  
-      const ui = new shaka.ui.Overlay(player, container, video);  
-  
-      ui.configure({  
-        controlPanelElements: [  
-          'play_pause', 'time_and_duration', 'mute', 'volume',  
-          'spacer', 'language', 'captions', 'picture_in_picture',  
-          'quality', 'fullscreen'  
-        ],  
-        volumeBarColors: {  
-          base: 'rgba(255, 192, 203, 0.3)',  
-          level: 'rgb(255, 105, 180)'  
-        },  
-        seekBarColors: {  
-          base: 'rgba(255, 255, 0, 0.3)',  
-          buffered: 'rgba(255, 255, 0, 0.6)',  
-          played: 'rgb(255, 255, 0)'  
-        }  
-      });  
-  
-      // ✅ Updated ClearKey Configuration
-      let drmConfig = {  
-        clearKeys: {  
-          "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"  
-        }  
-      };  
-  
-      // ✅ Updated Stream URL
-      let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd";  
-  
-      player.configure({  
-        drm: drmConfig,  
-        streaming: {  
-          lowLatencyMode: true,  
-          bufferingGoal: 10,  
-          rebufferingGoal: 2,  
-          bufferBehind: 10,  
-          retryParameters: {  
-            timeout: 10000,  
-            maxAttempts: 5,  
-            baseDelay: 300,  
-            backoffFactor: 1.2  
-          }  
-        }  
-      });  
-  
-      player.addEventListener('error', (event) => {  
-        console.error('Shaka Player Error:', event.detail);  
-      });  
-  
-      try {  
-        await player.load(streamUrl);  
-        console.log("Stream loaded successfully: Star Sports HD 1 Hindi");  
-      } catch (error) {  
-        console.error('Load error:', error);  
-      }  
-    });  
-  </script>  
-</body>  
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotstar Live Stream</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: sans-serif; }
+    .shaka-video-container { position: absolute; inset: 0; width: 100%; height: 100%; }
+    video { width: 100%; height: 100%; background: #000; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <div class="shaka-video-container" data-shaka-player>
+    <video autoplay playsinline preload="metadata"></video>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      shaka.polyfill.installAll();
+      if (!shaka.Player.isBrowserSupported()) return;
+
+      const video = document.querySelector('video');
+      const container = document.querySelector('.shaka-video-container');
+      const player = new shaka.Player();
+      await player.attach(video);
+
+      const ui = new shaka.ui.Overlay(player, container, video);
+      
+      // Aapka naya Stream URL aur Details
+      const streamUrl = "https://livetv-push.hotstar.com/dash/live/2002466/sshindiwv/master.mpd";
+      const cookieData = "hdntl=exp=1768274777~acl=*sshindi*~id=b103e85a75452674f96b713d7887a9fc~data=hdntl~hmac=115b8ef4c5d9ccb5eee9c8a66c657e1f5b3923d75ef622b64c5ff0cd13dc3766";
+      const userAgent = "Hotstar;in.startv.hotstar/25.02.24.8.11169 (Android/15)";
+
+      // DRM Configuration (ClearKey)
+      player.configure({
+        drm: {
+          clearKeys: {
+            "fe7718fbb3fb4ba78c07cc0f578744e6": "624e24b1843b459fab0a949609416f0d"
+          }
+        },
+        streaming: {
+          lowLatencyMode: true,
+          jumpLargeGaps: true
+        }
+      });
+
+      // Headers set karna
+      player.getNetworkingEngine().registerRequestFilter((type, request) => {
+        request.headers['User-Agent'] = userAgent;
+        request.headers['Cookie'] = cookieData;
+        
+        // URL ke peeche cookie attach karna (Hotstar CDN requirements)
+        if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
+          const separator = request.uris[0].includes('?') ? '&' : '?';
+          request.uris[0] += separator + cookieData;
+        }
+      });
+
+      try {
+        await player.load(streamUrl);
+        console.log('Stream loaded successfully');
+      } catch (e) {
+        console.error('Error loading stream:', e);
+      }
+
+      // Autoplay handle karne ke liye click listener
+      document.addEventListener('click', () => {
+        video.muted = false;
+        video.play();
+      }, { once: true });
+    });
+  </script>
+</body>
 </html>
-
-
