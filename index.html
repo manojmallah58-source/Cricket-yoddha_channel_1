@@ -1,9 +1,9 @@
 <!DOCTYPE html>  
-<html lang="en">  
+<html>  
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>CricLife Max - Prime Player</title>     
+  <title>Prime By Cricket Yoddha</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
@@ -27,7 +27,7 @@
       background: #000;  
       object-fit: contain;  
     }  
-    /* Shaka Loading Spinner को छुपाने के लिए */
+    /* Shaka Spinner Hide (To make it look cleaner) */
     .shaka-spinner-container,  
     .shaka-spinner,  
     .shaka-spinner-svg {  
@@ -38,27 +38,26 @@
   </style>  
 </head>  
 <body>  
-  <div class="shaka-video-container" data-shaka-player id="video-container">  
-    <video id="video" autoplay playsinline preload="metadata" poster="https://assets.tntsports.io/web/img/og/tntsports.jpg"></video>  
+  <div class="shaka-video-container" data-shaka-player>  
+    <video autoplay playsinline preload="metadata" poster="https://assets.tntsports.io/web/img/og/tntsports.jpg"></video>  
   </div>  
   
   <script>  
     document.addEventListener('DOMContentLoaded', async () => {  
-      // Polyfills install करें ताकि सभी ब्राउज़र्स पर चले
       shaka.polyfill.installAll();  
   
       if (!shaka.Player.isBrowserSupported()) {  
-        console.error('Browser not supported for Shaka Player');  
+        console.error('Browser not supported');  
         return;  
       }  
   
-      const video = document.getElementById('video');  
-      const container = document.getElementById('video-container');  
+      const video = document.querySelector('video');  
       const player = new shaka.Player();  
       await player.attach(video);  
   
-      // UI Overlay सेटअप
+      const container = document.querySelector('.shaka-video-container');  
       const ui = new shaka.ui.Overlay(player, container, video);  
+  
       ui.configure({  
         controlPanelElements: [  
           'play_pause', 'time_and_duration', 'mute', 'volume',  
@@ -76,44 +75,43 @@
         }  
       });  
   
-      // ✅ नया DRM Key Config (CricLife Max)
-      const drmConfig = {  
+      // ✅ UPDATED DRM Key (CricLife1)
+      let drmConfig = {  
         clearKeys: {  
-          "ad59b720bd4b44d063686212b99484b5": "e1744990edf98acc729c0773a3766583"  
+          "1e23e51b09a67b83813c17049870bcd4": "c3d6288e378b0dc55320fd0e6fd2e55f"  
         }  
       };  
   
-      // ✅ नया MPD URL (StarzPlay)
-      const streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLifeMax/DASH/CricLifeMax.mpd";  
+      // ✅ UPDATED MPD URL
+      let streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLife1/DASH/CricLife1.mpd";  
   
-      // प्लेयर कॉन्फ़िगरेशन
       player.configure({  
         drm: drmConfig,  
         streaming: {  
           lowLatencyMode: true,  
-          bufferingGoal: 10, // लाइव के लिए थोडा कम रखा है ताकि लैग न हो
+          bufferingGoal: 10,  
           rebufferingGoal: 2,  
-          bufferBehind: 10,  
+          bufferBehind: 15,  
           retryParameters: {  
-            timeout: 15000,  
-            maxAttempts: 4,  
-            baseDelay: 500,  
-            backoffFactor: 1.5  
-          }  
+            timeout: 10000,  
+            maxAttempts: 5,  
+            baseDelay: 300,  
+            backoffFactor: 1.2  
+          },  
+          segmentRequestTimeout: 8000,  
+          useNativeHlsOnSafari: true  
         }  
       });  
   
-      // एरर हैंडलिंग
       player.addEventListener('error', (event) => {  
         console.error('Shaka Player Error:', event.detail);  
       });  
   
-      // लोड और प्ले
       try {  
         await player.load(streamUrl);  
-        console.log("CricLife Max Loaded Successfully!");  
+        console.log("CricLife1 Stream loaded successfully");  
       } catch (error) {  
-        console.error('Load Error:', error);  
+        console.error('Load error:', error);  
       }  
     });  
   </script>  
