@@ -1,9 +1,9 @@
 <!DOCTYPE html>  
-<html>  
+<html lang="en">  
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Prime By Cricket Yoddha</title>     
+  <title>CricLife Max - Prime Player</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
@@ -27,7 +27,7 @@
       background: #000;  
       object-fit: contain;  
     }  
-    /* Shaka Spinner Hiding */
+    /* Shaka Loading Spinner को छुपाने के लिए */
     .shaka-spinner-container,  
     .shaka-spinner,  
     .shaka-spinner-svg {  
@@ -38,26 +38,27 @@
   </style>  
 </head>  
 <body>  
-  <div class="shaka-video-container" data-shaka-player>  
-    <video autoplay playsinline preload="metadata"></video>  
+  <div class="shaka-video-container" data-shaka-player id="video-container">  
+    <video id="video" autoplay playsinline preload="metadata" poster="https://assets.tntsports.io/web/img/og/tntsports.jpg"></video>  
   </div>  
   
   <script>  
     document.addEventListener('DOMContentLoaded', async () => {  
+      // Polyfills install करें ताकि सभी ब्राउज़र्स पर चले
       shaka.polyfill.installAll();  
   
       if (!shaka.Player.isBrowserSupported()) {  
-        console.error('Browser not supported');  
+        console.error('Browser not supported for Shaka Player');  
         return;  
       }  
   
-      const video = document.querySelector('video');  
+      const video = document.getElementById('video');  
+      const container = document.getElementById('video-container');  
       const player = new shaka.Player();  
       await player.attach(video);  
   
-      const container = document.querySelector('.shaka-video-container');  
+      // UI Overlay सेटअप
       const ui = new shaka.ui.Overlay(player, container, video);  
-  
       ui.configure({  
         controlPanelElements: [  
           'play_pause', 'time_and_duration', 'mute', 'volume',  
@@ -66,7 +67,7 @@
         ],  
         volumeBarColors: {  
           base: 'rgba(255, 192, 203, 0.3)',  
-          level: 'rgb(255, 105, 180)'
+          level: 'rgb(255, 105, 180)'  
         },  
         seekBarColors: {  
           base: 'rgba(255, 255, 0, 0.3)',  
@@ -75,46 +76,48 @@
         }  
       });  
   
-      // ✅ NEW DRM Key (ID:Key)
-      let drmConfig = {  
+      // ✅ नया DRM Key Config (CricLife Max)
+      const drmConfig = {  
         clearKeys: {  
-          "4e8b5ddac5332a4e66c002b4c0f22322": "d06de29b0eacb81ac6e3f325849047e8"  
+          "ad59b720bd4b44d063686212b99484b5": "e1744990edf98acc729c0773a3766583"  
         }  
       };  
   
-      // ✅ NEW MPD URL
-      let streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/Criclife_3/DASH/Criclife_3.mpd";  
+      // ✅ नया MPD URL (StarzPlay)
+      const streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLifeMax/DASH/CricLifeMax.mpd";  
   
+      // प्लेयर कॉन्फ़िगरेशन
       player.configure({  
         drm: drmConfig,  
         streaming: {  
           lowLatencyMode: true,  
-          bufferingGoal: 10,  
+          bufferingGoal: 10, // लाइव के लिए थोडा कम रखा है ताकि लैग न हो
           rebufferingGoal: 2,  
           bufferBehind: 10,  
           retryParameters: {  
-            timeout: 10000,  
-            maxAttempts: 5,  
-            baseDelay: 300,  
-            backoffFactor: 1.2  
-          },  
-          segmentRequestTimeout: 8000,  
-          useNativeHlsOnSafari: true  
+            timeout: 15000,  
+            maxAttempts: 4,  
+            baseDelay: 500,  
+            backoffFactor: 1.5  
+          }  
         }  
       });  
   
+      // एरर हैंडलिंग
       player.addEventListener('error', (event) => {  
         console.error('Shaka Player Error:', event.detail);  
       });  
   
+      // लोड और प्ले
       try {  
         await player.load(streamUrl);  
-        console.log("Criclife 3 Stream loaded successfully");  
+        console.log("CricLife Max Loaded Successfully!");  
       } catch (error) {  
-        console.error('Load error:', error);  
+        console.error('Load Error:', error);  
       }  
     });  
   </script>  
 </body>  
 </html>
+
 
