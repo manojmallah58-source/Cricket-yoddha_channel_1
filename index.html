@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prime By Cricket Yoddha - Live</title>
+  <title>Prime By Cricket Yoddha</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+   * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       background: #000;
       height: 100vh;
@@ -27,7 +27,7 @@
       background: #000;
       object-fit: contain;
     }
-    /* Hide Default Spinner */
+    /* Hide Spinner */
     .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg {
       display: none !important;
       visibility: hidden !important;
@@ -36,18 +36,16 @@
   </style>
 </head>
 <body>
-
   <div class="shaka-video-container" data-shaka-player>
     <video autoplay playsinline preload="metadata" poster="https://assets.tntsports.io/web/img/og/tntsports.jpg"></video>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      // Install built-in polyfills to patch browser incompatibilities.
       shaka.polyfill.installAll();
 
       if (!shaka.Player.isBrowserSupported()) {
-        console.error('Browser not supported!');
+        console.error('Browser not supported');
         return;
       }
 
@@ -58,33 +56,24 @@
       const container = document.querySelector('.shaka-video-container');
       const ui = new shaka.ui.Overlay(player, container, video);
 
-      // UI Configuration
       ui.configure({
         controlPanelElements: [
           'play_pause', 'time_and_duration', 'mute', 'volume',
           'spacer', 'language', 'captions', 'picture_in_picture',
           'quality', 'fullscreen'
         ],
-        volumeBarColors: {
-          base: 'rgba(255, 192, 203, 0.3)',
-          level: 'rgb(255, 105, 180)'
-        },
-        seekBarColors: {
-          base: 'rgba(255, 255, 0, 0.3)',
-          buffered: 'rgba(255, 255, 0, 0.6)',
-          played: 'rgb(255, 255, 0)'
-        }
+        volumeBarColors: { base: 'rgba(255, 192, 203, 0.3)', level: 'rgb(255, 105, 180)' },
+        seekBarColors: { base: 'rgba(255, 255, 0, 0.3)', buffered: 'rgba(255, 255, 0, 0.6)', played: 'rgb(255, 255, 0)' }
       });
 
-      // ✅ Updated DRM Key (Key ID : Key)
-      const drmConfig = {
+      // ✅ NEW DRM KEY & URL REPLACED HERE
+      let drmConfig = {
         clearKeys: {
-          "a6dfc4f17d70d8d07639659193f03b25": "893eacfabe386144b81733d622a7ad17"
+          "03c2e0af2f8159f9f0ce9b5dbc865f10": "cd84ed136b0cc71f8ab8cd4d4f6a2e4c"
         }
       };
 
-      // ✅ Updated MPD URL
-      const streamUrl = "https://live2.shoq.com.pk/live/eds/ICC_Women_World_Cup_2025/DASH/ICC_Women_World_Cup_2025.mpd";
+      let streamUrl = "https://oriby-streaming-proxy.sultanarabi161.workers.dev/https://linearjitp-playback.astro.com.my/dash-wv/linear/2504/default_ott.mpd";
 
       player.configure({
         drm: drmConfig,
@@ -92,32 +81,31 @@
           lowLatencyMode: true,
           bufferingGoal: 10,
           rebufferingGoal: 2,
-          retryParameters: {
-            timeout: 15000,
-            maxAttempts: 5,
-            baseDelay: 500,
-            backoffFactor: 1.5
-          }
+          retryParameters: { timeout: 15000, maxAttempts: 5 }
         }
       });
 
-      // Error handling
-      player.addEventListener('error', (event) => {
-        console.error('Shaka Player Error:', event.detail);
+      // Request Filter for Proxy issues (Optional but helpful)
+      player.getNetworkingEngine().registerRequestFilter((type, request) => {
+        if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT || type === shaka.net.NetworkingEngine.RequestType.MANIFEST) {
+          // You can add custom headers here if the proxy requires them
+        }
       });
 
-      // Load the stream
+      player.addEventListener('error', (event) => {
+        console.error('Shaka Error:', event.detail);
+      });
+
       try {
         await player.load(streamUrl);
-        console.log("ICC Women World Cup 2025 Stream loaded successfully!");
+        console.log("Stream Loaded Successfully!");
       } catch (error) {
-        console.error('Error while loading stream:', error);
+        console.error('Playback failed:', error);
       }
     });
   </script>
 </body>
 </html>
-
 
 
 
