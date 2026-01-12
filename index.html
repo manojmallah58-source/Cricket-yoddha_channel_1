@@ -27,7 +27,7 @@
       background: #000;  
       object-fit: contain;  
     }  
-    /* Shaka Spinner Hide (To make it look cleaner) */
+    /* Shaka Spinner Hidden */
     .shaka-spinner-container,  
     .shaka-spinner,  
     .shaka-spinner-svg {  
@@ -75,15 +75,15 @@
         }  
       });  
   
-      // ✅ UPDATED DRM Key (CricLife1)
+      // ✅ आपकी नई Clear Key ID और Key यहाँ है
       let drmConfig = {  
         clearKeys: {  
-          "1e23e51b09a67b83813c17049870bcd4": "c3d6288e378b0dc55320fd0e6fd2e55f"  
+          "2ce2e7d0af813fd26c6fe0b59201ced5": "1416f69da90f62735a6521aae461dd74"  
         }  
       };  
   
-      // ✅ UPDATED MPD URL
-      let streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLife1/DASH/CricLife1.mpd";  
+      // ✅ आपका नया MPD Stream URL यहाँ है
+      let streamUrl = "https://ottb.live.cf.ww.aiv-cdn.net/sin-nitro/live/dash/enc/jr0zvtazlv/out/v1/6bae9634f7594a738530656284177423/cenc.mpd";  
   
       player.configure({  
         drm: drmConfig,  
@@ -91,7 +91,7 @@
           lowLatencyMode: true,  
           bufferingGoal: 10,  
           rebufferingGoal: 2,  
-          bufferBehind: 15,  
+          bufferBehind: 10,  
           retryParameters: {  
             timeout: 10000,  
             maxAttempts: 5,  
@@ -99,7 +99,14 @@
             backoffFactor: 1.2  
           },  
           segmentRequestTimeout: 8000,  
+          segmentPrefetchLimit: 2,  
           useNativeHlsOnSafari: true  
+        },  
+        manifest: {  
+          retryParameters: {  
+            timeout: 8000,  
+            maxAttempts: 3  
+          }  
         }  
       });  
   
@@ -109,7 +116,7 @@
   
       try {  
         await player.load(streamUrl);  
-        console.log("CricLife1 Stream loaded successfully");  
+        console.log("Stream loaded successfully");  
       } catch (error) {  
         console.error('Load error:', error);  
       }  
@@ -117,5 +124,6 @@
   </script>  
 </body>  
 </html>
+
 
 
