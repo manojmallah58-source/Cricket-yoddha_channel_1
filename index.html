@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hotstar Live Stream</title>
+  <title>Hotstar Live Final</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
   <style>
@@ -15,27 +15,26 @@
 </head>
 <body>
   <div class="shaka-video-container" data-shaka-player>
-    <video autoplay playsinline preload="metadata"></video>
+    <video autoplay playsinline id="video"></video>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
+    async function initPlayer() {
       shaka.polyfill.installAll();
       if (!shaka.Player.isBrowserSupported()) return;
 
-      const video = document.querySelector('video');
+      const video = document.getElementById('video');
       const container = document.querySelector('.shaka-video-container');
       const player = new shaka.Player();
       await player.attach(video);
 
       const ui = new shaka.ui.Overlay(player, container, video);
-      
-      // Aapka naya Stream URL aur Details
+
+      // --- CONFIGURATION ---
       const streamUrl = "https://livetv-push.hotstar.com/dash/live/2002466/sshindiwv/master.mpd";
       const cookieData = "hdntl=exp=1768274777~acl=*sshindi*~id=b103e85a75452674f96b713d7887a9fc~data=hdntl~hmac=115b8ef4c5d9ccb5eee9c8a66c657e1f5b3923d75ef622b64c5ff0cd13dc3766";
       const userAgent = "Hotstar;in.startv.hotstar/25.02.24.8.11169 (Android/15)";
 
-      // DRM Configuration (ClearKey)
       player.configure({
         drm: {
           clearKeys: {
@@ -44,16 +43,17 @@
         },
         streaming: {
           lowLatencyMode: true,
-          jumpLargeGaps: true
+          bufferingGoal: 10,
+          retryParameters: { maxAttempts: 5 }
         }
       });
 
-      // Headers set karna
+      // Networking engine for Headers
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
         request.headers['User-Agent'] = userAgent;
         request.headers['Cookie'] = cookieData;
-        
-        // URL ke peeche cookie attach karna (Hotstar CDN requirements)
+
+        // Hotstar requires cookie in URL as well
         if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
           const separator = request.uris[0].includes('?') ? '&' : '?';
           request.uris[0] += separator + cookieData;
@@ -62,17 +62,21 @@
 
       try {
         await player.load(streamUrl);
-        console.log('Stream loaded successfully');
-      } catch (e) {
-        console.error('Error loading stream:', e);
+        console.log("Success: Stream Loaded");
+      } catch (error) {
+        console.error("Error Code:", error.code, "Check Console for details");
       }
+    }
 
-      // Autoplay handle karne ke liye click listener
-      document.addEventListener('click', () => {
-        video.muted = false;
-        video.play();
-      }, { once: true });
-    });
+    document.addEventListener('shaka-ui-loaded', initPlayer);
+    document.addEventListener('shaka-polyfilled', initPlayer);
+
+    // Click to Play/Unmute for Chrome/Android
+    document.addEventListener('click', () => {
+      const v = document.getElementById('video');
+      v.muted = false;
+      v.play();
+    }, { once: true });
   </script>
 </body>
 </html>
