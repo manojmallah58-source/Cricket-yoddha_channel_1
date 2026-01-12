@@ -3,7 +3,7 @@
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Prime By Allrounder</title>     
+  <title>Prime By Cricket Yoddha</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
@@ -27,6 +27,7 @@
       background: #000;  
       object-fit: contain;  
     }  
+    /* Shaka Spinner Hiding */
     .shaka-spinner-container,  
     .shaka-spinner,  
     .shaka-spinner-svg {  
@@ -38,7 +39,7 @@
 </head>  
 <body>  
   <div class="shaka-video-container" data-shaka-player>  
-    <video autoplay playsinline preload="metadata" poster=""></video>  
+    <video autoplay playsinline preload="metadata"></video>  
   </div>  
   
   <script>  
@@ -65,7 +66,7 @@
         ],  
         volumeBarColors: {  
           base: 'rgba(255, 192, 203, 0.3)',  
-          level: 'rgb(255, 105, 180)'  
+          level: 'rgb(255, 105, 180)'
         },  
         seekBarColors: {  
           base: 'rgba(255, 255, 0, 0.3)',  
@@ -74,31 +75,23 @@
         }  
       });  
   
-      // ✅ Your DRM Key + MPD URL  
+      // ✅ NEW DRM Key (ID:Key)
       let drmConfig = {  
         clearKeys: {  
-          "aefc2c8d1c8840f1b6981f856c9269ba": "cf8ea114c45b4d6596b2748258ab74d6"  
+          "4e8b5ddac5332a4e66c002b4c0f22322": "d06de29b0eacb81ac6e3f325849047e8"  
         }  
       };  
   
-      // 🔥 Load MPD dynamically from JSON
-      let streamUrl = "";
-      try {
-        const res = await fetch("https://raw.githubusercontent.com/Cricketstan/Sky-Nz-Json/refs/heads/main/data.json");
-        const data = await res.json();
-        streamUrl = data.url;
-        console.log("Fetched MPD:", streamUrl);
-      } catch (err) {
-        console.error("Failed to fetch JSON:", err);
-      }
+      // ✅ NEW MPD URL
+      let streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/Criclife_3/DASH/Criclife_3.mpd";  
   
       player.configure({  
         drm: drmConfig,  
         streaming: {  
           lowLatencyMode: true,  
-          bufferingGoal: 15,  
+          bufferingGoal: 10,  
           rebufferingGoal: 2,  
-          bufferBehind: 15,  
+          bufferBehind: 10,  
           retryParameters: {  
             timeout: 10000,  
             maxAttempts: 5,  
@@ -106,14 +99,7 @@
             backoffFactor: 1.2  
           },  
           segmentRequestTimeout: 8000,  
-          segmentPrefetchLimit: 2,  
           useNativeHlsOnSafari: true  
-        },  
-        manifest: {  
-          retryParameters: {  
-            timeout: 8000,  
-            maxAttempts: 3  
-          }  
         }  
       });  
   
@@ -123,7 +109,7 @@
   
       try {  
         await player.load(streamUrl);  
-        console.log("Stream loaded successfully");  
+        console.log("Criclife 3 Stream loaded successfully");  
       } catch (error) {  
         console.error('Load error:', error);  
       }  
@@ -131,6 +117,4 @@
   </script>  
 </body>  
 </html>
-
-
 
