@@ -3,83 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Player - Quality Fix</title>
+    <title>Live Player Final Fix</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
-        body { margin: 0; background: #000; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: sans-serif; }
-        .container { width: 100%; max-width: 800px; }
+        body { margin: 0; background: #000; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { width: 100%; max-width: 900px; }
+        /* Screenshot jaisa Red Theme */
         :root { --plyr-color-main: #ff0000; }
-        .error-msg { color: white; text-align: center; padding: 20px; display: none; }
-        #debug-info { color: #555; font-size: 10px; margin-top: 10px; }
+        .plyr__control--overlaid { background: rgba(0, 0, 0, 0.5); border: 2px solid #fff; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <video id="player" playsinline crossorigin controls></video>
-    <div id="error-box" class="error-msg">
-        <p>Video load nahi ho raha hai.</p>
-        <button onclick="location.reload()" style="padding:10px; background:#ff0000; color:white; border:none; cursor:pointer;">Retry Player</button>
-    </div>
 </div>
-
-<div id="debug-info">Status: Initializing...</div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <script>
-    const streamUrl = "http://103.140.254.2:3500/live/1998.m3u8";
-    // Using an alternative proxy
-    const finalUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(streamUrl);
-
     document.addEventListener('DOMContentLoaded', () => {
         const video = document.querySelector('#player');
-        const debug = document.getElementById('debug-info');
+        
+        // HTTP link ko HTTPS ke liye Bridge/Proxy dena zaroori hai
+        const originalUrl = "http://103.140.254.2:3500/live/1998.m3u8";
+        const proxyUrl = "https://thingproxy.freeboard.io/fetch/" + originalUrl;
+        
+        const plyrOptions = {
+            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
+            settings: ['quality'],
+            title: 'Live Stream'
+        };
 
         if (Hls.isSupported()) {
-            const hls = new Hls({
-                xhrSetup: function (xhr) {
-                    xhr.withCredentials = false;
-                }
-            });
-
-            hls.loadSource(finalUrl);
+            const hls = new Hls();
+            hls.loadSource(proxyUrl);
             hls.attachMedia(video);
-
-            hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-                debug.innerText = "Status: Playing...";
+            
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
                 const availableQualities = hls.levels.map((l) => l.height);
                 
                 const player = new Plyr(video, {
-                    settings: ['quality'],
+                    ...plyrOptions,
                     quality: {
                         default: 0,
                         options: [0, ...availableQualities],
                         forced: true,
                         onChange: (q) => {
-                            if (q === 0) hls.currentLevel = -1;
-                            else hls.levels.forEach((l, i) => { if (l.height === q) hls.currentLevel = i; });
+                            if (q === 0) { hls.currentLevel = -1; } 
+                            else {
+                                hls.levels.forEach((level, index) => {
+                                    if (level.height === q) hls.currentLevel = index;
+                                });
+                            }
                         }
                     },
                     i18n: { qualityLabel: { 0: 'Auto' } }
                 });
             });
 
+            // Agar proxy fail ho toh backup direct link
             hls.on(Hls.Events.ERROR, function (event, data) {
                 if (data.fatal) {
-                    console.error("HLS Fatal Error", data);
-                    debug.innerText = "Error: Link Blocked or Down";
-                    document.getElementById('error-box').style.display = 'block';
+                    console.log("Switching to direct link...");
+                    hls.loadSource(originalUrl);
                 }
             });
 
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = streamUrl;
-            new Plyr(video);
+            video.src = originalUrl;
+            new Plyr(video, plyrOptions);
         }
     });
 </script>
 </body>
 </html>
-
