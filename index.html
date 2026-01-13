@@ -1,128 +1,123 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cricket Yoddha Live Prime</title>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css">
-  
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { 
-      background: #000; 
-      height: 100vh; 
-      width: 100vw; 
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container { width: 100%; height: 100%; position: relative; }
-    video { width: 100%; height: 100%; object-fit: contain; }
-
-    /* --- SCREENSHOT JAISA UI CUSTOMIZATION --- */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream Player with Quality Control</title>
     
-    /* Play/Pause Button ko bada aur laal (Red) karna */
-    .shaka-play-button-container {
-      background-color: #ff0000 !important; /* Red Circle */
-      border-radius: 50% !important;
-      width: 50px !important;
-      height: 50px !important;
-      margin-right: 15px !important;
-    }
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     
-    .shaka-play-button {
-      font-size: 24px !important;
-      color: white !important;
-    }
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    /* Seekbar (Progress bar) ko laal karna */
-    .shaka-seek-bar-container { height: 5px !important; }
-    .shaka-seek-bar { 
-        --played-color: #ff0000 !important; 
-        --base-color: rgba(255, 255, 255, 0.3) !important;
-        --buffered-color: rgba(255, 255, 255, 0.5) !important;
-    }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 10px;
+        }
 
-    /* Controls bar styling */
-    .shaka-bottom-controls {
-      padding: 10px 20px !important;
-      display: flex !important;
-      align-items: center !important;
-    }
+        /* Screenshot jaisa Red Theme */
+        :root {
+            --plyr-color-main: #ff0000;
+        }
 
-    .shaka-current-time {
-      font-size: 14px !important;
-      color: white !important;
-      font-weight: bold;
-    }
-
-    /* Connection Status */
-    #loader {
-      position: absolute;
-      top: 15px; left: 15px;
-      color: white; font-size: 12px;
-      z-index: 100;
-      background: #ff0000;
-      padding: 4px 12px;
-      border-radius: 4px;
-      font-family: sans-serif;
-    }
-  </style>
+        .plyr__control--overlaid {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ffffff;
+        }
+    </style>
 </head>
 <body>
 
-  <div id="loader">Connecting to Stream...</div>
+<div class="container">
+    <video id="player" playsinline controls></video>
+</div>
 
-  <div class="container" id="video-container" data-shaka-player-container>
-    <video autoplay playsinline id="video" poster="https://assets.tntsports.io/web/img/og/tntsports.jpg"></video>
-  </div>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
-  <script>
-    async function initPlayer() {
-      shaka.polyfill.installAll();
-      
-      const video = document.getElementById('video');
-      const container = document.getElementById('video-container');
-      const player = new shaka.Player();
-      await player.attach(video);
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const video = document.querySelector('#player');
+        const source = "http://103.140.254.2:3500/live/1998.m3u8";
+        
+        const defaultOptions = {
+            controls: [
+                'play-large', 'play', 'progress', 'current-time', 
+                'mute', 'volume', 'settings', 'fullscreen'
+            ],
+            settings: ['quality', 'speed'],
+            quality: {
+                default: 0,
+                options: [0], // Ye dynamic update hoga niche
+                forced: true,
+                onChange: (e) => updateQuality(e),
+            }
+        };
 
-      const ui = new shaka.ui.Overlay(player, container, video);
-      
-      // Screenshot ke hisaab se button order
-      ui.configure({
-        'controlPanelElements': [
-          'play_pause', 
-          'time_and_duration', 
-          'spacer', 
-          'mute', 
-          'volume', 
-          'quality', 
-          'fullscreen'
-        ]
-      });
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(source);
+            hls.attachMedia(video);
 
-      // Stream Link Logic
-      let streamUrl = "http://103.140.254.2:3500/live/1998.m3u8";
-      
-      // Vercel/GitHub (HTTPS) support fix
-      if (window.location.protocol === 'https:') {
-        streamUrl = "https://corsproxy.io/?" + encodeURIComponent(streamUrl);
-      }
+            hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                // Quality levels ko extract karna
+                const availableQualities = hls.levels.map((l) => l.height);
+                availableQualities.unshift(0); // Add 'Auto'
 
-      try {
-        await player.load(streamUrl);
-        document.getElementById('loader').style.display = 'none';
-      } catch (e) {
-        console.error("Load Failed", e);
-        document.getElementById('loader').innerText = "Retry Loading...";
-      }
+                defaultOptions.quality = {
+                    default: 0,
+                    options: availableQualities,
+                    forced: true,
+                    onChange: (e) => {
+                        if (e === 0) {
+                            hls.currentLevel = -1; // Auto
+                        } else {
+                            hls.levels.forEach((level, levelIndex) => {
+                                if (level.height === e) {
+                                    hls.currentLevel = levelIndex;
+                                }
+                            });
+                        }
+                    },
+                };
+
+                // Quality labels ko rename karna (e.g. 0 to 'Auto')
+                defaultOptions.i18n = {
+                    qualityLabel: { 0: 'Auto' }
+                };
+
+                new Plyr(video, defaultOptions);
+            });
+
+            window.hls = hls;
+        } else {
+            // Safari/iOS support
+            new Plyr(video, defaultOptions);
+        }
+    });
+
+    function updateQuality(newQuality) {
+        if (window.hls) {
+            if (newQuality === 0) {
+                window.hls.currentLevel = -1;
+            } else {
+                window.hls.levels.forEach((level, levelIndex) => {
+                    if (level.height === newQuality) {
+                        window.hls.currentLevel = levelIndex;
+                    }
+                });
+            }
+        }
     }
+</script>
 
-    document.addEventListener('shaka-ui-loaded', initPlayer);
-  </script>
 </body>
 </html>
