@@ -3,18 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Player - Quality Control</title>
+    <title>Live Player - Final Fix</title>
+    
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    
     <style>
-        body { margin: 0; background: #000; height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .container { width: 100%; max-width: 900px; }
-        :root { --plyr-color-main: #ff0000; } /* Screenshot jaisa Red Theme */
-        .plyr__control--overlaid { background: rgba(0, 0, 0, 0.5); border: 2px solid #fff; }
+        body {
+            margin: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 100%; /* Mobile full width */
+            background: #000;
+        }
+
+        /* Screenshot jaisa Red Theme */
+        :root {
+            --plyr-color-main: #ff0000; /* Red Seek Bar */
+            --plyr-video-control-background-hover: rgba(255, 0, 0, 0.2);
+        }
+
+        /* Center Play Button like your image */
+        .plyr__control--overlaid {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #fff;
+        }
+
+        /* Hide default play button on mobile if needed */
+        .plyr--loading .plyr__control--overlaid {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="video-container">
     <video id="player" playsinline crossorigin controls></video>
 </div>
 
@@ -24,36 +53,62 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const video = document.querySelector('#player');
-        const source = "http://103.140.254.2:3500/live/1998.m3u8";
+        
+        // HTTPS FIX: Adding a Proxy so it works on GitHub/Vercel
+        const streamUrl = "http://103.140.254.2:3500/live/1998.m3u8";
+        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(streamUrl);
         
         const plyrOptions = {
-            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
-            settings: ['quality'],
+            controls: [
+                'play-large', 'play', 'progress', 'current-time', 
+                'mute', 'volume', 'settings', 'fullscreen'
+            ],
+            settings: ['quality', 'speed'],
+            quality: {
+                default: 0,
+                options: [0],
+                forced: true,
+                onChange: (q) => updateQuality(q),
+            },
+            i18n: { qualityLabel: { 0: 'Auto' } }
         };
 
         if (Hls.isSupported()) {
             const hls = new Hls();
-            hls.loadSource(source);
+            hls.loadSource(proxyUrl);
             hls.attachMedia(video);
             
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                // Get available qualities from stream
                 const availableQualities = hls.levels.map((l) => l.height);
-                plyrOptions.quality = {
-                    default: availableQualities[0],
-                    options: availableQualities,
-                    forced: true,
-                    onChange: (q) => {
-                        hls.levels.forEach((level, levelIndex) => {
-                            if (level.height === q) { hls.currentLevel = levelIndex; }
-                        });
+                
+                const player = new Plyr(video, {
+                    ...plyrOptions,
+                    quality: {
+                        default: 0,
+                        options: [0, ...availableQualities],
+                        forced: true,
+                        onChange: (q) => {
+                            if (q === 0) {
+                                hls.currentLevel = -1; // Auto
+                            } else {
+                                hls.levels.forEach((level, index) => {
+                                    if (level.height === q) hls.currentLevel = index;
+                                });
+                            }
+                        }
                     }
-                };
-                new Plyr(video, plyrOptions);
+                });
             });
-        } else {
+            window.hls = hls;
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // For Safari
+            video.src = streamUrl;
             new Plyr(video, plyrOptions);
         }
     });
 </script>
+
 </body>
 </html>
+
