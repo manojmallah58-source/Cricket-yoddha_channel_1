@@ -3,112 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Player - Final Fix</title>
-    
+    <title>Live Player - Quality Fix</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    
     <style>
-        body {
-            margin: 0;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .video-container {
-            width: 100%;
-            max-width: 100%; /* Mobile full width */
-            background: #000;
-        }
-
-        /* Screenshot jaisa Red Theme */
-        :root {
-            --plyr-color-main: #ff0000; /* Red Seek Bar */
-            --plyr-video-control-background-hover: rgba(255, 0, 0, 0.2);
-        }
-
-        /* Center Play Button like your image */
-        .plyr__control--overlaid {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #fff;
-        }
-
-        /* Hide default play button on mobile if needed */
-        .plyr--loading .plyr__control--overlaid {
-            display: none;
-        }
+        body { margin: 0; background: #000; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: sans-serif; }
+        .container { width: 100%; max-width: 800px; }
+        :root { --plyr-color-main: #ff0000; }
+        .error-msg { color: white; text-align: center; padding: 20px; display: none; }
+        #debug-info { color: #555; font-size: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="video-container">
+<div class="container">
     <video id="player" playsinline crossorigin controls></video>
+    <div id="error-box" class="error-msg">
+        <p>Video load nahi ho raha hai.</p>
+        <button onclick="location.reload()" style="padding:10px; background:#ff0000; color:white; border:none; cursor:pointer;">Retry Player</button>
+    </div>
 </div>
+
+<div id="debug-info">Status: Initializing...</div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <script>
+    const streamUrl = "http://103.140.254.2:3500/live/1998.m3u8";
+    // Using an alternative proxy
+    const finalUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(streamUrl);
+
     document.addEventListener('DOMContentLoaded', () => {
         const video = document.querySelector('#player');
-        
-        // HTTPS FIX: Adding a Proxy so it works on GitHub/Vercel
-        const streamUrl = "http://103.140.254.2:3500/live/1998.m3u8";
-        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(streamUrl);
-        
-        const plyrOptions = {
-            controls: [
-                'play-large', 'play', 'progress', 'current-time', 
-                'mute', 'volume', 'settings', 'fullscreen'
-            ],
-            settings: ['quality', 'speed'],
-            quality: {
-                default: 0,
-                options: [0],
-                forced: true,
-                onChange: (q) => updateQuality(q),
-            },
-            i18n: { qualityLabel: { 0: 'Auto' } }
-        };
+        const debug = document.getElementById('debug-info');
 
         if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(proxyUrl);
+            const hls = new Hls({
+                xhrSetup: function (xhr) {
+                    xhr.withCredentials = false;
+                }
+            });
+
+            hls.loadSource(finalUrl);
             hls.attachMedia(video);
-            
-            hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                // Get available qualities from stream
+
+            hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                debug.innerText = "Status: Playing...";
                 const availableQualities = hls.levels.map((l) => l.height);
                 
                 const player = new Plyr(video, {
-                    ...plyrOptions,
+                    settings: ['quality'],
                     quality: {
                         default: 0,
                         options: [0, ...availableQualities],
                         forced: true,
                         onChange: (q) => {
-                            if (q === 0) {
-                                hls.currentLevel = -1; // Auto
-                            } else {
-                                hls.levels.forEach((level, index) => {
-                                    if (level.height === q) hls.currentLevel = index;
-                                });
-                            }
+                            if (q === 0) hls.currentLevel = -1;
+                            else hls.levels.forEach((l, i) => { if (l.height === q) hls.currentLevel = i; });
                         }
-                    }
+                    },
+                    i18n: { qualityLabel: { 0: 'Auto' } }
                 });
             });
-            window.hls = hls;
+
+            hls.on(Hls.Events.ERROR, function (event, data) {
+                if (data.fatal) {
+                    console.error("HLS Fatal Error", data);
+                    debug.innerText = "Error: Link Blocked or Down";
+                    document.getElementById('error-box').style.display = 'block';
+                }
+            });
+
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // For Safari
             video.src = streamUrl;
-            new Plyr(video, plyrOptions);
+            new Plyr(video);
         }
     });
 </script>
-
 </body>
 </html>
 
