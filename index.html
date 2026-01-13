@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Player Final Fix</title>
+    <title>Final Live Player</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         body { margin: 0; background: #000; height: 100vh; display: flex; justify-content: center; align-items: center; }
         .container { width: 100%; max-width: 900px; }
-        /* Screenshot jaisa Red Theme */
         :root { --plyr-color-main: #ff0000; }
-        .plyr__control--overlaid { background: rgba(0, 0, 0, 0.5); border: 2px solid #fff; }
+        .plyr__control--overlaid { background: rgba(0, 0, 0, 0.6); border: 2px solid #fff; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <video id="player" playsinline crossorigin controls></video>
+    <video id="player" playsinline crossorigin controls autoplay muted></video>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -25,55 +24,29 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const video = document.querySelector('#player');
-        
-        // HTTP link ko HTTPS ke liye Bridge/Proxy dena zaroori hai
-        const originalUrl = "http://103.140.254.2:3500/live/1998.m3u8";
-        const proxyUrl = "https://thingproxy.freeboard.io/fetch/" + originalUrl;
-        
-        const plyrOptions = {
-            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
-            settings: ['quality'],
-            title: 'Live Stream'
-        };
+        // Direct link bina kisi proxy ke
+        const source = "http://103.140.254.2:3500/live/1998.m3u8";
 
         if (Hls.isSupported()) {
             const hls = new Hls();
-            hls.loadSource(proxyUrl);
+            hls.loadSource(source);
             hls.attachMedia(video);
-            
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
                 const availableQualities = hls.levels.map((l) => l.height);
-                
-                const player = new Plyr(video, {
-                    ...plyrOptions,
+                new Plyr(video, {
+                    settings: ['quality'],
                     quality: {
                         default: 0,
                         options: [0, ...availableQualities],
                         forced: true,
                         onChange: (q) => {
-                            if (q === 0) { hls.currentLevel = -1; } 
-                            else {
-                                hls.levels.forEach((level, index) => {
-                                    if (level.height === q) hls.currentLevel = index;
-                                });
-                            }
+                            if (q === 0) hls.currentLevel = -1;
+                            else hls.levels.forEach((l, i) => { if (l.height === q) hls.currentLevel = i; });
                         }
-                    },
-                    i18n: { qualityLabel: { 0: 'Auto' } }
+                    }
                 });
+                video.play(); // Auto-start
             });
-
-            // Agar proxy fail ho toh backup direct link
-            hls.on(Hls.Events.ERROR, function (event, data) {
-                if (data.fatal) {
-                    console.log("Switching to direct link...");
-                    hls.loadSource(originalUrl);
-                }
-            });
-
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = originalUrl;
-            new Plyr(video, plyrOptions);
         }
     });
 </script>
