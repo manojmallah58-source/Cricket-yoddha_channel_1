@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRICKET YODDHA | ULTRA PRO</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-dark: #0D1117;
+      --secondary-dark: #161B22;
+      --border-color: #30363D;
+      --accent-color: #FACC15; 
+      --text-primary: #E6EDF3;
+      --text-secondary: #8B949E;
+      --live-red: #ff3e3e;
+      --neon-glow: rgba(250, 204, 21, 0.4);
+    }
+
+    body {
+      margin: 0; padding: 0; background: var(--primary-dark);
+      font-family: 'Poppins', sans-serif; color: var(--text-primary);
+      overflow-x: hidden; -webkit-tap-highlight-color: transparent;
+    }
+
+    header {
+      position: fixed; top: 0; left: 0; right: 0; height: 70px;
+      background: rgba(13, 17, 23, 0.95); backdrop-filter: blur(15px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 20px; border-bottom: 1px solid var(--border-color); z-index: 9999;
+    }
+    header img { height: 45px; filter: drop-shadow(0 0 5px var(--neon-glow)); }
+    .menu-icon { position: absolute; left: 20px; font-size: 32px; cursor: pointer; color: var(--accent-color); }
+
+    .news-ticker {
+        margin-top: 70px; background: #1a1f27; height: 32px;
+        display: flex; align-items: center; border-bottom: 1px solid var(--border-color);
+        overflow: hidden; font-size: 11px; font-weight: 500;
+    }
+    .ticker-content {
+        display: inline-block; white-space: nowrap; padding-left: 100%;
+        animation: ticker 25s linear infinite; color: var(--text-secondary);
+    }
+    @keyframes ticker { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+    .video-container { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    
+    /* --- ADVANCED SERVERS --- */
+    .server-control { padding: 18px 15px; background: var(--secondary-dark); border-bottom: 1px solid var(--border-color); }
+    .server-row { display: flex; justify-content: space-between; gap: 10px; }
+    .srv-pill {
+      flex: 1; background: var(--primary-dark); border: 1.5px solid var(--border-color);
+      border-radius: 12px; padding: 12px 5px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .srv-pill.active { border-color: var(--accent-color); background: rgba(250, 204, 21, 0.1); box-shadow: 0 0 15px var(--neon-glow); transform: translateY(-3px); }
+    .srv-pill:active { transform: scale(0.92); }
+    .srv-title { font-size: 13px; font-weight: 700; }
+    .srv-quality { font-size: 9px; color: var(--accent-color); font-weight: 800; }
+
+    /* --- ADVANCED ACTION BAR --- */
+    .action-bar {
+        margin: 25px 15px; display: flex; justify-content: space-around;
+        background: rgba(22, 27, 34, 0.9); border-radius: 25px; padding: 18px;
+        border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    .act-item { display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; color: var(--text-secondary); cursor: pointer; transition: 0.3s ease; }
+    .icon-circle {
+        width: 60px; height: 60px; border-radius: 50%; background: #1a1f27;
+        display: flex; justify-content: center; align-items: center; border: 2px solid var(--border-color);
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .act-item:active { transform: scale(0.9); }
+    .act-item:active .icon-circle { border-color: var(--accent-color); box-shadow: 0 0 20px var(--accent-color); }
+
+    /* --- ADVANCED POPUP (SCREENSHOT STYLE) --- */
+    .popup-overlay {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+      display: none; align-items: center; justify-content: center; z-index: 10005;
+      backdrop-filter: blur(10px); animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .popup-box {
+      width: 320px; background: #1c2128; border: 1.5px solid var(--border-color);
+      border-radius: 28px; padding: 35px 25px; text-align: center;
+      position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(250, 204, 21, 0.1);
+      animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    @keyframes popIn { from { transform: scale(0.7) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+    .popup-title { font-size: 28px; font-weight: 900; color: var(--accent-color); margin-bottom: 8px; text-shadow: 0 0 10px rgba(250,204,21,0.2); }
+    .popup-text { color: var(--text-secondary); font-size: 14px; line-height: 1.5; margin-bottom: 25px; }
+
+    .btn-popup-join {
+      background: var(--accent-color); color: #000; padding: 14px; border-radius: 14px;
+      display: block; text-decoration: none; font-weight: 800; font-size: 16px;
+      box-shadow: 0 8px 20px rgba(250, 204, 21, 0.3); transition: 0.3s;
+    }
+    .btn-popup-join:active { transform: scale(0.95); }
+
+    .btn-popup-close {
+      background: rgba(255,255,255,0.05); color: var(--text-primary); padding: 12px;
+      border-radius: 14px; display: block; border: 1px solid var(--border-color);
+      width: 100%; margin-top: 12px; font-weight: 600; cursor: pointer; transition: 0.3s;
+    }
+    .btn-popup-close:active { background: rgba(255,255,255,0.1); }
+
+    .close-icon { position: absolute; top: 15px; right: 20px; color: var(--text-secondary); cursor: pointer; }
+
+    /* --- SIDEBAR & STATS --- */
+    .sidebar {
+      position: fixed; top: 0; left: -320px; width: 300px; height: 100%; 
+      background: #0d1117; z-index: 10001; transition: 0.5s cubic-bezier(0.65, 0, 0.35, 1); 
+      border-right: 1px solid var(--border-color); display: flex; flex-direction: column;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar-header { font-size: 26px; font-weight: 900; text-align: center; padding: 50px 0 30px; color: var(--accent-color); }
+    .sidebar-links a { display: flex; align-items: center; padding: 16px 30px; color: var(--text-secondary); text-decoration: none; font-size: 16px; font-weight: 600; }
+    .sidebar-links a i { margin-right: 18px; font-size: 24px; }
+    
+    .stats-container { padding: 25px; border-top: 1px solid var(--border-color); margin-top: auto; }
+    .visit-card-pro {
+      background: linear-gradient(135deg, #1c2128 0%, #0d1117 100%);
+      border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 22px;
+      padding: 18px; display: flex; align-items: center; gap: 18px;
+    }
+    .visit-icon-box { width: 48px; height: 48px; background: rgba(250, 204, 21, 0.15); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--accent-color); }
+    .visit-number { font-size: 24px; font-weight: 900; color: #fff; }
+
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 10000; backdrop-filter: blur(8px); }
+    .overlay.show { display: block; }
+  </style>
+</head>
+<body>
+
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <span class="material-icons close-icon" onclick="closePopup()">close</span>
+    <div class="popup-title">Support Us!</div>
+    <div class="popup-text">Join our Telegram channel for the latest HD match links and daily updates.</div>
+    <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="btn-popup-join">Join Now</a>
+    <button class="btn-popup-close" onclick="closePopup()">Already Joined</button>
+  </div>
+</div>
+
+<header>
+  <span class="material-icons menu-icon" onclick="toggleSidebar()">menu</span>
+  <img src="https://i.ibb.co/HLkW7zJV/ei-1765534270242-removebg-preview.png" alt="Logo">
+  <div style="position: absolute; right: 20px; border: 2px solid var(--live-red); color: var(--live-red); padding: 3px 12px; border-radius: 8px; font-size: 11px; font-weight: 900;">LIVE</div>
+</header>
+
+<div class="news-ticker">
+    <div class="ticker-content">
+        🏆 Welcome to Cricket Yoddha HD • Join Telegram for All Match Updates • High Speed Servers Active • Share with your Friends!
+    </div>
+</div>
+
+<div class="video-container">
+  <iframe id="main-player" src="https://cricketstan.github.io/channel-10" allowfullscreen allow="autoplay"></iframe>
+</div>
+
+<div class="server-control">
+    <div class="server-row">
+        <div class="srv-pill active" onclick="play(this, 'https://cricketstan.github.io/channel-10')">
+            <span class="srv-title">SERVER 1</span>
+            <span class="srv-quality">ULTRA HD</span>
+        </div>
+        <div class="srv-pill" onclick="play(this, 'https://cricketstan.github.io/channel-10')">
+            <span class="srv-title">SERVER 2</span>
+            <span class="srv-quality">HD 1080P</span>
+        </div>
+        <div class="srv-pill" onclick="play(this, 'https://cricketstan.github.io/channel-10')">
+            <span class="srv-title">SERVER 3</span>
+            <span class="srv-quality">NO ADS</span>
+        </div>
+    </div>
+</div>
+
+<div class="action-bar">
+    <div class="act-item">
+        <div class="icon-circle" id="viewer-count">0</div>
+        <span style="font-size: 12px; font-weight: 700;">Watching</span>
+    </div>
+    <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank" class="act-item">
+        <div class="icon-circle" style="color:#0088cc"><i class="material-icons" style="font-size: 28px;">send</i></div>
+        <span style="font-size: 12px; font-weight: 700;">Telegram</span>
+    </a>
+    <div class="act-item" onclick="shareMe()">
+        <div class="icon-circle"><i class="material-icons" style="font-size: 28px;">share</i></div>
+        <span style="font-size: 12px; font-weight: 700;">Share</span>
+    </div>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">MENU</div>
+    <div class="sidebar-links">
+        <a href="https://t.me/+rwZKMV0-L8wyOTll" target="_blank"><i class="material-icons" style="color: var(--accent-color);">telegram</i> Join Telegram</a>
+        <a href="#"><i class="material-icons">contact_support</i> Contact Us</a>
+        <a href="#"><i class="material-icons">copyright</i> Copyright</a>
+    </div>
+    <div class="stats-container">
+        <div class="visit-card-pro">
+            <div class="visit-icon-box"><i class="material-icons">trending_up</i></div>
+            <div>
+                <span style="font-size: 11px; color: var(--text-secondary); font-weight: 800; text-transform: uppercase;">Daily Visits</span><br>
+                <span class="visit-number" id="total-views-count">0</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const WEBSITE_ID = "channel_1"; 
+    const firebaseConfig = {
+      apiKey: "AIzaSyA-vR50CMDYJVHApJir-6fmgRqhFiqQDU8",
+      authDomain: "my-website-cricket.firebaseapp.com",
+      databaseURL: "https://my-website-cricket-default-rtdb.firebaseio.com",
+      projectId: "my-website-cricket",
+      storageBucket: "my-website-cricket.appspot.com",
+      messagingSenderId: "664276981494",
+      appId: "1:664276981494:web:4d6b5cd5c55f6b6b18fed7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // AUTO POPUP LOGIC
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById('popup').style.display = 'flex';
+        }, 5000); 
+    };
+
+    // Live Viewers Sync
+    const viewersRef = database.ref('viewers/' + WEBSITE_ID);
+    database.ref('.info/connected').on('value', s => {
+        if (s.val()) {
+            const myRef = viewersRef.push(true);
+            myRef.onDisconnect().remove();
+        }
+    });
+    viewersRef.on('value', s => {
+        let n = s.numChildren();
+        document.getElementById('viewer-count').innerText = n >= 1000 ? (n/1000).toFixed(1)+'K' : n;
+    });
+
+    const day = new Date().toDateString();
+    const vRef = database.ref('daily_visits/' + WEBSITE_ID + '/' + day);
+    vRef.transaction(c => (c || 0) + 1);
+    vRef.on('value', s => {
+        document.getElementById('total-views-count').innerText = s.val() ? s.val().toLocaleString() : '0';
+    });
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('show');
+    }
+    function closePopup() { document.getElementById('popup').style.display = 'none'; }
+    function play(btn, url) {
+        document.getElementById('main-player').src = url;
+        document.querySelectorAll('.srv-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        if (window.navigator.vibrate) window.navigator.vibrate(40);
+    }
+    function shareMe() {
+        const text = "🏏 *Watch Live Cricket HD for Free!* \nEnjoy the match on Cricket Yoddha! 🔥\n\n👉 *Watch Here:* " + window.location.href;
+        if (navigator.share) {
+            navigator.share({ title: 'Cricket Yoddha Live', text: text }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(text);
+            alert("Share message copied! 🏏");
+        }
+    }
+</script>
+</body>
+</html>
