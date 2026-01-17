@@ -1,60 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stream Player</title>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <style>
-        body { margin: 0; background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .container { width: 100%; max-width: 850px; }
-        :root { --plyr-color-main: #ff0000; } /* Screenshot jaisa Red Theme */
-        .plyr__control--overlaid { background: rgba(0, 0, 0, 0.6); border: 2px solid #fff; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <video id="player" playsinline crossorigin controls autoplay muted></video>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-
-<script>
-    const streamUrl = "http://103.140.254.2:3500/live/1998.m3u8";
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>  
+  <title>Prime By Cricket Yoddha</title>     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
+  <style>  
+    * { margin: 0; padding: 0; box-sizing: border-box; }  
     
-    document.addEventListener('DOMContentLoaded', () => {
-        const video = document.querySelector('#player');
-        
-        if (Hls.isSupported()) {
-            const hls = new Hls({
-                // Forced fix for some browsers
-                xhrSetup: function(xhr) { xhr.withCredentials = false; }
-            });
-            
-            hls.loadSource(streamUrl);
-            hls.attachMedia(video);
-            
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                const qualities = hls.levels.map((l) => l.height);
-                new Plyr(video, {
-                    settings: ['quality'],
-                    quality: {
-                        default: 0,
-                        options: [0, ...qualities],
-                        forced: true,
-                        onChange: (q) => {
-                            if (q === 0) hls.currentLevel = -1;
-                            else hls.levels.forEach((l, i) => { if (l.height === q) hls.currentLevel = i; });
-                        }
-                    },
-                    i18n: { qualityLabel: { 0: 'Auto' } }
-                });
-                video.play().catch(() => console.log("User interaction required to play"));
-            });
-        }
-    });
-</script>
-</body>
+    html, body {  
+      background: #000;  
+      height: 100vh;  
+      width: 100vw;  
+      overflow: hidden;  
+    }
+
+    /* --- वीडियो कंटेनर --- */
+    .shaka-video-container {  
+      position: relative; /* ओवरले के लिए जरूरी */
+      width: 100%;  
+      height: 100%;  
+    }
+
+    video {  
+      width: 100%;  
+      height: 100%;  
+      object-fit: contain;  
+    }
+
+    /* --- इमेज के जैसा फ्लोटिंग टिकर (Floating Ticker) --- */
+    .video-overlay-ticker {
+      position: absolute;
+      top: 15px; /* स्क्रीन के थोड़ा नीचे */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%; /* स्क्रीन की चौड़ाई के हिसाब से */
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.8); /* डार्क पारदर्शी बैकग्राउंड */
+      border: 1px solid rgba(250, 204, 21, 0.5); /* पीली बॉर्डर */
+      padding: 5px 0;
+      border-radius: 4px;
+      z-index: 100; /* वीडियो के ऊपर */
+      overflow: hidden;
+      pointer-events: none; /* ताकि टच वीडियो पर काम करे */
+    }
+
+    .ticker-text {
+      display: inline-block;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: scroll-left 15s linear infinite;
+      color: #FACC15; /* पीला रंग */
+      font-family: sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Shaka UI को टिकर के ऊपर रखने के लिए */
+    .shaka-controls-container { z-index: 101 !important; }
+    .shaka-spinner-container { display: none !important; }  
+  </style>  
+</head>  
+<body>  
+
+  <div class="shaka-video-container" data-shaka-player id="video-container">  
+    
+    <div class="video-overlay-ticker">
+      <div class="ticker-text">
+        EVERYONE MUST SHARE THE LINK 🔗 | JOIN TELEGRAM FOR BACKUP LINKS 📲 | WATCH HD LIVE 🏏
+      </div>
+    </div>
+
+    <video autoplay playsinline preload="metadata" poster="https://i.ibb.co/S4nRbgCN/IMG-20251213-135745.jpg"></video>  
+  </div>  
+  
+  <script>  
+    document.addEventListener('DOMContentLoaded', async () => {  
+      shaka.polyfill.installAll();  
+      if (!shaka.Player.isBrowserSupported()) return;  
+  
+      const video = document.querySelector('video');  
+      const player = new shaka.Player();  
+      await player.attach(video);  
+  
+      const container = document.getElementById('video-container');  
+      const ui = new shaka.ui.Overlay(player, container, video);  
+  
+      ui.configure({  
+        controlPanelElements: ['play_pause', 'spacer', 'quality', 'fullscreen'],
+        seekBarColors: { base: 'rgba(255,255,0,0.3)', buffered: 'rgba(255,255,0,0.5)', played: 'rgb(255,255,0)' }
+      });  
+  
+      let drmConfig = {  
+        clearKeys: { "1779c27b9d077a3ba0c9cc1bb9a94b9f": "cc5cf3b7928fb9e0a1ee6a8b566f0a8e" }  
+      };  
+  
+      let streamUrl = "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd";  
+  
+      player.configure({ drm: drmConfig });  
+  
+      try {  
+        await player.load(streamUrl);  
+      } catch (e) { console.error("Error loading stream", e); }  
+    });  
+  </script>  
+</body>  
 </html>
