@@ -14,11 +14,11 @@
       height: 100vh;  
       width: 100vw;  
       overflow: hidden;  
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* --- वीडियो कंटेनर --- */
     .shaka-video-container {  
-      position: relative; /* ओवरले के लिए जरूरी */
+      position: relative; 
       width: 100%;  
       height: 100%;  
     }
@@ -29,52 +29,56 @@
       object-fit: contain;  
     }
 
-    /* --- इमेज के जैसा फ्लोटिंग टिकर (Floating Ticker) --- */
-    .video-overlay-ticker {
+    /* --- प्रोफेशनल छोटा कैप्सूल टिकर --- */
+    .pro-ticker-container {
       position: absolute;
-      top: 15px; /* स्क्रीन के थोड़ा नीचे */
+      top: 12px; /* ऊपर से थोड़ा नीचे */
       left: 50%;
       transform: translateX(-50%);
-      width: 90%; /* स्क्रीन की चौड़ाई के हिसाब से */
-      max-width: 600px;
-      background: rgba(0, 0, 0, 0.8); /* डार्क पारदर्शी बैकग्राउंड */
-      border: 1px solid rgba(250, 204, 21, 0.5); /* पीली बॉर्डर */
-      padding: 5px 0;
-      border-radius: 4px;
-      z-index: 100; /* वीडियो के ऊपर */
+      width: 85%; /* छोटा और सेंटर में */
+      max-width: 450px; /* ज्यादा बड़ा न हो */
+      background: rgba(0, 0, 0, 0.75); /* हल्का पारदर्शी डार्क */
+      backdrop-filter: blur(5px); /* पीछे का वीडियो धुंधला दिखेगा (Premium effect) */
+      border: 1px solid rgba(250, 204, 21, 0.4); 
+      height: 26px; /* ऊंचाई कम की गई */
+      border-radius: 50px; /* कैप्सूल शेप */
+      display: flex;
+      align-items: center;
       overflow: hidden;
-      pointer-events: none; /* ताकि टच वीडियो पर काम करे */
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      pointer-events: none;
     }
 
-    .ticker-text {
+    .ticker-content {
       display: inline-block;
       white-space: nowrap;
       padding-left: 100%;
-      animation: scroll-left 15s linear infinite;
-      color: #FACC15; /* पीला रंग */
-      font-family: sans-serif;
-      font-size: 12px;
-      font-weight: bold;
+      animation: scroll-slow 12s linear infinite;
+      color: #FACC15; /* प्रीमियम गोल्ड/पीला */
+      font-size: 11px; /* छोटा और साफ */
+      font-weight: 700;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
-    @keyframes scroll-left {
+    @keyframes scroll-slow {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
-    /* Shaka UI को टिकर के ऊपर रखने के लिए */
-    .shaka-controls-container { z-index: 101 !important; }
+    /* Shaka UI Controls Adjustments */
     .shaka-spinner-container { display: none !important; }  
+    .shaka-controls-container { z-index: 101 !important; }
   </style>  
 </head>  
 <body>  
 
   <div class="shaka-video-container" data-shaka-player id="video-container">  
     
-    <div class="video-overlay-ticker">
-      <div class="ticker-text">
-        EVERYONE MUST SHARE THE LINK 🔗 | JOIN TELEGRAM FOR BACKUP LINKS 📲 | WATCH HD LIVE 🏏
+    <div class="pro-ticker-container">
+      <div class="ticker-content">
+        EVERYONE MUST SHARE THE LINK 🔗 | JOIN TELEGRAM FOR BACKUP LINKS 📲 | ENJOY HD LIVE 🏏
       </div>
     </div>
 
@@ -95,20 +99,22 @@
   
       ui.configure({  
         controlPanelElements: ['play_pause', 'spacer', 'quality', 'fullscreen'],
-        seekBarColors: { base: 'rgba(255,255,0,0.3)', buffered: 'rgba(255,255,0,0.5)', played: 'rgb(255,255,0)' }
+        seekBarColors: { 
+            base: 'rgba(255,255,255,0.2)', 
+            buffered: 'rgba(255,255,255,0.4)', 
+            played: '#FACC15' 
+        }
       });  
   
       let drmConfig = {  
         clearKeys: { "1779c27b9d077a3ba0c9cc1bb9a94b9f": "cc5cf3b7928fb9e0a1ee6a8b566f0a8e" }  
       };  
   
-      let streamUrl = "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd";  
-  
       player.configure({ drm: drmConfig });  
   
       try {  
-        await player.load(streamUrl);  
-      } catch (e) { console.error("Error loading stream", e); }  
+        await player.load("https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd");  
+      } catch (e) { console.error(e); }  
     });  
   </script>  
 </body>  
