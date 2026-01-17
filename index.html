@@ -3,50 +3,34 @@
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>  
-  <title>Prime By Cricket Yoddha</title>     
+  <title>Cricket Yoddha Prime</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
     * { margin: 0; padding: 0; box-sizing: border-box; }  
-    
-    html, body {  
-      background: #000;  
-      height: 100vh;  
-      width: 100vw;  
-      overflow: hidden;  
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
+    body { background: #000; height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; }
 
-    .shaka-video-container {  
-      position: relative; 
-      width: 100%;  
-      height: 100%;  
-    }
+    .shaka-video-container { position: relative; width: 100%; height: 100%; }
+    video { width: 100%; height: 100%; object-fit: contain; }
 
-    video {  
-      width: 100%;  
-      height: 100%;  
-      object-fit: contain;  
-    }
-
-    /* --- प्रोफेशनल छोटा कैप्सूल टिकर --- */
-    .pro-ticker-container {
+    /* --- सुपर प्रोफेशनल मिनी टिकर --- */
+    .mini-badge-ticker {
       position: absolute;
-      top: 12px; /* ऊपर से थोड़ा नीचे */
+      top: 10px; 
       left: 50%;
       transform: translateX(-50%);
-      width: 85%; /* छोटा और सेंटर में */
-      max-width: 450px; /* ज्यादा बड़ा न हो */
-      background: rgba(0, 0, 0, 0.75); /* हल्का पारदर्शी डार्क */
-      backdrop-filter: blur(5px); /* पीछे का वीडियो धुंधला दिखेगा (Premium effect) */
-      border: 1px solid rgba(250, 204, 21, 0.4); 
-      height: 26px; /* ऊंचाई कम की गई */
-      border-radius: 50px; /* कैप्सूल शेप */
+      width: 70%; /* और छोटा किया गया */
+      max-width: 320px; /* मोबाइल पर एकदम परफेक्ट साइज */
+      background: rgba(20, 20, 20, 0.6); /* प्रीमियम डार्क ट्रांसपेरेंट */
+      backdrop-filter: blur(8px); /* ग्लास इफेक्ट */
+      border: 0.5px solid rgba(255, 255, 255, 0.15); /* बहुत हल्की वाइट बॉर्डर */
+      height: 22px; /* बहुत पतली और प्रोफेशनल */
+      border-radius: 100px; 
       display: flex;
       align-items: center;
       overflow: hidden;
       z-index: 100;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
       pointer-events: none;
     }
 
@@ -54,21 +38,21 @@
       display: inline-block;
       white-space: nowrap;
       padding-left: 100%;
-      animation: scroll-slow 12s linear infinite;
-      color: #FACC15; /* प्रीमियम गोल्ड/पीला */
-      font-size: 11px; /* छोटा और साफ */
-      font-weight: 700;
-      letter-spacing: 0.5px;
+      animation: scroll-fast 10s linear infinite; /* थोड़ी तेज स्पीड ताकि तुरंत समझ आए */
+      color: #FFD700; /* गोल्ड कलर */
+      font-size: 10px; /* छोटा और बारीक फॉन्ट */
+      font-weight: 600;
+      letter-spacing: 0.8px;
       text-transform: uppercase;
     }
 
-    @keyframes scroll-slow {
+    @keyframes scroll-fast {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
-    /* Shaka UI Controls Adjustments */
-    .shaka-spinner-container { display: none !important; }  
+    /* Shaka UI को क्लीन रखने के लिए */
+    .shaka-spinner-container { display: none !important; }
     .shaka-controls-container { z-index: 101 !important; }
   </style>  
 </head>  
@@ -76,9 +60,9 @@
 
   <div class="shaka-video-container" data-shaka-player id="video-container">  
     
-    <div class="pro-ticker-container">
+    <div class="mini-badge-ticker">
       <div class="ticker-content">
-        EVERYONE MUST SHARE THE LINK 🔗 | JOIN TELEGRAM FOR BACKUP LINKS 📲 | ENJOY HD LIVE 🏏
+         SHARE LINK 🔗 | JOIN TELEGRAM 📲 | CRICKET YODDHA LIVE 🏏
       </div>
     </div>
 
@@ -88,29 +72,19 @@
   <script>  
     document.addEventListener('DOMContentLoaded', async () => {  
       shaka.polyfill.installAll();  
-      if (!shaka.Player.isBrowserSupported()) return;  
-  
       const video = document.querySelector('video');  
       const player = new shaka.Player();  
       await player.attach(video);  
-  
       const container = document.getElementById('video-container');  
       const ui = new shaka.ui.Overlay(player, container, video);  
   
       ui.configure({  
         controlPanelElements: ['play_pause', 'spacer', 'quality', 'fullscreen'],
-        seekBarColors: { 
-            base: 'rgba(255,255,255,0.2)', 
-            buffered: 'rgba(255,255,255,0.4)', 
-            played: '#FACC15' 
-        }
       });  
   
-      let drmConfig = {  
-        clearKeys: { "1779c27b9d077a3ba0c9cc1bb9a94b9f": "cc5cf3b7928fb9e0a1ee6a8b566f0a8e" }  
-      };  
-  
-      player.configure({ drm: drmConfig });  
+      player.configure({ 
+        drm: { clearKeys: { "1779c27b9d077a3ba0c9cc1bb9a94b9f": "cc5cf3b7928fb9e0a1ee6a8b566f0a8e" } } 
+      });  
   
       try {  
         await player.load("https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd");  
