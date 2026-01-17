@@ -3,34 +3,34 @@
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>  
-  <title>Cricket Yoddha Prime</title>     
+  <title>Cricket Yoddha | High-Level Prime</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
     * { margin: 0; padding: 0; box-sizing: border-box; }  
-    body { background: #000; height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; }
+    body { background: #000; height: 100vh; overflow: hidden; font-family: 'Inter', -apple-system, sans-serif; }
 
     .shaka-video-container { position: relative; width: 100%; height: 100%; }
     video { width: 100%; height: 100%; object-fit: contain; }
 
-    /* --- सुपर प्रोफेशनल मिनी टिकर --- */
-    .mini-badge-ticker {
+    /* --- ADVANCED HIGH-LEVEL TICKER --- */
+    .premium-smart-badge {
       position: absolute;
-      top: 10px; 
+      top: 15px; 
       left: 50%;
       transform: translateX(-50%);
-      width: 70%; /* और छोटा किया गया */
-      max-width: 320px; /* मोबाइल पर एकदम परफेक्ट साइज */
-      background: rgba(20, 20, 20, 0.6); /* प्रीमियम डार्क ट्रांसपेरेंट */
-      backdrop-filter: blur(8px); /* ग्लास इफेक्ट */
-      border: 0.5px solid rgba(255, 255, 255, 0.15); /* बहुत हल्की वाइट बॉर्डर */
-      height: 22px; /* बहुत पतली और प्रोफेशनल */
-      border-radius: 100px; 
+      width: 75%; 
+      max-width: 350px; 
+      background: rgba(10, 10, 10, 0.85); /* गहरा और साफ़ बैकग्राउंड */
+      backdrop-filter: blur(12px); 
+      border: 1px solid rgba(250, 204, 21, 0.6); /* गोल्ड बॉर्डर थोड़ी डार्क */
+      height: 26px; 
+      border-radius: 6px; /* मॉडर्न शार्प लुक के लिए कम रेडियस */
       display: flex;
       align-items: center;
       overflow: hidden;
       z-index: 100;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 10px rgba(250, 204, 21, 0.1);
       pointer-events: none;
     }
 
@@ -38,31 +38,35 @@
       display: inline-block;
       white-space: nowrap;
       padding-left: 100%;
-      animation: scroll-fast 10s linear infinite; /* थोड़ी तेज स्पीड ताकि तुरंत समझ आए */
-      color: #FFD700; /* गोल्ड कलर */
-      font-size: 10px; /* छोटा और बारीक फॉन्ट */
-      font-weight: 600;
-      letter-spacing: 0.8px;
+      animation: scroll-pro 12s linear infinite; 
+      color: #FFFFFF; /* टेक्स्ट को वाइट रखा है ताकि क्लियर दिखे */
+      font-size: 11px; 
+      font-weight: 800; /* एक्स्ट्रा बोल्ड */
+      letter-spacing: 1px;
       text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(250, 204, 21, 0.8); /* टेक्स्ट के पीछे गोल्ड ग्लो */
     }
 
-    @keyframes scroll-fast {
+    /* गोल्ड हाइलाइट के लिए अलग कलर */
+    .highlight { color: #FACC15; }
+
+    @keyframes scroll-pro {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
-    /* Shaka UI को क्लीन रखने के लिए */
-    .shaka-spinner-container { display: none !important; }
+    /* Player Controls Z-Index */
     .shaka-controls-container { z-index: 101 !important; }
+    .shaka-spinner-container { display: none !important; }
   </style>  
 </head>  
 <body>  
 
   <div class="shaka-video-container" data-shaka-player id="video-container">  
     
-    <div class="mini-badge-ticker">
+    <div class="premium-smart-badge">
       <div class="ticker-content">
-         SHARE LINK 🔗 | JOIN TELEGRAM 📲 | CRICKET YODDHA LIVE 🏏
+        <span class="highlight">SHARE LINK</span> 🔗 | <span class="highlight">JOIN TELEGRAM</span> 📲 | WATCH HD LIVE ON <span class="highlight">CRICKET YODDHA</span> 🏏
       </div>
     </div>
 
