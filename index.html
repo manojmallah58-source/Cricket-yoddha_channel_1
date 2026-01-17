@@ -3,58 +3,65 @@
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>  
-  <title>Cricket Yoddha | Ultra Pro Live</title>     
+  <title>Cricket Yoddha | Elite Mini</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
     * { margin: 0; padding: 0; box-sizing: border-box; }  
-    body { background: #000; height: 100vh; overflow: hidden; font-family: 'Inter', -apple-system, sans-serif; }
+    body { background: #000; height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; }
 
     .shaka-video-container { position: relative; width: 100%; height: 100%; }
     video { width: 100%; height: 100%; object-fit: contain; }
 
-    /* --- ULTRA PRO ADVANCED TICKER (Yellow Background, Black Text) --- */
-    .advanced-pro-ticker {
+    /* --- ELITE MINI PROFESSIONAL TICKER --- */
+    .elite-mini-ticker {
       position: absolute;
-      top: 15px; 
+      top: 12px; 
       left: 50%;
       transform: translateX(-50%);
-      width: 80%; 
-      max-width: 380px; 
-      background: #FACC15; /* प्रीमियम ब्राइट येलो */
-      height: 28px; 
-      border-radius: 4px; /* प्रोफेशनल शार्प लुक */
+      width: 60%; /* काफी छोटा और कॉम्पैक्ट */
+      max-width: 280px; 
+      background: linear-gradient(90deg, #FFD700, #FACC15); /* प्रीमियम गोल्ड */
+      height: 20px; /* बहुत पतली और क्लासी */
+      border-radius: 2px;
       display: flex;
       align-items: center;
       overflow: hidden;
       z-index: 100;
-      /* हाई-लेवल शैडो और बॉर्डर */
-      border: 1.5px solid #000;
-      box-shadow: 0 10px 25px rgba(250, 204, 21, 0.3), 0 5px 10px rgba(0,0,0,0.5);
+      border: 1px solid #000;
+      box-shadow: 0 4px 15px rgba(250, 204, 21, 0.4);
       pointer-events: none;
     }
+
+    /* चमकता हुआ प्रीमियम इफेक्ट */
+    .elite-mini-ticker::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+      animation: shine 2.5s infinite;
+    }
+
+    @keyframes shine { to { left: 200%; } }
 
     .ticker-content {
       display: inline-block;
       white-space: nowrap;
       padding-left: 100%;
-      animation: scroll-ultra 12s linear infinite; 
-      color: #000000; /* बोल्ड ब्लैक टेक्स्ट */
-      font-size: 12px; 
-      font-weight: 900; /* एक्स्ट्रा बोल्ड ताकि साफ़ दिखे */
+      animation: scroll-mini 8s linear infinite; /* थोड़ी तेज स्पीड ताकि छोटा टेक्स्ट जल्दी दिखे */
+      color: #000; 
+      font-size: 9.5px; 
+      font-weight: 900; 
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
-    /* स्पेशल सिंबल के लिए स्टाइल */
-    .icon-sep { margin: 0 10px; opacity: 0.5; }
-
-    @keyframes scroll-ultra {
+    @keyframes scroll-mini {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
-    /* Player UI Fixes */
     .shaka-controls-container { z-index: 101 !important; }
     .shaka-spinner-container { display: none !important; }
   </style>  
@@ -63,9 +70,9 @@
 
   <div class="shaka-video-container" data-shaka-player id="video-container">  
     
-    <div class="advanced-pro-ticker">
+    <div class="elite-mini-ticker">
       <div class="ticker-content">
-        EVERYONE MUST SHARE THE LINK 🔗 <span class="icon-sep">|</span> JOIN TELEGRAM FOR BACKUP LINKS 📲 <span class="icon-sep">|</span> CRICKET YODDHA PRO LIVE 🏏
+        SHARE LINK 🔗 | JOIN TELEGRAM 📲 | LIVE HD 🏏
       </div>
     </div>
 
@@ -91,7 +98,7 @@
   
       try {  
         await player.load("https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd");  
-      } catch (e) { console.error("Stream Load Error", e); }  
+      } catch (e) { console.error(e); }  
     });  
   </script>  
 </body>  
