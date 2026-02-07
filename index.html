@@ -28,23 +28,16 @@
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
+let playerUI;
+let shakaInstance;
+
+async function initApp() {
     const video = document.getElementById('player');
     shaka.polyfill.installAll();
-    const shakaInstance = new shaka.Player(video);
+    
+    shakaInstance = new shaka.Player(video);
 
-    // 1. Plyr Setup with Quality Labels
-    const playerUI = new Plyr(video, {
-        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
-        settings: ['quality', 'speed'],
-        // Isse "720" ke peeche "p" lag jayega
-        i18n: {
-            quality: 'Quality',
-            speed: 'Speed',
-        }
-    });
-
-    // 2. DRM Settings
+    // DRM Config
     shakaInstance.configure({
         drm: {
             clearKeys: {
@@ -53,42 +46,54 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // 3. Quality Changer Logic
-    window.updateQuality = (newQuality) => {
-        if (newQuality === 0) {
-            shakaInstance.configure({ abr: { enabled: true } });
-        } else {
-            shakaInstance.configure({ abr: { enabled: false } });
-            const tracks = shakaInstance.getVariantTracks();
-            const track = tracks.find(t => t.height === newQuality);
-            if (track) shakaInstance.selectVariantTrack(track, true);
-        }
-    };
-
-    // 4. Update Menu when Tracks Load
-    shakaInstance.addEventListener('variantchanged', () => {
-        const tracks = shakaInstance.getVariantTracks();
-        const levels = [...new Set(tracks.map(t => t.height))]
-                        .filter(h => h !== null)
-                        .sort((a, b) => b - a);
-
-        // Plyr ko batana ki options kya hain
-        playerUI.quality = {
-            options: [0, ...levels],
-            forced: true,
-            onChange: (h) => window.updateQuality(h)
-        };
-    });
-
-    // 5. Load Stream
+    // 1. First Load the Stream
     const manifestUri = 'https://livem-d-01-icc-we.akamaized.net/variant/v1/dai-event-prd-pal-west/vcg-01-d/DASH_DASH/Live/channel(vcg-01-ch-hd-05)/manifest.mpd?vcfilter=44951f97-10ec-427f-a95a-a2ecf57e9a41';
 
     try {
         await shakaInstance.load(manifestUri);
+        setupPlyrWithQuality(); // Stream load hone ke baad Plyr setup karein
     } catch (e) {
         console.error("Load Error", e);
     }
-});
+}
+
+function setupPlyrWithQuality() {
+    const video = document.getElementById('player');
+    
+    // Get Available Heights from Shaka
+    const tracks = shakaInstance.getVariantTracks();
+    const levels = [...new Set(tracks.map(t => t.height))]
+                    .filter(h => h !== null)
+                    .sort((a, b) => b - a);
+
+    // 2. Initialize Plyr with extracted qualities
+    playerUI = new Plyr(video, {
+        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
+        settings: ['quality', 'speed'],
+        quality: {
+            default: 0, // 0 = Auto
+            options: [0, ...levels],
+            forced: true,
+            onChange: (h) => updateShakaQuality(h)
+        },
+        i18n: { quality: 'Quality' }
+    });
+}
+
+function updateShakaQuality(newQuality) {
+    if (newQuality === 0) {
+        shakaInstance.configure({ abr: { enabled: true } });
+    } else {
+        shakaInstance.configure({ abr: { enabled: false } });
+        const tracks = shakaInstance.getVariantTracks();
+        const track = tracks.find(t => t.height === newQuality);
+        if (track) {
+            shakaInstance.selectVariantTrack(track, true);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
 </script>
 
 </body>
