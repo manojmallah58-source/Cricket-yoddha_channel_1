@@ -1,117 +1,71 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Prime By Cricket Yoddha</title>     
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
-  <style>  
-   * { margin: 0; padding: 0; box-sizing: border-box; }  
-    html, body {  
-      background: #000;  
-      height: 100vh;  
-      width: 100vw;  
-      overflow: hidden;  
-      font-family: system-ui, -apple-system, sans-serif;  
-    }  
-    .shaka-video-container {  
-      position: absolute;  
-      inset: 0;  
-      width: 100%;  
-      height: 100%;  
-    }  
-    video {  
-      width: 100%;  
-      height: 100%;  
-      background: #000;  
-      object-fit: contain;  
-    }  
-    /* Shaka Spinner Hiding */
-    .shaka-spinner-container,  
-    .shaka-spinner,  
-    .shaka-spinner-svg {  
-      display: none !important;  
-      visibility: hidden !important;  
-      opacity: 0 !important;  
-    }  
-  </style>  
-</head>  
-<body>  
-  <div class="shaka-video-container" data-shaka-player>  
-    <video autoplay muted playsinline preload="metadata" poster="https://i.ibb.co/S4nRbgCN/IMG-20251213-135745.jpg"></video>  
-  </div>  
-  
-  <script>  
-    document.addEventListener('DOMContentLoaded', async () => {  
-      shaka.polyfill.installAll();  
-  
-      if (!shaka.Player.isBrowserSupported()) {  
-        console.error('Browser not supported');  
-        return;  
-      }  
-  
-      const video = document.querySelector('video');  
-      const player = new shaka.Player();  
-      await player.attach(video);  
-  
-      const container = document.querySelector('.shaka-video-container');  
-      const ui = new shaka.ui.Overlay(player, container, video);  
-  
-      ui.configure({  
-        controlPanelElements: [  
-          'play_pause', 'time_and_duration', 'mute', 'volume',  
-          'spacer', 'language', 'captions', 'picture_in_picture',  
-          'quality', 'fullscreen'  
-        ],  
-        volumeBarColors: {  
-          base: 'rgba(255, 192, 203, 0.3)',  
-          level: 'rgb(255, 105, 180)'
-        },  
-        seekBarColors: {  
-          base: 'rgba(255, 255, 0, 0.3)',  
-          buffered: 'rgba(255, 255, 0, 0.6)',  
-          played: 'rgb(255, 255, 0)'  
-        }  
-      });  
-  
-      // ✅ NEW DRM Key (Key ID : Key Value)
-      let drmConfig = {  
-        "ae7076b647133606b704d33e4cef5134": "810251515584cf71216d9a2d1ebf04bb"  
-      };  
-  
-      // ✅ NEW MPD URL
-      let streamUrl = "https://shotner.u0k.workers.dev/WC-Hindi.mpd";  
-  
-      player.configure({  
-        drm: {  
-          clearKeys: drmConfig  
-        },  
-        streaming: {  
-          lowLatencyMode: true,  
-          bufferingGoal: 15,  
-          rebufferingGoal: 2,  
-          bufferBehind: 15,  
-          retryParameters: {  
-            timeout: 10000,  
-            maxAttempts: 5,  
-            baseDelay: 300,  
-            backoffFactor: 1.2  
-          }
-        }  
-      });  
-  
-      player.addEventListener('error', (event) => {  
-        console.error('Shaka Player Error:', event.detail);  
-      });  
-  
-      try {  
-        await player.load(streamUrl);  
-        console.log("New stream loaded successfully");  
-      } catch (error) {  
-        console.error('Load error:', error);  
-      }  
-    });  
-  </script>  
-</body>  
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="utf-8">
+    <title>Cricket Yoddha - Live Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.7.1/dash.all.min.js"></script>
+    
+    <link href="//telegram.org/css/bootstrap.min.css?3" rel="stylesheet">
+    <link href="//telegram.org/css/telegram.css?249" rel="stylesheet">
+
+    <style>
+        body { background-color: #f0f0f0; }
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        video { width: 100%; display: block; }
+        .tgme_page_wrap { padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="tgme_page_wrap">
+        <div class="tgme_page">
+            <div class="tgme_page_title">
+                <span dir="auto">Cricket Yoddha Live</span>
+            </div>
+
+            <div class="video-container">
+                <video id="videoPlayer" controls></video>
+            </div>
+
+            <div class="tgme_page_description">
+                Live stream is playing above. Join our channel for more updates!
+            </div>
+            
+            <div class="tgme_page_action">
+                <a class="tgme_action_button_new shine" href="https://t.me/+rwZKMV0-L8wyOTll">Join Cricket Yoddha</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var url = "https://livem-d-01-icc-we.akamaized.net/variant/v1/dai-event-prd-pal-west/vcg-01-d/DASH_DASH/Live/channel(vcg-01-ch-hd-05)/manifest.mpd?vcfilter=44951f97-10ec-427f-a95a-a2ecf57e9a41";
+            
+            // DRM ClearKey Details from your link
+            var protData = {
+                "org.w3.clearkey": {
+                    "clearkeys": {
+                        "ae7076b647133606b704d33e4cef5134": "810251515584cf71216d9a2d1ebf04bb"
+                    }
+                }
+            };
+
+            var video = document.querySelector("#videoPlayer");
+            var player = dashjs.MediaPlayer().create();
+            
+            player.initialize(video, url, true);
+            player.setProtectionData(protData);
+        })();
+    </script>
+</body>
 </html>
