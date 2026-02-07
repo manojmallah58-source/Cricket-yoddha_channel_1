@@ -2,70 +2,94 @@
 <html lang="hi">
 <head>
     <meta charset="utf-8">
-    <title>Cricket Yoddha - Live Player</title>
+    <title>Cricket Yoddha - HD Live</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.7.1/dash.all.min.js"></script>
-    
-    <link href="//telegram.org/css/bootstrap.min.css?3" rel="stylesheet">
-    <link href="//telegram.org/css/telegram.css?249" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.compiled.js"></script>
     <style>
-        body { background-color: #f0f0f0; }
-        .video-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        video { width: 100%; display: block; }
-        .tgme_page_wrap { padding-top: 20px; }
+        body { margin: 0; padding: 0; background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
+        .container { position: relative; width: 100%; max-width: 1000px; aspect-ratio: 16/9; }
+        video { width: 100%; height: 100%; }
+        .watermark { position: absolute; top: 15px; right: 15px; width: 50px; z-index: 10; opacity: 0.8; pointer-events: none; }
+        
+        /* Custom Blue Theme */
+        .plyr--full-ui input[type=range] { color: #00b3ff; }
+        .plyr__control--overlaid { background: rgba(0, 179, 255, 0.8); }
+        .plyr__accent { background: #00b3ff; }
     </style>
 </head>
 <body>
 
-    <div class="tgme_page_wrap">
-        <div class="tgme_page">
-            <div class="tgme_page_title">
-                <span dir="auto">Cricket Yoddha Live</span>
-            </div>
+<div class="container">
+    <img src="https://i.ibb.co/4RvCpCsM/Qdqj-WDqj-QOOb5vb-K8f4wf-Q.png" class="watermark">
+    <video id="player" playsinline controls crossorigin></video>
+</div>
 
-            <div class="video-container">
-                <video id="videoPlayer" controls></video>
-            </div>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
-            <div class="tgme_page_description">
-                Live stream is playing above. Join our channel for more updates!
-            </div>
-            
-            <div class="tgme_page_action">
-                <a class="tgme_action_button_new shine" href="https://t.me/+rwZKMV0-L8wyOTll">Join Cricket Yoddha</a>
-            </div>
-        </div>
-    </div>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const video = document.getElementById('player');
+    shaka.polyfill.installAll();
+    const shakaInstance = new shaka.Player(video);
 
-    <script>
-        (function() {
-            var url = "https://livem-d-01-icc-we.akamaized.net/variant/v1/dai-event-prd-pal-west/vcg-01-d/DASH_DASH/Live/channel(vcg-01-ch-hd-05)/manifest.mpd?vcfilter=44951f97-10ec-427f-a95a-a2ecf57e9a41";
-            
-            // DRM ClearKey Details from your link
-            var protData = {
-                "org.w3.clearkey": {
-                    "clearkeys": {
-                        "ae7076b647133606b704d33e4cef5134": "810251515584cf71216d9a2d1ebf04bb"
-                    }
-                }
-            };
+    // 1. Plyr Setup with Quality Labels
+    const playerUI = new Plyr(video, {
+        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
+        settings: ['quality', 'speed'],
+        // Isse "720" ke peeche "p" lag jayega
+        i18n: {
+            quality: 'Quality',
+            speed: 'Speed',
+        }
+    });
 
-            var video = document.querySelector("#videoPlayer");
-            var player = dashjs.MediaPlayer().create();
-            
-            player.initialize(video, url, true);
-            player.setProtectionData(protData);
-        })();
-    </script>
+    // 2. DRM Settings
+    shakaInstance.configure({
+        drm: {
+            clearKeys: {
+                'ae7076b647133606b704d33e4cef5134': '810251515584cf71216d9a2d1ebf04bb'
+            }
+        }
+    });
+
+    // 3. Quality Changer Logic
+    window.updateQuality = (newQuality) => {
+        if (newQuality === 0) {
+            shakaInstance.configure({ abr: { enabled: true } });
+        } else {
+            shakaInstance.configure({ abr: { enabled: false } });
+            const tracks = shakaInstance.getVariantTracks();
+            const track = tracks.find(t => t.height === newQuality);
+            if (track) shakaInstance.selectVariantTrack(track, true);
+        }
+    };
+
+    // 4. Update Menu when Tracks Load
+    shakaInstance.addEventListener('variantchanged', () => {
+        const tracks = shakaInstance.getVariantTracks();
+        const levels = [...new Set(tracks.map(t => t.height))]
+                        .filter(h => h !== null)
+                        .sort((a, b) => b - a);
+
+        // Plyr ko batana ki options kya hain
+        playerUI.quality = {
+            options: [0, ...levels],
+            forced: true,
+            onChange: (h) => window.updateQuality(h)
+        };
+    });
+
+    // 5. Load Stream
+    const manifestUri = 'https://livem-d-01-icc-we.akamaized.net/variant/v1/dai-event-prd-pal-west/vcg-01-d/DASH_DASH/Live/channel(vcg-01-ch-hd-05)/manifest.mpd?vcfilter=44951f97-10ec-427f-a95a-a2ecf57e9a41';
+
+    try {
+        await shakaInstance.load(manifestUri);
+    } catch (e) {
+        console.error("Load Error", e);
+    }
+});
+</script>
+
 </body>
 </html>
