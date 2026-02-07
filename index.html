@@ -75,34 +75,39 @@
         }  
       });  
   
-      // ✅ Updated MPD URL
-      let streamUrl = "https://livem-d-01-icc-we.akamaized.net/variant/v1/dai-event-prd-pal-west/vcg-01-d/DASH_DASH/Live/channel(vcg-01-ch-hd-04)/manifest.mpd?vcfilter=1515fde2-060d-4124-935f-e28bd5c4bfc3|drmScheme=clearkey";  
+      // ✅ NEW DRM Key (Key ID : Key Value)
+      let drmConfig = {  
+        "ae7076b647133606b704d33e4cef5134": "810251515584cf71216d9a2d1ebf04bb"  
+      };  
+  
+      // ✅ NEW MPD URL
+      let streamUrl = "https://shotner.u0k.workers.dev/WC-Hindi.mpd";  
   
       player.configure({  
         drm: {  
-          clearKeys: {  
-            // Key ID : Key Value extracted from your link
-            "ae7076b647133606b704d33e4cef5134": "810251515584cf71216d9a2d1ebf04bb"  
-          }  
+          clearKeys: drmConfig  
         },  
         streaming: {  
           lowLatencyMode: true,  
-          bufferingGoal: 12,  
+          bufferingGoal: 15,  
           rebufferingGoal: 2,  
+          bufferBehind: 15,  
           retryParameters: {  
-            timeout: 15000,  
-            maxAttempts: 4  
-          }  
+            timeout: 10000,  
+            maxAttempts: 5,  
+            baseDelay: 300,  
+            backoffFactor: 1.2  
+          }
         }  
       });  
   
       player.addEventListener('error', (event) => {  
-        console.error('Shaka Error:', event.detail);  
+        console.error('Shaka Player Error:', event.detail);  
       });  
   
       try {  
         await player.load(streamUrl);  
-        console.log("Stream loaded successfully with new keys");  
+        console.log("New stream loaded successfully");  
       } catch (error) {  
         console.error('Load error:', error);  
       }  
