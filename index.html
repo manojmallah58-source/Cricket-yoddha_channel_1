@@ -2,99 +2,90 @@
 <html lang="hi">
 <head>
     <meta charset="utf-8">
-    <title>Cricket Yoddha - HD Live</title>
+    <title>Cricket Yoddha Live</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.compiled.js"></script>
     <style>
-        body { margin: 0; padding: 0; background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
-        .container { position: relative; width: 100%; max-width: 1000px; aspect-ratio: 16/9; }
+        body { margin: 0; background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { width: 100%; max-width: 1000px; aspect-ratio: 16/9; position: relative; }
         video { width: 100%; height: 100%; }
         .watermark { position: absolute; top: 15px; right: 15px; width: 50px; z-index: 10; opacity: 0.8; pointer-events: none; }
-        
-        /* Custom Blue Theme */
-        .plyr--full-ui input[type=range] { color: #00b3ff; }
-        .plyr__control--overlaid { background: rgba(0, 179, 255, 0.8); }
-        .plyr__accent { background: #00b3ff; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <img src="https://i.ibb.co/4RvCpCsM/Qdqj-WDqj-QOOb5vb-K8f4wf-Q.png" class="watermark">
-    <video id="player" playsinline controls crossorigin></video>
+    <video id="player" playsinline controls crossorigin="anonymous"></video>
 </div>
 
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <script>
-let playerUI;
 let shakaInstance;
+let playerUI;
 
-async function initApp() {
+async function init() {
     const video = document.getElementById('player');
     shaka.polyfill.installAll();
-    
+
+    if (!shaka.Player.isBrowserSupported()) {
+        alert("Aapka browser support nahi kar raha!");
+        return;
+    }
+
     shakaInstance = new shaka.Player(video);
 
-    // DRM Config
+    // Error Handling
+    shakaInstance.addEventListener('error', (event) => {
+        console.error('Shaka Error:', event.detail);
+        if(event.detail.code == 1001) alert("CORS Error: Stream block ho gayi hai.");
+    });
+
     shakaInstance.configure({
         drm: {
             clearKeys: {
                 'ae7076b647133606b704d33e4cef5134': '810251515584cf71216d9a2d1ebf04bb'
             }
+        },
+        streaming: {
+            bufferingGoal: 30,
+            jumpLargeGaps: true
         }
     });
 
-    // 1. First Load the Stream
-    const manifestUri = 'https://livem-d-01-icc-we.akamaized.net/variant/v1/dai-event-prd-pal-west/vcg-01-d/DASH_DASH/Live/channel(vcg-01-ch-hd-05)/manifest.mpd?vcfilter=44951f97-10ec-427f-a95a-a2ecf57e9a41';
+    const url = 'https://livem-d-01-icc-we.akamaized.net/variant/v1/dai-event-prd-pal-west/vcg-01-d/DASH_DASH/Live/channel(vcg-01-ch-hd-05)/manifest.mpd?vcfilter=44951f97-10ec-427f-a95a-a2ecf57e9a41';
 
     try {
-        await shakaInstance.load(manifestUri);
-        setupPlyrWithQuality(); // Stream load hone ke baad Plyr setup karein
+        await shakaInstance.load(url);
+        setupUI();
     } catch (e) {
-        console.error("Load Error", e);
+        console.error("Load Failed", e);
     }
 }
 
-function setupPlyrWithQuality() {
+function setupUI() {
     const video = document.getElementById('player');
-    
-    // Get Available Heights from Shaka
     const tracks = shakaInstance.getVariantTracks();
-    const levels = [...new Set(tracks.map(t => t.height))]
-                    .filter(h => h !== null)
-                    .sort((a, b) => b - a);
+    const levels = [...new Set(tracks.map(t => t.height))].filter(h => h).sort((a,b) => b-a);
 
-    // 2. Initialize Plyr with extracted qualities
     playerUI = new Plyr(video, {
-        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
         settings: ['quality', 'speed'],
         quality: {
-            default: 0, // 0 = Auto
             options: [0, ...levels],
-            forced: true,
-            onChange: (h) => updateShakaQuality(h)
-        },
-        i18n: { quality: 'Quality' }
+            onChange: (h) => {
+                if(h === 0) shakaInstance.configure({abr:{enabled:true}});
+                else {
+                    shakaInstance.configure({abr:{enabled:false}});
+                    shakaInstance.selectVariantTrack(tracks.find(t => t.height === h), true);
+                }
+            }
+        }
     });
 }
 
-function updateShakaQuality(newQuality) {
-    if (newQuality === 0) {
-        shakaInstance.configure({ abr: { enabled: true } });
-    } else {
-        shakaInstance.configure({ abr: { enabled: false } });
-        const tracks = shakaInstance.getVariantTracks();
-        const track = tracks.find(t => t.height === newQuality);
-        if (track) {
-            shakaInstance.selectVariantTrack(track, true);
-        }
-    }
-}
-
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', init);
 </script>
-
 </body>
 </html>
