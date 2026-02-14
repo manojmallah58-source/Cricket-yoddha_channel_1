@@ -55,10 +55,12 @@
       
       const ui = new shaka.ui.Overlay(player, container, video);
       ui.configure({
-        controlPanelElements: ['play_pause', 'time_and_duration', 'spacer', 'volume', 'quality', 'fullscreen']
+        controlPanelElements: [
+          'play_pause', 'time_and_duration', 'spacer', 'volume', 'quality', 'fullscreen'
+        ]
       });
 
-      // Stream Details
+      // --- Stream & DRM Settings ---
       const streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd";
       const drmConfig = {
         clearKeys: {
@@ -69,10 +71,12 @@
 
       player.configure({
         drm: drmConfig,
-        streaming: { lowLatencyMode: true, useNativeHlsOnSafari: true }
+        streaming: {
+          lowLatencyMode: true,
+          useNativeHlsOnSafari: true
+        }
       });
 
-      // Request filters for Headers & Auth
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
         request.headers['Referer'] = 'https://www.jiotv.com/';
         request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
@@ -88,19 +92,14 @@
       try {
         await player.attach(video);
         await player.load(streamUrl);
-        console.log('Stream loaded successfully!');
+        console.log('Stream loaded!');
       } catch (e) {
         console.error('Error loading stream:', e);
       }
     });
   </script>
 
-  <script>
-    (function(s){
-      s.dataset.zone='10609561';
-      s.src='https://gizokraijaw.net/vignette.min.js';
-    })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-  </script>
+  <script>(function(s){s.dataset.zone='10609561',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
 </body>
 </html>
