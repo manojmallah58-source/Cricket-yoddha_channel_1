@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Star Sports 1 Hindi HD</title>
+  <title>Star Sports 1 HD Hindi</title>
+  
+  <meta name="monetag" content="d92f56862a91a65d409aab592c77b749">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -27,67 +31,75 @@
       background: #000;
       object-fit: contain;
     }
-    /* बफरिंग स्पिनर को छुपाने के लिए (यदि आप चाहें) */
-    .shaka-spinner-container,
-    .shaka-spinner,
-    .shaka-spinner-svg {
-      display: none !important;
-      visibility: hidden !important;
-      opacity: 0 !important;
-    }
+    /* Spinner hide karne ke liye */
+    .shaka-spinner-container { display: none !important; }
   </style>
 </head>
-
 <body>
+
   <div class="shaka-video-container" data-shaka-player>
-    <video autoplay playsinline preload="metadata" poster="https://i.ibb.co/9k9Gx2BJ/0281bb99-9c47-4db0-a1a7-52cefbdf8098.png"></video>
+    <video autoplay playsinline preload="metadata"></video>
   </div>
 
   <script>
-    // डिकोडेड और क्लीन स्क्रिप्ट
     document.addEventListener('DOMContentLoaded', async () => {
+      // Shaka Polyfills install karein
       shaka.polyfill.installAll();
+
       if (!shaka.Player.isBrowserSupported()) {
         console.error('Browser not supported');
         return;
       }
 
       const video = document.querySelector('video');
-      const videoContainer = document.querySelector('.shaka-video-container');
-      const player = new shaka.Player(video);
-      const ui = new shaka.ui.Overlay(player, videoContainer, video);
-
-      // प्लेयर कॉन्फ़िगरेशन
+      const container = document.querySelector('.shaka-video-container');
+      const player = new shaka.Player();
+      
+      // UI Overlay setup
+      const ui = new shaka.ui.Overlay(player, container, video);
       ui.configure({
-        'controlPanelElements': ['play_pause', 'time_and_duration', 'spacer', 'mute', 'volume', 'quality', 'captions', 'picture_in_picture', 'fullscreen']
+        controlPanelElements: [
+          'play_pause', 'time_and_duration', 'spacer', 'volume', 'quality', 'fullscreen'
+        ]
       });
 
-      // DRM और स्ट्रीमिंग सेटिंग्स
+      // --- Stream & DRM Configuration ---
+      const streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd";
+      const drmConfig = {
+        clearKeys: {
+          "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"
+        }
+      };
+      const cookieHeader = "__hdnea__=st=1771050752~exp=1771137152~acl=/*~hmac=3166015b213e67390aac5af7eb0bbaefcda2e7e239e7f47a54e8e6c17ec92d93";
+
       player.configure({
-        drm: {
-          clearKeys: {
-            '400131994b445d8c8817202248760fda': '7ef675a4c38f5f703a285d534ae2bf07'
-          }
-        },
+        drm: drmConfig,
         streaming: {
           lowLatencyMode: true,
-          bufferingGoal: 15,
           useNativeHlsOnSafari: true
         }
       });
 
-      // नेटवर्क रिक्वेस्ट फ़िल्टर (हेडर्स सेट करने के लिए)
+      // Networking Engine Filters (Headers & Cookies)
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        request.headers['User-Agent'] = 'Mozilla/5.0 (Linux; Android 13)';
         request.headers['Referer'] = 'https://www.jiotv.com/';
+        request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+        request.headers['Cookie'] = cookieHeader;
+
+        // URL parsing for authentication
+        if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
+            type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
+          const separator = request.uris[0].includes('?') ? '&' : '?';
+          request.uris[0] += separator + cookieHeader;
+        }
       });
 
       try {
-        // स्ट्रीम लोड करें
-        await player.load('https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_HD1_Hindi_BTS/output/index.m3u8');
-        console.log('The video has now been loaded!');
+        await player.attach(video);
+        await player.load(streamUrl);
+        console.log('Stream loaded successfully!');
       } catch (e) {
-        console.error('Error loading video:', e);
+        console.error('Error loading stream:', e);
       }
     });
   </script>
