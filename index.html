@@ -31,7 +31,6 @@
       background: #000;
       object-fit: contain;
     }
-    /* Spinner hide karne ke liye */
     .shaka-spinner-container { display: none !important; }
   </style>
 </head>
@@ -43,7 +42,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      // Shaka Polyfills install karein
       shaka.polyfill.installAll();
 
       if (!shaka.Player.isBrowserSupported()) {
@@ -55,15 +53,12 @@
       const container = document.querySelector('.shaka-video-container');
       const player = new shaka.Player();
       
-      // UI Overlay setup
       const ui = new shaka.ui.Overlay(player, container, video);
       ui.configure({
-        controlPanelElements: [
-          'play_pause', 'time_and_duration', 'spacer', 'volume', 'quality', 'fullscreen'
-        ]
+        controlPanelElements: ['play_pause', 'time_and_duration', 'spacer', 'volume', 'quality', 'fullscreen']
       });
 
-      // --- Stream & DRM Configuration ---
+      // Stream Details
       const streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd";
       const drmConfig = {
         clearKeys: {
@@ -74,19 +69,15 @@
 
       player.configure({
         drm: drmConfig,
-        streaming: {
-          lowLatencyMode: true,
-          useNativeHlsOnSafari: true
-        }
+        streaming: { lowLatencyMode: true, useNativeHlsOnSafari: true }
       });
 
-      // Networking Engine Filters (Headers & Cookies)
+      // Request filters for Headers & Auth
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
         request.headers['Referer'] = 'https://www.jiotv.com/';
         request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
         request.headers['Cookie'] = cookieHeader;
 
-        // URL parsing for authentication
         if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
             type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
           const separator = request.uris[0].includes('?') ? '&' : '?';
@@ -103,5 +94,13 @@
       }
     });
   </script>
+
+  <script>
+    (function(s){
+      s.dataset.zone='10609561';
+      s.src='https://gizokraijaw.net/vignette.min.js';
+    })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+  </script>
+
 </body>
 </html>
