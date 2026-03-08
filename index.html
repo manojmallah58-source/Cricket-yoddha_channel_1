@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Star Sports 1 HD Hindi</title>
+  <title>Star Sports 2 HD</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
   <style>
@@ -74,18 +74,17 @@
         }
       });
 
-      // Updated DRM Keys
+      // Updated DRM ClearKeys
       let drmConfig = {
         clearKeys: {
           "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"
         }
       };
 
-      // Updated Cookie and URL
+      // Updated Cookie and Stream URL
       let cookieHeader = "__hdnea__=st=1772908177~exp=1772994577~acl=/*~hmac=a75d41857d35a2e4fbada2207e606ec1ff6cf3bd334da54d4e6bf5e5b60e85cd";
       let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd?__hdnea__=st=1772908177~exp=1772994577~acl=/*~hmac=a75d41857d35a2e4fbada2207e606ec1ff6cf3bd334da54d4e6bf5e5b60e85cd";
 
-      // Keeping the M3U fetch logic as per original code
       try {
         const response = await fetch('https://raw.githubusercontent.com/alex8875/m3u/refs/heads/main/jstar.m3u');
         const m3uText = await response.text();
@@ -135,8 +134,9 @@
       });
 
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        request.headers['Referer'] = 'https://www.jiotv.com/';
-        request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+        request.headers['Referer'] = 'https://jiotv.com/';
+        request.headers['Origin'] = 'https://jiotv.com/';
+        request.headers['User-Agent'] = "Exoplayer";
         request.headers['Cookie'] = cookieHeader;
 
         if (
