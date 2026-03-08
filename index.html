@@ -1,100 +1,76 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Sports 1 Hindi HD - Final</title>
+    <title>Star Sports 1 Hindi HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { 
-            background: #000; 
-            height: 100vh; 
-            width: 100vw; 
-            overflow: hidden; 
-            font-family: sans-serif; 
-        }
-        .shaka-video-container { 
-            position: absolute; 
-            inset: 0; 
-            width: 100%; 
-            height: 100%; 
-        }
-        video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
-        }
-
-        /* Ads और Unwanted Elements Removal */
-        .shaka-ad-controls, .shaka-ad-container, .shaka-spinner-container, .shaka-overflow-menu {
-            display: none !important;
-            visibility: hidden !important;
-        }
+        html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; }
+        .shaka-video-container { position: absolute; inset: 0; width: 100%; height: 100%; }
+        video { width: 100%; height: 100%; background: #000; object-fit: contain; }
+        .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg { display: none !important; visibility: hidden !important; opacity: 0 !important; }
     </style>
 </head>
 <body>
+    <div class="shaka-video-container" data-shaka-player>
+        <video autoplay playsinline preload="metadata" poster=""></video>
+    </div>
 
-<div class="shaka-video-container" data-shaka-player-container>
-    <video id="video" autoplay playsinline crossorigin="anonymous"></video>
-</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            shaka.polyfill.installAll();
+            if (!shaka.Player.isBrowserSupported()) { return; }
 
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-    shaka.polyfill.installAll();
-    
-    const video = document.getElementById('video');
-    const container = document.querySelector('.shaka-video-container');
-    const player = new shaka.Player(video);
-    const ui = new shaka.ui.Overlay(player, container, video);
+            const video = document.querySelector('video');
+            const player = new shaka.Player();
+            await player.attach(video);
 
-    // Ads Free UI Config
-    ui.configure({
-        'controlPanelElements': [
-            'play_pause', 'time_and_duration', 'spacer', 
-            'mute', 'volume', 'quality', 'fullscreen'
-        ],
-        'addAdsControls': false,
-        'addOverflowMenu': false,
-        'seekBarColors': { base: 'rgba(255, 255, 255, 0.3)', played: 'gold' }
-    });
+            const container = document.querySelector('.shaka-video-container');
+            const ui = new shaka.ui.Overlay(player, container, video);
 
-    // Updated DRM Keys
-    const drmConfig = {
-        clearKeys: { 
-            "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4" 
-        }
-    };
+            // UI Configuration
+            ui.configure({
+                controlPanelElements: ['play_pause', 'time_and_duration', 'mute', 'volume', 'spacer', 'language', 'captions', 'picture_in_picture', 'quality', 'fullscreen'],
+                volumeBarColors: { base: 'purple', level: 'purple' },
+                seekBarColors: { base: 'gold', buffered: 'gold', played: 'gold' }
+            });
 
-    // Updated Credentials
-    const streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd?__hdnea__=st=1772908177~exp=1772994577~acl=/*~hmac=a75d41857d35a2e4fbada2207e606ec1ff6cf3bd334da54d4e6bf5e5b60e85cd";
-    const cookieHeader = "__hdnea__=st=1772908177~exp=1772994577~acl=/*~hmac=a75d41857d35a2e4fbada2207e606ec1ff6cf3bd334da54d4e6bf5e5b60e85cd";
+            // --- नए डेटा के साथ अपडेट ---
+            let drmConfig = {
+                clearKeys: {
+                    "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"
+                }
+            };
+            
+            let cookieHeader = "__hdnea__=st=1772908177~exp=1772994577~acl=/*~hmac=a75d41857d35a2e4fbada2207e606ec1ff6cf3bd334da54d4e6bf5e5b60e85cd";
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd?__hdnea__=st=1772908177~exp=1772994577~acl=/*~hmac=a75d41857d35a2e4fbada2207e606ec1ff6cf3bd334da54d4e6bf5e5b60e85cd";
 
-    player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        request.headers['User-Agent'] = "Exoplayer";
-        request.headers['Referer'] = "https://jiotv.com/";
-        request.headers['Origin'] = "https://jiotv.com/";
-        request.headers['Cookie'] = cookieHeader;
-    });
+            player.configure({
+                drm: drmConfig,
+                streaming: {
+                    lowLatencyMode: true,
+                    bufferingGoal: 15,
+                    retryParameters: { timeout: 10000, maxAttempts: 5 }
+                }
+            });
 
-    player.configure({ 
-        drm: drmConfig,
-        streaming: { 
-            lowLatencyMode: true, 
-            bufferingGoal: 10,
-            useNativeHlsOnSafari: true
-        } 
-    });
+            player.getNetworkingEngine().registerRequestFilter((type, request) => {
+                request.headers['Referer'] = 'https://jiotv.com/';
+                request.headers['Origin'] = 'https://jiotv.com/';
+                request.headers['User-Agent'] = "Exoplayer";
+                request.headers['Cookie'] = cookieHeader;
+            });
 
-    try {
-        await player.load(streamUrl);
-        console.log('Star Sports 1 Hindi Loaded');
-    } catch (e) {
-        console.error('Error:', e);
-    }
-});
-</script>
+            try {
+                await player.load(streamUrl);
+                video.play();
+            } catch (error) {
+                console.error('Error loading stream:', error);
+            }
+        });
+    </script>
 </body>
 </html>
