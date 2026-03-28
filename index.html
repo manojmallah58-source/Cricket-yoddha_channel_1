@@ -1,117 +1,105 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Star Sports 1 Hindi HD</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      background: #000;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      font-family: system-ui, -apple-system, sans-serif;
+<!DOCTYPE html>  
+<html>  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Prime Hindi - Cricket Yoddha</title>     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
+  <style>  
+   * { margin: 0; padding: 0; box-sizing: border-box; }  
+    html, body {  
+      background: #000;  
+      height: 100vh;  
+      width: 100vw;  
+      overflow: hidden;  
+      font-family: system-ui, -apple-system, sans-serif;  
+    }  
+    .shaka-video-container {  
+      position: absolute;  
+      inset: 0;  
+      width: 100%;  
+      height: 100%;  
+    }  
+    video {  
+      width: 100%;  
+      height: 100%;  
+      background: #000;  
+      object-fit: contain;  
+    }  
+    .shaka-spinner-container { display: none !important; }  
+  </style>  
+</head>  
+<body>  
+  <div class="shaka-video-container" data-shaka-player>  
+    <video id="video" autoplay muted playsinline preload="metadata" poster="https://i.ibb.co/VrsnMcD/image-search-1765615733453.webp"></video>  
+  </div>  
+  
+  <script>  
+    async function initApp() {  
+      shaka.polyfill.installAll();  
+      if (shaka.Player.isBrowserSupported()) {  
+        initPlayer();  
+      } else {  
+        console.error('Browser not supported!');  
+      }  
     }
-    .shaka-video-container {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-    video {
-      width: 100%;
-      height: 100%;
-      background: #000;
-      object-fit: contain;
-    }
-    /* Hide the default loading spinner */
-    .shaka-spinner-container { display: none !important; }
-  </style>
-</head>
-<body>
-  <div class="shaka-video-container" data-shaka-player>
-    <video autoplay playsinline preload="metadata"></video>
-  </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      shaka.polyfill.installAll();
-
-      if (!shaka.Player.isBrowserSupported()) {
-        console.error('Browser not supported');
-        return;
-      }
-
-      const video = document.querySelector('video');
-      const player = new shaka.Player();
-      await player.attach(video);
-
-      const container = document.querySelector('.shaka-video-container');
-      const ui = new shaka.ui.Overlay(player, container, video);
-
-      ui.configure({
-        controlPanelElements: [
-          'play_pause', 'time_and_duration', 'spacer', 
-          'mute', 'volume', 'quality', 'fullscreen'
-        ],
-        volumeBarColors: { base: 'purple', level: 'purple' },
-        seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
-      });
-
-      // --- UPDATED CREDENTIALS FROM YOUR LINK ---
-      const drmConfig = {
-        clearKeys: {
-          "8ea9b607549252068e260a5f4d7dd321": "350c0aaffedf51cc1502e9543c7c885e"
-        }
-      };
-
-      const cookieHeader = "__hdnea__=st=1773629375~exp=1773715775~acl=/*~hmac=ef55190f024fdd08cbd1abb181b06b9166148359dd2f24a0f7036ab745bb3628";
-      const streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_BTS/output/index.mpd?" + cookieHeader;
-
-      player.configure({
-        drm: drmConfig,
-        streaming: {
-          lowLatencyMode: true,
-          bufferingGoal: 10,
+    async function initPlayer() {  
+      const video = document.getElementById('video');  
+      const container = document.querySelector('.shaka-video-container');  
+      const player = new shaka.Player(video);  
+      
+      const ui = new shaka.ui.Overlay(player, container, video);  
+      ui.configure({  
+        controlPanelElements: [  
+          'play_pause', 'time_and_duration', 'mute', 'volume',  
+          'spacer', 'quality', 'picture_in_picture', 'fullscreen'  
+        ],  
+        seekBarColors: {  
+          base: 'rgba(255, 255, 0, 0.3)',  
+          buffered: 'rgba(255, 255, 0, 0.5)',  
+          played: 'rgb(255, 255, 0)'  
+        }  
+      });  
+  
+      // ✅ Updated Stream URL
+      const streamUrl = "https://a96aivottlinear-a.akamaihd.net/OTTB/iad-nitro/live/clients/dash/enc/kksbtkclxn/out/v1/75ba74c3fa354297aa9327a31dfeb4d5/cenc.mpd";  
+      
+      player.configure({  
+        drm: {  
+          clearKeys: {  
+            // ✅ Updated ClearKey (KID: KEY)
+            "4a3d50bef26a7b2acebfb719a2d02476": "f94f4e94b57e18e48450231b20222c0c"  
+          }  
+        },  
+        manifest: {
+          retryParameters: {
+            maxAttempts: 5,
+            baseDelay: 1000,
+            backoffFactor: 2
+          }
+        },
+        streaming: {  
+          lowLatencyMode: true,  
+          jumpLargeGaps: true,
           rebufferingGoal: 2,
-        }
-      });
+          bufferingGoal: 10
+        }  
+      });  
+  
+      player.addEventListener('error', (e) => console.error('Shaka Error:', e.detail));  
+  
+      try {  
+        await player.load(streamUrl);  
+        console.log("Stream successfully loaded!");  
+      } catch (error) {  
+        console.error('Error loading stream:', error);  
+      }  
+    }  
 
-      // Network Filter to handle CDN authentication
-      player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        // Adding headers often blocked by browsers, but useful if running in WebView/App
-        request.headers['User-Agent'] = "Exoplayer";
-        
-        // Append cookie to segment and manifest URLs if not already present
-        if (!request.uris[0].includes('__hdnea__')) {
-          const separator = request.uris[0].includes('?') ? '&' : '?';
-          request.uris[0] += separator + cookieHeader;
-        }
-      });
-
-      // Autoplay & Interaction Logic
-      const attemptPlay = async () => {
-        try {
-          await video.play();
-        } catch (e) {
-          video.muted = true;
-          await video.play();
-        }
-      };
-
-      try {
-        await player.load(streamUrl);
-        await attemptPlay();
-      } catch (error) {
-        console.error('Load error:', error);
-      }
-
-      // Unmute on first click
-      document.addEventListener('click', () => { if(video.muted) video.muted = false; }, { once: true });
-    });
-  </script>
-</body>
+    document.addEventListener('shaka-ui-loaded', initApp);
+    document.addEventListener('DOMContentLoaded', () => { if (!window.shaka) initApp(); });
+  </script>  
+</body>  
 </html>
