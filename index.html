@@ -3,7 +3,7 @@
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Prime Hindi - CricLife1</title>     
+  <title>Prime Hindi - Cricket Yoddha</title>     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
@@ -63,14 +63,14 @@
         }  
       });  
   
-      // ✅ Updated StarzPlay Stream URL
-      const streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLife1/DASH/CricLife1.mpd";  
+      // ✅ New Stream URL Updated
+      const streamUrl = "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/4ncgjuq0f0/out/v1/f7306c616dc84f3c9f5ed27c605a5f3c/cenc.mpd";  
       
       player.configure({  
         drm: {  
           clearKeys: {  
-            // ✅ Updated ClearKey (KID: KEY)
-            "1e23e51b09a67b83813c17049870bcd4": "c3d6288e378b0dc55320fd0e6fd2e55f"  
+            // ✅ New ClearKey (KID: KEY) Updated
+            "cd52cd6287d4421c03ac06c93348752c": "784ba87ab8a33fc18bc1c146191329ac"  
           }  
         },  
         manifest: {
@@ -92,7 +92,7 @@
   
       try {  
         await player.load(streamUrl);  
-        console.log("CricLife1 successfully loaded!");  
+        console.log("Stream successfully loaded!");  
       } catch (error) {  
         console.error('Error loading stream:', error);  
       }  
