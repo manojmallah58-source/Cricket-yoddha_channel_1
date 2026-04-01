@@ -63,14 +63,14 @@
         }  
       });  
   
-      // ✅ New Stream URL Updated
-      const streamUrl = "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/4ncgjuq0f0/out/v1/f7306c616dc84f3c9f5ed27c605a5f3c/cenc.mpd";  
+      // ✅ New Updated Stream URL
+      const streamUrl = "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/zw4c5ukci9/out/v1/00ca9d82ccf441cbbfcb84a235eca9e1/cenc.mpd";  
       
       player.configure({  
         drm: {  
           clearKeys: {  
-            // ✅ New ClearKey (KID: KEY) Updated
-            "cd52cd6287d4421c03ac06c93348752c": "784ba87ab8a33fc18bc1c146191329ac"  
+            // ✅ New KID: KEY Mapping
+            "749618dc54f5bc958a67e38339147bf4": "e746efd1bcc637ae2008043357c7ff6e"  
           }  
         },  
         manifest: {
@@ -92,7 +92,7 @@
   
       try {  
         await player.load(streamUrl);  
-        console.log("Stream successfully loaded!");  
+        console.log("Stream successfully loaded with new keys!");  
       } catch (error) {  
         console.error('Error loading stream:', error);  
       }  
