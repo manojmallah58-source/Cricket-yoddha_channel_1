@@ -36,7 +36,7 @@
 <script>
 // --- AD CONTROL LOGIC (Har 5 Minute Mein) ---
 (function() {
-    const AD_GAP = 5 * 60 * 1000; // 5 minute gap in milliseconds
+    const AD_GAP = 5 * 60 * 1000; 
     const AD_KEY = 'last_ad_trigger_time';
     const currentTime = new Date().getTime();
     const lastShown = localStorage.getItem(AD_KEY);
@@ -46,12 +46,7 @@
         script.src = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
         script.async = true;
         document.body.appendChild(script);
-        
-        // Save current time as the last shown time
         localStorage.setItem(AD_KEY, currentTime);
-        console.log("Ad script loaded. 5-minute timer started.");
-    } else {
-        console.log("Ad skipped to protect user experience (5 min not passed).");
     }
 })();
 
@@ -63,7 +58,8 @@
     if(isSandboxedEnv()){ return; }
 
     const CONFIG={
-        streamUrl:"https://jiotvioslive.cdn.jio.com//bpk-tv/StarSportsHD2Hin_BTS/output/index.mpd",
+        // Naya URL aur DRM Keys yahan update kiye gaye hain
+        streamUrl:"https://jiotvioslive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS//output/index.mpd",
         keyId:"bd1ea6a1c1fb5dcdb709434e0826bbc0",
         key:"f57f22cba32739ce7beb1fab3f3d060b"
     };
@@ -85,6 +81,7 @@
             streaming:{ lowLatencyMode:true }
         });
 
+        // Nayi Cookie value update ki gayi hai
         let cookieValue="__hdnea__=st=1775370547~exp=1775456947~acl=/*~hmac=c94c324abf3cae8f90d791778e154cd35fb1bd0af38825648a1b031c7ae6de2d";
 
         player.getNetworkingEngine().registerRequestFilter((type,request)=>{
@@ -98,7 +95,9 @@
         try{
             await player.load(CONFIG.streamUrl);
             video.play().catch(()=>{});
-        }catch(e){}
+        }catch(e){
+            console.error("Error loading stream", e);
+        }
         video.addEventListener("play",()=>{ video.muted=false; });
     });
 })();
