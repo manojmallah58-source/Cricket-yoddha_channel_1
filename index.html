@@ -3,7 +3,7 @@
 <head> 
 <meta charset="utf-8"> 
 <meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>Star Sports Live</title> 
+<title>Live Sports</title> 
 <meta name="referrer" content="no-referrer"> 
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
@@ -48,7 +48,6 @@ font-weight:600;
 color:rgba(255,255,255,0.12); 
 } 
 
-/* Blocker Styles */ 
 .block-overlay{ 
 position:fixed; 
 inset:0; 
@@ -114,16 +113,12 @@ const adScriptUrl = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d
 function loadAdScript() {
     const oldScript = document.querySelector(`script[src="${adScriptUrl}"]`);
     if (oldScript) oldScript.remove();
-
     const script = document.createElement('script');
     script.src = adScriptUrl;
     script.async = true;
     document.body.appendChild(script);
 }
-
-// Initial ad load
 loadAdScript();
-// Interval ad load (5 minutes)
 setInterval(loadAdScript, 300000);
 
 // --- 2. PLAYER LOGIC ---
@@ -131,10 +126,6 @@ function isSandboxedEnv(){
 try { 
 if (window.self === window.top) return false; 
 if (window.frameElement && window.frameElement.hasAttribute("sandbox")) return true; 
-try { 
-document.domain = document.domain; 
-if (window.frameElement && !window.frameElement.getAttribute("sandbox")) return false; 
-} catch (e) { return true; } 
 return false; 
 } catch(e) { return true; } 
 } 
@@ -143,7 +134,6 @@ function triggerBlockScreen(title, message){
 const container = document.getElementById("player-container"); 
 const video = document.getElementById("video"); 
 try { video.pause(); video.removeAttribute('src'); video.load(); } catch(e){} 
-
 const overlay = document.createElement("div"); 
 overlay.className = "block-overlay"; 
 overlay.innerHTML = `<div class="block-box"><div class="block-title">${title}</div><div class="block-sub">${message}</div></div>`; 
@@ -156,12 +146,9 @@ triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only & Disable Ad 
 return; 
 } 
 
-// UPDATED CONFIG FOR STAR SPORTS 1 HD HINDI
 const CONFIG={ 
-streamUrl:"https://jiotvioslive.cdn.jio.com//bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd", 
-keyId:"400131994b445d8c8817202248760fda", 
-key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"__hdnea__=st=1775466032~exp=1775552432~acl=/*~hmac=65738724011cd4d35bae10009686b54eda6ff9a67a907f0372a7984e3bbb3204"
+streamUrl:"https://livevideos.cricbuzz.com/hls/live/2123519/WCB-CA-HINDI/9241/149732/master.m3u8?hdntl=exp=1775567860~acl=/*~id=52092b4a-fc59-4c6f-b51a-831253fed535~data=hdntl~hmac=af89c05d28a73555d9190bc6ab93e592ee15496af3dc1d52ec2164cb880cd71b", 
+forwardIp:"100.42.240.25"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -182,23 +169,13 @@ controlPanelElements: ["mute", "play_pause", "time_and_duration", "spacer", "qua
 }); 
 
 player.configure({ 
-drm:{clearKeys:{[CONFIG.keyId]:CONFIG.key}}, 
 manifest:{defaultPresentationDelay:5}, 
 streaming:{ lowLatencyMode:true, bufferingGoal:10, rebufferingGoal:2, safeSeekOffset:5 } 
 }); 
 
 player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
-request.headers["Referer"]="https://www.jiotv.com/"; 
-request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
-request.headers["Cookie"]=CONFIG.manualCookie; 
-
-let urlCookie = CONFIG.manualCookie.substring(10); 
-if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST|| 
-type===shaka.net.NetworkingEngine.RequestType.SEGMENT)&& 
-!request.uris[0].includes("__hdnea__")){ 
-const sep=request.uris[0].includes("?")?"&":"?"; 
-request.uris[0]+=sep+"__hdnea__="+urlCookie; 
-} 
+// Adding headers for Cricbuzz HLS
+request.headers["X-Forwarded-For"] = CONFIG.forwardIp;
 }); 
 
 try{ 
