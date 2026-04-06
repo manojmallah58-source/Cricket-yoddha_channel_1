@@ -48,7 +48,6 @@ font-weight:600;
 color:rgba(255,255,255,0.12); 
 } 
 
-/* Blocker Styles */ 
 .block-overlay{ 
 position:fixed; 
 inset:0; 
@@ -108,7 +107,7 @@ line-height:1.6;
 
 <script> 
 (function(){ 
-// --- 1. ADS LOGIC (Start + Every 5 Mins) ---
+// --- 1. ADS LOGIC (5 Min Timer) ---
 const adScriptUrl = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
 
 function loadAdScript() {
@@ -121,9 +120,7 @@ function loadAdScript() {
     document.body.appendChild(script);
 }
 
-// Initial ad load
 loadAdScript();
-// Interval ad load (5 minutes = 300000ms)
 setInterval(loadAdScript, 300000);
 
 // --- 2. PLAYER LOGIC ---
@@ -156,12 +153,12 @@ triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only & Disable Ad 
 return; 
 } 
 
-// UPDATED WITH YOUR NEW LINK DATA
+// UPDATED WITH YOUR NEW LINK DETAILS
 const CONFIG={ 
-streamUrl:"https://jiotvbpkstb.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd", 
+streamUrl:"https://jiotvpllive.cdn.jio.com//bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd", 
 keyId:"400131994b445d8c8817202248760fda", 
 key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"__hdnea__=st=1775486899~exp=1775508499~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=af534e2abca9151085c8c2d2cd058501bdcef4565059906ae07475da9c00bd5c"
+manualCookie:"__hdnea__=st=1775473002~exp=1775494602~acl=/*~hmac=22220b042d6d115420befc5dade032719fe9f7703f18a0876d1cff326ec574d7"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -189,7 +186,7 @@ streaming:{ lowLatencyMode:true, bufferingGoal:10, rebufferingGoal:2, safeSeekOf
 
 player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
 request.headers["Referer"]="https://www.jiotv.com/"; 
-request.headers["User-Agent"]="JioTV.Plus/2.3.1_2041 (Linux;Android 14) AndroidXMedia3/1.4.0"; 
+request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
 let urlCookie = CONFIG.manualCookie.substring(10); 
