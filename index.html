@@ -3,7 +3,7 @@
 <head> 
 <meta charset="utf-8"> 
 <meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>Star Sports 1 HD Live</title> 
+<title>Star Sports HD 1 Live</title> 
 <meta name="referrer" content="no-referrer"> 
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
@@ -19,97 +19,26 @@ gtag('config', 'G-FMP9REY96D');
 <style> 
 *{margin:0;padding:0;box-sizing:border-box} 
 html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif} 
-
-.shaka-video-container{ 
-position:fixed; 
-inset:0; 
-background:#000; 
-display:flex; 
-align-items:center; 
-justify-content:center; 
-} 
-
-video{ 
-width:100%; 
-height:100%; 
-object-fit:contain; 
-background:#000; 
-} 
-
-.custom-watermark{ 
-position:absolute; 
-z-index:40; 
-pointer-events:none; 
-top:65%; 
-left:6%; 
-transform:translateY(-50%); 
-font-size:11px; 
-font-weight:600; 
-color:rgba(255,255,255,0.12); 
-} 
-
-.block-overlay{ 
-position:fixed; 
-inset:0; 
-z-index:99999; 
-display:flex; 
-align-items:center; 
-justify-content:center; 
-background:radial-gradient(circle at center, #1a1a1a 0%, #000000 100%); 
-text-align:center; 
-} 
-
-.block-box{ 
-padding:40px; 
-max-width:500px; 
-width:90%; 
-background:rgba(20, 20, 20, 0.95); 
-border-radius:16px; 
-border:1px solid rgba(255, 255, 255, 0.1); 
-box-shadow:0 20px 50px rgba(0,0,0,0.5); 
-animation: fadeInUp 0.6s ease-out; 
-} 
-
-@keyframes fadeInUp { 
-from { opacity: 0; transform: translateY(30px); } 
-to { opacity: 1; transform: translateY(0); } 
-} 
-
-.block-title{ 
-font-size:42px; 
-font-weight:800; 
-color:#ffffff; 
-text-transform:uppercase; 
-letter-spacing:2px; 
-margin-bottom:20px; 
-} 
-
-.block-sub{ 
-font-size:14px; 
-font-weight:500; 
-color:rgba(255, 255, 255, 0.6); 
-line-height:1.6; 
-} 
-
-@media(max-width:700px){ 
-.custom-watermark{font-size:9px;top:60%;left:16%} 
-.block-title{font-size:28px} 
-.block-box{padding:25px} 
-} 
+.shaka-video-container{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center} 
+video{width:100%;height:100%;object-fit:contain;background:#000} 
+.block-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);text-align:center} 
+.block-box{padding:40px;max-width:500px;width:90%;background:rgba(20, 20, 20, 0.95);border-radius:16px;border:1px solid rgba(255, 255, 255, 0.1);box-shadow:0 20px 50px rgba(0,0,0,0.5);animation: fadeInUp 0.6s ease-out} 
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } } 
+.block-title{font-size:42px;font-weight:800;color:#ffffff;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px} 
+.block-sub{font-size:14px;font-weight:500;color:rgba(255, 255, 255, 0.6);line-height:1.6} 
+@media(max-width:700px){.block-title{font-size:28px}.block-box{padding:25px}} 
 </style> 
 </head> 
 <body> 
 
 <div class="shaka-video-container" id="player-container"> 
 <video id="video" autoplay muted playsinline preload="metadata"></video> 
-<div class="custom-watermark"> </div> 
 </div> 
 
 <script> 
 (function(){ 
-// --- ADS LOGIC (Pehli baar turant, fir har 5 min) ---
+// --- 1. ADS LOGIC (Start + Every 5 Mins) ---
 const adScriptUrl = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
-
 function loadAdScript() {
     const oldScript = document.querySelector(`script[src="${adScriptUrl}"]`);
     if (oldScript) oldScript.remove();
@@ -118,18 +47,12 @@ function loadAdScript() {
     script.async = true;
     document.body.appendChild(script);
 }
-
 loadAdScript();
-setInterval(loadAdScript, 300000); // 300000ms = 5 minutes
+setInterval(loadAdScript, 300000);
 
-// --- PLAYER LOGIC ---
+// --- 2. PLAYER LOGIC ---
 function isSandboxedEnv(){ 
-try { 
-if (window.self === window.top) return false; 
-if (window.frameElement && window.frameElement.hasAttribute("sandbox")) return true; 
-try { document.domain = document.domain; if (window.frameElement && !window.frameElement.getAttribute("sandbox")) return false; } catch (e) { return true; } 
-return false; 
-} catch(e) { return true; } 
+try { if (window.self === window.top) return false; if (window.frameElement && window.frameElement.hasAttribute("sandbox")) return true; try { document.domain = document.domain; if (window.frameElement && !window.frameElement.getAttribute("sandbox")) return false; } catch (e) { return true; } return false; } catch(e) { return true; } 
 } 
 
 function triggerBlockScreen(title, message){ 
@@ -148,12 +71,12 @@ triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only & Disable Ad 
 return; 
 } 
 
-// UPDATED WITH YOUR NEW LINK DATA
+// NEW REPLACED CONFIG DATA
 const CONFIG={ 
-streamUrl:"https://jiotvpllive.cdn.jio.com//bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd", 
+streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd", 
 keyId:"400131994b445d8c8817202248760fda", 
 key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"__hdnea__=st=1775559734~exp=1775581334~acl=/*~hmac=60f9c2d0af2297a4cfeed4abe2df3ce3bd5e63a3cd39909c5291b965ddc9f41c"
+manualCookie:"__hdnea__=st=1775615122~exp=1775636722~acl=/*~hmac=a0cd55e96c2d1dcc53479a5619e9f1d50979f85249437a172c78cf83909a50d3"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -196,7 +119,7 @@ request.uris[0]+=sep+"__hdnea__="+urlCookie;
 try{ 
 await player.load(CONFIG.streamUrl); 
 video.play().catch(()=>{}); 
-}catch(e){} 
+} catch(e){} 
 
 video.addEventListener("play",()=>{ video.muted=false; }); 
 }); 
