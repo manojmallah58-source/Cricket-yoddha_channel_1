@@ -76,7 +76,6 @@ color:rgba(255, 255, 255, 0.6);
 const adScriptUrl = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
 
 function loadAd() {
-    // Purani script hatana taaki fresh reload ho
     const existingScript = document.getElementById('ad-script');
     if (existingScript) existingScript.remove();
 
@@ -87,14 +86,15 @@ function loadAd() {
     document.body.appendChild(script);
 }
 
-// Pehli baar turant load hoga
+// Pehli baar load karne ke liye yahan call karen
 loadAd();
 
-// Har 5 minute (300,000 ms) mein reload hoga
+// Har 5 minute (300,000 ms) mein load karne ke liye setInterval
 setInterval(loadAd, 300000);
 
 
 // --- 2. PLAYER LOGIC ---
+// Security checks can make removing this block difficult. Try opening in Chrome/Safari directly.
 function isSandboxedEnv(){ 
 try { 
 if (window.self === window.top) return false; 
