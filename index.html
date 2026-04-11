@@ -62,14 +62,9 @@
 
                 player.configure({
                     manifest: { defaultPresentationDelay: 5 },
-                    streaming: { 
-                        lowLatencyMode: true, 
-                        bufferingGoal: 10, 
-                        rebufferingGoal: 2 
-                    }
+                    streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2 }
                 });
 
-                // Fetching Cookie and setting Headers
                 try {
                     const response = await fetch(CONFIG.cookieUrl, { cache: "no-store" });
                     const data = await response.json();
@@ -104,23 +99,25 @@
 
     <script>
         (function() {
-            const AD_INTERVAL = 5 * 60 * 1000; // 5 minute limit
+            const AD_INTERVAL = 5 * 60 * 1000; // 5 minute
             const now = Date.now();
             const lastAdTime = localStorage.getItem('ad_timer');
 
-            // Agar 5 min beet chuke hain ya pehli baar hai
+            // Agar pehli baar hai ya 5 minute beet chuke hain
             if (!lastAdTime || (now - lastAdTime) > AD_INTERVAL) {
                 const adScript = document.createElement('script');
                 adScript.src = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
                 adScript.async = true;
 
                 adScript.onload = function() {
-                    localStorage.setItem('ad_timer', Date.now()); // Time save karlo
+                    localStorage.setItem('ad_timer', Date.now()); // Naya time save karein
                 };
 
                 document.body.appendChild(adScript);
+                console.log("Ad loading now...");
             } else {
-                console.log("Ads on 5-min cooldown.");
+                const timeLeft = Math.ceil((AD_INTERVAL - (now - lastAdTime)) / 60000);
+                console.log("Next ad will show in: " + timeLeft + " minute(s)");
             }
         })();
     </script>
