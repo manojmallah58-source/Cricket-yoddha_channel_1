@@ -158,7 +158,8 @@ const CONFIG={
 streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd", 
 keyId:"400131994b445d8c8817202248760fda", 
 key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"__hdnea__=st=1775965857~exp=1775987457~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=a29c18f2a6515936344e62aecddf980150009bb3c3ac4125bdfa2bc5741a32be"
+manualCookie:"__hdnea__=st=1775985148~exp=1776006748~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=85f4098017953e9f2e416aaece4774b2aa173df430f4ed1ab511178c485c93c1",
+userAgent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -186,15 +187,15 @@ streaming:{ lowLatencyMode:true, bufferingGoal:10, rebufferingGoal:2, safeSeekOf
 
 player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
 request.headers["Referer"]="https://www.jiotv.com/"; 
-request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
+request.headers["User-Agent"]=CONFIG.userAgent; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
-let urlCookie = CONFIG.manualCookie.split('__hdnea__=')[1]; 
+let urlCookie = CONFIG.manualCookie; 
 if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST || 
     type===shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
    !request.uris[0].includes("__hdnea__")){ 
     const sep = request.uris[0].includes("?") ? "&" : "?"; 
-    request.uris[0] += sep + "__hdnea__=" + urlCookie; 
+    request.uris[0] += sep + urlCookie; 
 } 
 }); 
 
