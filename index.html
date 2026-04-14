@@ -3,131 +3,106 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Star Sports Hindi - Live</title>
+    <title>Star Sports Hindi - Optimized</title>
     <meta name="referrer" content="no-referrer">
+    
+    <script>
+        (function() {
+            const AD_INTERVAL = 5 * 60 * 1000; // 5 minute (milliseconds mein)
+            const now = Date.now();
+            const lastAdTime = localStorage.getItem('last_ad_trigger');
+
+            // Agar pehli baar hai ya 5 min beet chuke hain
+            if (!lastAdTime || (now - lastAdTime) > AD_INTERVAL) {
+                const script = document.createElement('script');
+                script.src = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
+                script.async = true;
+                document.head.appendChild(script);
+                
+                // Naya time save karein
+                localStorage.setItem('last_ad_trigger', now);
+                console.log("Ad loaded. Next ad in 5 minutes.");
+            } else {
+                const remaining = Math.round((AD_INTERVAL - (now - lastAdTime)) / 1000);
+                console.log("Ad suppressed. Next ad available in: " + remaining + "s");
+            }
+        })();
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/>
-    
+
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
-        .shaka-video-container{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;}
-        video{width:100%;height:100%;object-fit:contain;background:#000;}
-        .custom-watermark{position:absolute;z-index:40;pointer-events:none;top:65%;left:6%;transform:translateY(-50%);font-size:11px;font-weight:600;color:rgba(255,255,255,0.12);}
+        html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:sans-serif}
+        .shaka-video-container{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center}
+        video{width:100%;height:100%;object-fit:contain}
+        .custom-watermark{position:absolute;z-index:40;pointer-events:none;top:65%;left:6%;font-size:11px;color:rgba(255,255,255,0.12)}
         
-        .block-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);text-align:center;}
-        .block-box{padding:40px;max-width:500px;width:90%;background:rgba(20, 20, 20, 0.95);border-radius:16px;border:1px solid rgba(255, 255, 255, 0.1);box-shadow:0 20px 50px rgba(0,0,0,0.5);animation: fadeInUp 0.6s ease-out;}
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .block-title{font-size:42px;font-weight:800;color:#ffffff;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;}
-        .block-sub{font-size:14px;font-weight:500;color:rgba(255, 255, 255, 0.6);line-height:1.6;}
-        
-        @media(max-width:700px){
-            .custom-watermark{font-size:9px;top:60%;left:16%}
-            .block-title{font-size:28px}
-            .block-box{padding:25px}
-            .block-sub{font-size:12px}
-        }
+        .block-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#000;text-align:center}
+        .block-box{padding:40px;max-width:500px;width:90%;background:#141414;border-radius:16px;border:1px solid #333}
+        .block-title{font-size:32px;font-weight:800;color:#fff;margin-bottom:20px}
+        .block-sub{font-size:14px;color:#aaa}
     </style>
 </head>
 
 <body>
-
     <div class="shaka-video-container" id="player-container">
         <video id="video" autoplay muted playsinline preload="metadata"></video>
-        <div class="custom-watermark">STREAMING LIVE</div>
+        <div class="custom-watermark"></div>
     </div>
 
     <script>
-    (function(){
-        // Sandbox check to prevent unauthorized embedding
-        function isSandboxedEnv(){
-            try {
-                if (window.self === window.top) return false;
-                if (window.frameElement && window.frameElement.hasAttribute("sandbox")) return true;
-                try { document.domain = document.domain; } catch (e) { return true; }
-                return false;
-            } catch(e) { return true; }
-        }
-
-        function triggerBlockScreen(title, message){
-            const container = document.getElementById("player-container");
-            const video = document.getElementById("video");
-            try { video.pause(); video.removeAttribute('src'); video.load(); } catch(e){}
-            const overlay = document.createElement("div");
-            overlay.className = "block-overlay";
-            overlay.innerHTML = `<div class="block-box"><div class="block-title">${title}</div><div class="block-sub">${message}</div></div>`;
-            document.body.appendChild(overlay);
-            container.style.display = 'none';
-        }
-
-        if(isSandboxedEnv()){
-            triggerBlockScreen('Access Denied', 'Please open in a standard browser to watch.');
-            return;
-        }
-
-        const CONFIG={
-            streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd",
-            keyId:"400131994b445d8c8817202248760fda",
-            key:"2d56cb6f07a75b9aff165d534ae2bfc4",
-            cookieUrl:"https://allrounder-live2.pages.dev/api/star-1-hindi.json"
-        };
-
-        document.addEventListener("DOMContentLoaded",async()=>{
-            shaka.polyfill.installAll();
-            if(!shaka.Player.isBrowserSupported()) return;
-
-            const video=document.getElementById("video");
-            const container=document.getElementById("player-container");
-            const player=new shaka.Player();
-            await player.attach(video);
-
-            const ui=new shaka.ui.Overlay(player,container,video);
-            ui.configure({
-                controlPanelElements: ["mute", "play_pause", "time_and_duration", "spacer", "quality", "fullscreen"],
-                seekBarColors: { base: "rgba(255,255,255,0.3)", buffered: "rgba(255,255,255,0.5)", played: "red" }
-            });
-
-            player.configure({
-                drm:{ clearKeys:{ [CONFIG.keyId]:CONFIG.key } },
-                manifest:{ defaultPresentationDelay:5 },
-                streaming:{ lowLatencyMode:true, bufferingGoal:10 }
-            });
-
-            // Fetching necessary cookies for JioTV Stream
-            let cookieValue="";
-            try{
-                const response=await fetch(CONFIG.cookieUrl,{cache:"no-store"});
-                const data=await response.json();
-                cookieValue=data.cookie||"";
-            }catch(e){ console.error("Auth failed"); }
-
-            if(cookieValue){
-                player.getNetworkingEngine().registerRequestFilter((type,request)=>{
-                    request.headers["Referer"]="https://www.jiotv.com/";
-                    request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
-                    request.headers["Cookie"]=cookieValue;
-
-                    let urlCookie=cookieValue.startsWith("__hdnea__=")?cookieValue.substring(10):cookieValue;
-                    if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST|| 
-                        type===shaka.net.NetworkingEngine.RequestType.SEGMENT)&& 
-                        !request.uris[0].includes("__hdnea__")){
-                        const sep=request.uris[0].includes("?")?"&":"?";
-                        request.uris[0]+=sep+"__hdnea__="+urlCookie;
-                    }
-                });
+        (function(){
+            // Sandbox Check
+            if (window.self !== window.top) {
+                document.body.innerHTML = '<div class="block-overlay"><div class="block-box"><div class="block-title">Direct Access Only</div><div class="block-sub">Please open in a main browser window.</div></div></div>';
+                return;
             }
 
-            try{
-                await player.load(CONFIG.streamUrl);
-                video.play().catch(()=>{});
-            }catch(e){ console.error("Load failed", e); }
+            const CONFIG={
+                streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd",
+                keyId:"400131994b445d8c8817202248760fda",
+                key:"2d56cb6f07a75b9aff165d534ae2bfc4",
+                cookieUrl:"https://allrounderid2.pages.dev/api/star-1-hindi.json"
+            };
 
-            video.addEventListener("play",()=>{ video.muted=false; });
-        });
-    })();
+            document.addEventListener("DOMContentLoaded",async()=>{
+                shaka.polyfill.installAll();
+                const video=document.getElementById("video");
+                const container=document.getElementById("player-container");
+                const player=new shaka.Player();
+                await player.attach(video);
+
+                new shaka.ui.Overlay(player,container,video).configure({
+                    controlPanelElements: ["mute", "play_pause", "time_and_duration", "spacer", "quality", "fullscreen"]
+                });
+
+                player.configure({
+                    drm:{clearKeys:{[CONFIG.keyId]:CONFIG.key}},
+                    streaming:{ lowLatencyMode:true, bufferingGoal:10 }
+                });
+
+                try{
+                    const res = await fetch(CONFIG.cookieUrl);
+                    const data = await res.json();
+                    if(data.cookie){
+                        player.getNetworkingEngine().registerRequestFilter((type,request)=>{
+                            request.headers["Cookie"]=data.cookie;
+                            request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13)";
+                            if(!request.uris[0].includes("__hdnea__")){
+                                const sep=request.uris[0].includes("?")?"&":"?";
+                                request.uris[0]+=sep+"__hdnea__="+(data.cookie.includes('=') ? data.cookie.split('=')[1] : data.cookie);
+                            }
+                        });
+                    }
+                    await player.load(CONFIG.streamUrl);
+                    video.play();
+                }catch(e){ console.error("Load error", e); }
+
+                video.addEventListener("play", () => { video.muted = false; });
+            });
+        })();
     </script>
-
-    <script src="https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js"></script>
-
 </body>
 </html>
