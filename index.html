@@ -116,7 +116,7 @@ function loadAdScript() {
 
     const script = document.createElement('script');
     script.src = adScriptUrl;
-    script.async = true; 
+    script.async = true;
     document.body.appendChild(script);
 }
 
@@ -158,7 +158,7 @@ const CONFIG={
 streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd", 
 keyId:"400131994b445d8c8817202248760fda", 
 key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"__hdnea__=st=1776253958~exp=1776275558~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=465f172e7f2d189dae3fadbed56662b2acfe174a53cfb65fe58f232376338cb8"
+manualCookie:"__hdnea__=st=1776343373~exp=1776364973~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=bf8f9c35dc8c2b026ce94c32c8bd9a5071cf1f98f9602281023849d46207cd2a"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -186,10 +186,10 @@ streaming:{ lowLatencyMode:true, bufferingGoal:10, rebufferingGoal:2, safeSeekOf
 
 player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
 request.headers["Referer"]="https://www.jiotv.com/"; 
-request.headers["User-Agent"]="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0"; 
+request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
-let urlCookie = CONFIG.manualCookie;
+let urlCookie = CONFIG.manualCookie; 
 if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST || 
     type===shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
    !request.uris[0].includes("__hdnea__")){ 
