@@ -3,7 +3,7 @@
 <head> 
 <meta charset="utf-8"> 
 <meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>Star Sports Hindi HD Live</title> 
+<title>Star Sports HD1 Hindi Live</title> 
 <meta name="referrer" content="no-referrer"> 
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
@@ -153,12 +153,12 @@ triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only & Disable Ad 
 return; 
 } 
 
-// UPDATED STAR SPORTS 1 HINDI HD CONFIG
+// UPDATED STAR SPORTS HD 1 HINDI CONFIG
 const CONFIG={ 
 streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd", 
 keyId:"400131994b445d8c8817202248760fda", 
 key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"hdnea=st=1776499725~exp=1776521325~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=22c6f6964c89656026fc96dc759b19e6a65d13a408406c7ac2e1a1e7fa1a9e22"
+manualCookie:"__hdnea__=st=1776499725~exp=1776521325~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=22c6f6964c89656026fc96dc759b19e6a65d13a408406c7ac2e1a1e7fa1a9e22"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -189,10 +189,10 @@ request.headers["Referer"]="https://www.jiotv.com/";
 request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
-let urlCookie = CONFIG.manualCookie; 
+let urlCookie = CONFIG.manualCookie; // Full cookie pass kar rahe hain segment request ke liye
 if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST || 
     type===shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
-   !request.uris[0].includes("hdnea=")){ 
+   !request.uris[0].includes("__hdnea__")){ 
     const sep = request.uris[0].includes("?") ? "&" : "?"; 
     request.uris[0] += sep + urlCookie; 
 } 
