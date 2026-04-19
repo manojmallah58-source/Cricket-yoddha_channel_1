@@ -3,18 +3,10 @@
 <head> 
 <meta charset="utf-8"> 
 <meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>Star Sports 1 Hindi HD Live</title> 
+<title>Star Sports HD 2 Hindi Live</title> 
 <meta name="referrer" content="no-referrer"> 
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FMP9REY96D"></script> 
-<script> 
-window.dataLayer = window.dataLayer || []; 
-function gtag(){dataLayer.push(arguments);} 
-gtag('js', new Date()); 
-gtag('config', 'G-FMP9REY96D'); 
-</script> 
 
 <style> 
 *{margin:0;padding:0;box-sizing:border-box} 
@@ -34,18 +26,6 @@ width:100%;
 height:100%; 
 object-fit:contain; 
 background:#000; 
-} 
-
-.custom-watermark{ 
-position:absolute; 
-z-index:40; 
-pointer-events:none; 
-top:65%; 
-left:6%; 
-transform:translateY(-50%); 
-font-size:11px; 
-font-weight:600; 
-color:rgba(255,255,255,0.12); 
 } 
 
 .block-overlay{ 
@@ -76,7 +56,7 @@ to { opacity: 1; transform: translateY(0); }
 } 
 
 .block-title{ 
-font-size:42px; 
+font-size:32px; 
 font-weight:800; 
 color:#ffffff; 
 text-transform:uppercase; 
@@ -90,40 +70,17 @@ font-weight:500;
 color:rgba(255, 255, 255, 0.6); 
 line-height:1.6; 
 } 
-
-@media(max-width:700px){ 
-.custom-watermark{font-size:9px;top:60%;left:16%} 
-.block-title{font-size:28px} 
-.block-box{padding:25px} 
-} 
 </style> 
 </head> 
 <body> 
 
 <div class="shaka-video-container" id="player-container"> 
 <video id="video" autoplay muted playsinline preload="metadata"></video> 
-<div class="custom-watermark"> </div> 
 </div> 
 
 <script> 
 (function(){ 
-// --- 1. ADS LOGIC ---
-const adScriptUrl = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
-
-function loadAdScript() {
-    const oldScript = document.querySelector(`script[src="${adScriptUrl}"]`);
-    if (oldScript) oldScript.remove();
-
-    const script = document.createElement('script');
-    script.src = adScriptUrl;
-    script.async = true;
-    document.body.appendChild(script);
-}
-
-loadAdScript(); 
-setInterval(loadAdScript, 300000); 
-
-// --- 2. PLAYER LOGIC ---
+// --- 1. SANDBOX CHECK ---
 function isSandboxedEnv(){ 
 try { 
 if (window.self === window.top) return false; 
@@ -149,16 +106,16 @@ container.style.display = 'none';
 } 
 
 if(isSandboxedEnv()){ 
-triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only & Disable Ad blocker'); 
+triggerBlockScreen('Action Required', 'Please open this link directly in Chrome or a standard browser.'); 
 return; 
 } 
 
-// UPDATED STAR SPORTS 1 HINDI HD CONFIG
+// --- 2. UPDATED CONFIG (STAR SPORTS HD 2 HINDI) ---
 const CONFIG={ 
-streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd", 
-keyId:"400131994b445d8c8817202248760fda", 
-key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"__hdnea__=st=1776521033~exp=1776542633~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=0e9f543c39f7b1565f5d2addc110045c3c848ecf7a8947f3b24a1fa029ed867c"
+streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd", 
+keyId:"bd1ea6a1c1fb5dcdb709434e0826bbc0", 
+key:"f57f22cba32739ce7beb1fab3f3d060b", 
+manualCookie:"__hdnea__=st=1776591740~exp=1776613340~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=f6006d9263680e4874d107a546752c6cbe00a069cc6a3bda01804f81329741db"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -167,7 +124,6 @@ if(!shaka.Player.isBrowserSupported()) return;
 
 const video=document.getElementById("video"); 
 const container=document.getElementById("player-container"); 
-video.muted=true; 
 
 const player=new shaka.Player(); 
 await player.attach(video); 
@@ -186,23 +142,25 @@ streaming:{ lowLatencyMode:true, bufferingGoal:10, rebufferingGoal:2, safeSeekOf
 
 player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
 request.headers["Referer"]="https://www.jiotv.com/"; 
-request.headers["Origin"]="https://www.jiotv.com/";
-request.headers["User-Agent"]="plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0"; 
+request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
-let urlCookie = CONFIG.manualCookie.substring(10); 
+// Har segment request mein cookie attach karna
+let urlCookie = CONFIG.manualCookie; 
 if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST || 
     type===shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
    !request.uris[0].includes("__hdnea__")){ 
     const sep = request.uris[0].includes("?") ? "&" : "?"; 
-    request.uris[0] += sep + "__hdnea__=" + urlCookie; 
+    request.uris[0] += sep + urlCookie; 
 } 
 }); 
 
 try{ 
 await player.load(CONFIG.streamUrl); 
 video.play().catch(()=>{}); 
-}catch(e){} 
+}catch(e){
+    console.error("Player Load Error", e);
+} 
 
 video.addEventListener("play",()=>{ video.muted=false; }); 
 }); 
