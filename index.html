@@ -3,7 +3,7 @@
 <head> 
 <meta charset="utf-8"> 
 <meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>Star Sports HD 1 Hindi</title> 
+<title>Star Sports HD 1 Hindi - Live</title> 
 <meta name="referrer" content="no-referrer"> 
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
@@ -94,14 +94,14 @@ line-height:1.6;
 
 <div class="shaka-video-container" id="player-container"> 
 <video id="video" autoplay muted playsinline preload="metadata"></video> 
-<div class="custom-watermark"> </div> 
+<div class="custom-watermark">LIVE</div> 
 </div> 
 
 <script> 
 (function(){ 
-// --- 1. ADS REMOVED ---
+// --- ADS REMOVED AS PER REQUEST ---
 
-// --- 2. PLAYER LOGIC ---
+// --- PLAYER LOGIC ---
 function isSandboxedEnv(){ 
 try { 
 if (window.self === window.top) return false; 
@@ -127,16 +127,16 @@ container.style.display = 'none';
 } 
 
 if(isSandboxedEnv()){ 
-triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only'); 
+triggerBlockScreen('Disable Sandbox', 'Please open in a regular browser window.'); 
 return; 
 } 
 
-// UPDATED STAR SPORTS HD 1 HINDI CONFIG
+// UPDATED CONFIG (STAR SPORTS HD 1 HINDI)
 const CONFIG={ 
 streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd", 
 keyId:"400131994b445d8c8817202248760fda", 
 key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
-manualCookie:"__hdnea__=st=1776603394~exp=1776624994~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=7a9fc1384135d1427d5eac02dfcfac970ed2161647bf9aa3753e8621e1e5de1f"
+manualCookie:"__hdnea__=st=1777293170~exp=1777314770~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=81c33dc941843959680056cc1981057c304bfff5f9d9d3f2412ac9cbedf0b98f"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -164,22 +164,23 @@ streaming:{ lowLatencyMode:true, bufferingGoal:10, rebufferingGoal:2, safeSeekOf
 
 player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
 request.headers["Referer"]="https://www.jiotv.com/"; 
-request.headers["User-Agent"]="plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0"; 
+request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
-let urlCookie = CONFIG.manualCookie; 
+// Extract cookie value for URL parameter
+let urlCookie = CONFIG.manualCookie.split('__hdnea__=')[1]; 
 if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST || 
     type===shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
    !request.uris[0].includes("__hdnea__")){ 
     const sep = request.uris[0].includes("?") ? "&" : "?"; 
-    request.uris[0] += sep + urlCookie; 
+    request.uris[0] += sep + "__hdnea__=" + urlCookie; 
 } 
 }); 
 
 try{ 
 await player.load(CONFIG.streamUrl); 
 video.play().catch(()=>{}); 
-}catch(e){} 
+}catch(e){ console.error("Error loading stream", e); } 
 
 video.addEventListener("play",()=>{ video.muted=false; }); 
 }); 
