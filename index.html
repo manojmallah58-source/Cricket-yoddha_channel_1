@@ -3,32 +3,48 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Star Sports HD 1 Hindi - Clean Player</title>
+    <title>Star Sports HD 1 Hindi - Live</title>
     <meta name="referrer" content="no-referrer">
-    
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; }
-        #player-container { width: 100%; height: 100%; }
-        video { width: 100%; height: 100%; }
+        html, body { 
+            width: 100%; height: 100%; 
+            background: #000; 
+            overflow: hidden; 
+            font-family: sans-serif; 
+        }
+
+        .shaka-video-container {
+            position: fixed;
+            inset: 0;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
 
-    <div id="player-container" data-shaka-player-container>
-        <video id="video" data-shaka-player autoplay playsinline></video>
-    </div>
+<div class="shaka-video-container" id="player-container" data-shaka-player-container>
+    <video id="video" autoplay playsinline data-shaka-player-video></video>
+</div>
 
 <script>
-// CONFIGURATION: Updated with your Hindi stream details
 const CONFIG = {
+    // The stream URL without the parameters for internal processing
     streamUrl: "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd",
+    // Extracted DRM Keys
     keyId: "400131994b445d8c8817202248760fda",
     key: "2d56cb6f07a75b9aff165d534ae2bfc4",
-    cookie: "__hdnea__=st=1777293170~exp=1777314770~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=81c33dc941843959680056cc1981057c304bfff5f9d9d3f2412ac9cbedf0b98f"
+    // Extracted Token from your URL
+    token: "st=1777374561~exp=1777396161~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=c5fe9544bc8eeaf888382de43fe67f979b8d0a12e22d704c5d79de6702c432ae"
 };
 
 async function initPlayer() {
@@ -43,13 +59,13 @@ async function initPlayer() {
     const container = document.getElementById('player-container');
     const player = new shaka.Player(video);
 
-    // UI Configuration
+    // Create UI
     const ui = new shaka.ui.Overlay(player, container, video);
     ui.configure({
-        'controlPanelElements': ["play_pause", "mute", "volume", "fullscreen", "quality", "spacer"]
+        'controlPanelElements': ["play_pause", "time_and_duration", "spacer", "quality", "mute", "volume", "fullscreen"]
     });
 
-    // DRM & Streaming Config
+    // DRM & Streaming Configuration
     player.configure({
         drm: {
             clearKeys: {
@@ -57,40 +73,35 @@ async function initPlayer() {
             }
         },
         streaming: {
-            bufferingGoal: 15,
             rebufferingGoal: 2,
-            lowLatencyMode: true
+            bufferingGoal: 10,
         }
     });
 
-    // Request Filter to inject Headers and Cookies
+    // Request Filter to add required Jio Headers and Auth Token
     player.getNetworkingEngine().registerRequestFilter((type, request) => {
+        // Essential Headers
         request.headers["Referer"] = "https://www.jiotv.com/";
         request.headers["User-Agent"] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
-        request.headers["Cookie"] = CONFIG.cookie;
-
-        // Append cookie to segment URLs if not present
-        if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT || 
-            type === shaka.net.NetworkingEngine.RequestType.MANIFEST) {
+        
+        // Append token to Manifest and Segment requests
+        if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
+            type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
             const separator = request.uris[0].includes('?') ? '&' : '?';
-            if (!request.uris[0].includes('__hdnea__')) {
-                request.uris[0] += separator + CONFIG.cookie;
-            }
+            request.uris[0] += separator + "__hdnea__=" + CONFIG.token;
         }
     });
 
     try {
         await player.load(CONFIG.streamUrl);
-        console.log('Stream loaded successfully');
-    } catch (error) {
-        console.error('Error loading stream:', error);
+        console.log('The video has now been loaded!');
+    } catch (e) {
+        console.error('Error code', e.code, 'object', e);
     }
 }
 
-document.addEventListener('shaka-ui-loaded', initPlayer);
-document.addEventListener('DOMContentLoaded', () => {
-    if (!window['shaka-ui-loaded-event']) initPlayer();
-});
+document.addEventListener('DOMContentLoaded', initPlayer);
 </script>
+
 </body>
 </html>
