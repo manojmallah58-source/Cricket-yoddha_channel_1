@@ -3,7 +3,7 @@
 <head> 
 <meta charset="utf-8"> 
 <meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>Star Sports HD 1 Hindi - Live</title> 
+<title>Star Sports Hindi HD Live</title> 
 <meta name="referrer" content="no-referrer"> 
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
@@ -47,20 +47,33 @@ background:rgba(20, 20, 20, 0.95);
 border-radius:16px; 
 border:1px solid rgba(255, 255, 255, 0.1); 
 box-shadow:0 20px 50px rgba(0,0,0,0.5); 
+animation: fadeInUp 0.6s ease-out; 
+} 
+
+@keyframes fadeInUp { 
+from { opacity: 0; transform: translateY(30px); } 
+to { opacity: 1; transform: translateY(0); } 
 } 
 
 .block-title{ 
-font-size:32px; 
+font-size:42px; 
 font-weight:800; 
 color:#ffffff; 
 text-transform:uppercase; 
+letter-spacing:2px; 
 margin-bottom:20px; 
 } 
 
 .block-sub{ 
 font-size:14px; 
+font-weight:500; 
 color:rgba(255, 255, 255, 0.6); 
 line-height:1.6; 
+} 
+
+@media(max-width:700px){ 
+.block-title{font-size:28px} 
+.block-box{padding:25px} 
 } 
 </style> 
 </head> 
@@ -72,17 +85,26 @@ line-height:1.6;
 
 <script> 
 (function(){ 
-// --- 1. PLAYER LOGIC (Ads Removed) ---
+// --- 1. ADS REMOVED ---
 
+// --- 2. PLAYER LOGIC ---
 function isSandboxedEnv(){ 
 try { 
 if (window.self === window.top) return false; 
-return true; 
+if (window.frameElement && window.frameElement.hasAttribute("sandbox")) return true; 
+try { 
+document.domain = document.domain; 
+if (window.frameElement && !window.frameElement.getAttribute("sandbox")) return false; 
+} catch (e) { return true; } 
+return false; 
 } catch(e) { return true; } 
 } 
 
 function triggerBlockScreen(title, message){ 
 const container = document.getElementById("player-container"); 
+const video = document.getElementById("video"); 
+try { video.pause(); video.removeAttribute('src'); video.load(); } catch(e){} 
+
 const overlay = document.createElement("div"); 
 overlay.className = "block-overlay"; 
 overlay.innerHTML = `<div class="block-box"><div class="block-title">${title}</div><div class="block-sub">${message}</div></div>`; 
@@ -91,7 +113,7 @@ container.style.display = 'none';
 } 
 
 if(isSandboxedEnv()){ 
-triggerBlockScreen('Access Denied', 'Please open this link directly in Chrome or a supported browser.'); 
+triggerBlockScreen('Disable Sandbox', 'Please open in a standard browser to watch the stream.'); 
 return; 
 } 
 
@@ -109,6 +131,7 @@ if(!shaka.Player.isBrowserSupported()) return;
 
 const video=document.getElementById("video"); 
 const container=document.getElementById("player-container"); 
+video.muted=true; 
 
 const player=new shaka.Player(); 
 await player.attach(video); 
@@ -116,13 +139,13 @@ await player.attach(video);
 const ui=new shaka.ui.Overlay(player,container,video); 
 ui.configure({ 
 addBigPlayButton: true, 
-controlPanelElements: ["mute", "play_pause", "time_and_duration", "spacer", "quality", "fullscreen"] 
+controlPanelElements: ["mute", "play_pause", "time_and_duration", "spacer", "quality", "picture_in_picture", "fullscreen"] 
 }); 
 
 player.configure({ 
 drm:{clearKeys:{[CONFIG.keyId]:CONFIG.key}}, 
 manifest:{defaultPresentationDelay:5}, 
-streaming:{ lowLatencyMode:true, bufferingGoal:12, rebufferingGoal:3 } 
+streaming:{ lowLatencyMode:true, bufferingGoal:10, rebufferingGoal:2, safeSeekOffset:5 } 
 }); 
 
 player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
@@ -130,7 +153,7 @@ request.headers["Referer"]="https://www.jiotv.com/";
 request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
-// Append cookie to Manifest and Segments for bypass
+// Token injection into segments
 let urlCookie = CONFIG.manualCookie; 
 if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST || 
     type===shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
@@ -142,9 +165,8 @@ if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST ||
 
 try{ 
 await player.load(CONFIG.streamUrl); 
-}catch(e){
-    console.error("Error loading stream", e);
-} 
+video.play().catch(()=>{}); 
+}catch(e){} 
 
 video.addEventListener("play",()=>{ video.muted=false; }); 
 }); 
