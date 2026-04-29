@@ -1,107 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Star Sports HD 1 Hindi - Live</title>
-    <meta name="referrer" content="no-referrer">
-    <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/>
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="utf-8"> 
+<meta name="viewport" content="width=device-width,initial-scale=1"> 
+<title>Star Sports HD 1 Hindi - Live</title> 
+<meta name="referrer" content="no-referrer"> 
+<script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { 
-            width: 100%; height: 100%; 
-            background: #000; 
-            overflow: hidden; 
-            font-family: sans-serif; 
-        }
+<style> 
+*{margin:0;padding:0;box-sizing:border-box} 
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif} 
 
-        .shaka-video-container {
-            position: fixed;
-            inset: 0;
-            background: #000;
-        }
+.shaka-video-container{ 
+position:fixed; 
+inset:0; 
+background:#000; 
+display:flex; 
+align-items:center; 
+justify-content:center; 
+} 
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-    </style>
-</head>
-<body>
+video{ 
+width:100%; 
+height:100%; 
+object-fit:contain; 
+background:#000; 
+} 
 
-<div class="shaka-video-container" id="player-container" data-shaka-player-container>
-    <video id="video" autoplay playsinline data-shaka-player-video></video>
-</div>
+.block-overlay{ 
+position:fixed; 
+inset:0; 
+z-index:99999; 
+display:flex; 
+align-items:center; 
+justify-content:center; 
+background:radial-gradient(circle at center, #1a1a1a 0%, #000000 100%); 
+text-align:center; 
+} 
 
-<script>
-const CONFIG = {
-    // The stream URL without the parameters for internal processing
-    streamUrl: "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd",
-    // Extracted DRM Keys
-    keyId: "400131994b445d8c8817202248760fda",
-    key: "2d56cb6f07a75b9aff165d534ae2bfc4",
-    // Extracted Token from your URL
-    token: "st=1777374561~exp=1777396161~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=c5fe9544bc8eeaf888382de43fe67f979b8d0a12e22d704c5d79de6702c432ae"
-};
+.block-box{ 
+padding:40px; 
+max-width:500px; 
+width:90%; 
+background:rgba(20, 20, 20, 0.95); 
+border-radius:16px; 
+border:1px solid rgba(255, 255, 255, 0.1); 
+box-shadow:0 20px 50px rgba(0,0,0,0.5); 
+} 
 
-async function initPlayer() {
-    // Install polyfills
-    shaka.polyfill.installAll();
-    if (!shaka.Player.isBrowserSupported()) {
-        console.error('Browser not supported!');
-        return;
-    }
+.block-title{ 
+font-size:32px; 
+font-weight:800; 
+color:#ffffff; 
+text-transform:uppercase; 
+margin-bottom:20px; 
+} 
 
-    const video = document.getElementById('video');
-    const container = document.getElementById('player-container');
-    const player = new shaka.Player(video);
+.block-sub{ 
+font-size:14px; 
+color:rgba(255, 255, 255, 0.6); 
+line-height:1.6; 
+} 
+</style> 
+</head> 
+<body> 
 
-    // Create UI
-    const ui = new shaka.ui.Overlay(player, container, video);
-    ui.configure({
-        'controlPanelElements': ["play_pause", "time_and_duration", "spacer", "quality", "mute", "volume", "fullscreen"]
-    });
+<div class="shaka-video-container" id="player-container"> 
+<video id="video" autoplay muted playsinline preload="metadata"></video> 
+</div> 
 
-    // DRM & Streaming Configuration
-    player.configure({
-        drm: {
-            clearKeys: {
-                [CONFIG.keyId]: CONFIG.key
-            }
-        },
-        streaming: {
-            rebufferingGoal: 2,
-            bufferingGoal: 10,
-        }
-    });
+<script> 
+(function(){ 
+// --- 1. PLAYER LOGIC (Ads Removed) ---
 
-    // Request Filter to add required Jio Headers and Auth Token
-    player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        // Essential Headers
-        request.headers["Referer"] = "https://www.jiotv.com/";
-        request.headers["User-Agent"] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
-        
-        // Append token to Manifest and Segment requests
-        if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
-            type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
-            const separator = request.uris[0].includes('?') ? '&' : '?';
-            request.uris[0] += separator + "__hdnea__=" + CONFIG.token;
-        }
-    });
+function isSandboxedEnv(){ 
+try { 
+if (window.self === window.top) return false; 
+return true; 
+} catch(e) { return true; } 
+} 
 
-    try {
-        await player.load(CONFIG.streamUrl);
-        console.log('The video has now been loaded!');
-    } catch (e) {
-        console.error('Error code', e.code, 'object', e);
-    }
-}
+function triggerBlockScreen(title, message){ 
+const container = document.getElementById("player-container"); 
+const overlay = document.createElement("div"); 
+overlay.className = "block-overlay"; 
+overlay.innerHTML = `<div class="block-box"><div class="block-title">${title}</div><div class="block-sub">${message}</div></div>`; 
+document.body.appendChild(overlay); 
+container.style.display = 'none'; 
+} 
 
-document.addEventListener('DOMContentLoaded', initPlayer);
-</script>
+if(isSandboxedEnv()){ 
+triggerBlockScreen('Access Denied', 'Please open this link directly in Chrome or a supported browser.'); 
+return; 
+} 
 
-</body>
+// UPDATED STAR SPORTS HD 1 HINDI CONFIG
+const CONFIG={ 
+streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd", 
+keyId:"400131994b445d8c8817202248760fda", 
+key:"2d56cb6f07a75b9aff165d534ae2bfc4", 
+manualCookie:"__hdnea__=st=1777459119~exp=1777480719~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=156b10394b87858192adbdba6b802cc760a90f64d75a5a4ca23a06aea182e269"
+}; 
+
+document.addEventListener("DOMContentLoaded",async()=>{ 
+shaka.polyfill.installAll(); 
+if(!shaka.Player.isBrowserSupported()) return; 
+
+const video=document.getElementById("video"); 
+const container=document.getElementById("player-container"); 
+
+const player=new shaka.Player(); 
+await player.attach(video); 
+
+const ui=new shaka.ui.Overlay(player,container,video); 
+ui.configure({ 
+addBigPlayButton: true, 
+controlPanelElements: ["mute", "play_pause", "time_and_duration", "spacer", "quality", "fullscreen"] 
+}); 
+
+player.configure({ 
+drm:{clearKeys:{[CONFIG.keyId]:CONFIG.key}}, 
+manifest:{defaultPresentationDelay:5}, 
+streaming:{ lowLatencyMode:true, bufferingGoal:12, rebufferingGoal:3 } 
+}); 
+
+player.getNetworkingEngine().registerRequestFilter((type,request)=>{ 
+request.headers["Referer"]="https://www.jiotv.com/"; 
+request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
+request.headers["Cookie"]=CONFIG.manualCookie; 
+
+// Append cookie to Manifest and Segments for bypass
+let urlCookie = CONFIG.manualCookie; 
+if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST || 
+    type===shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
+   !request.uris[0].includes("__hdnea__")){ 
+    const sep = request.uris[0].includes("?") ? "&" : "?"; 
+    request.uris[0] += sep + urlCookie; 
+} 
+}); 
+
+try{ 
+await player.load(CONFIG.streamUrl); 
+}catch(e){
+    console.error("Error loading stream", e);
+} 
+
+video.addEventListener("play",()=>{ video.muted=false; }); 
+}); 
+})(); 
+</script> 
+</body> 
 </html>
