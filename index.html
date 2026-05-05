@@ -27,8 +27,9 @@
             background: #000;
             object-fit: contain;
         }
-        /* Spinner hide karne ke liye */
-        .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg {
+        .shaka-spinner-container,
+        .shaka-spinner,
+        .shaka-spinner-svg {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
@@ -66,18 +67,18 @@
                 seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
             });
 
-            // --- NAYA DATA YAHA HAI ---
+            // Updated DRM Keys
             let drmConfig = {
                 clearKeys: {
                     "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"
                 }
             };
+
+            // Updated Stream URL & Token
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1777984235~exp=1778005835~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=e855217d7aea1d444dcbd4db59b0a6557a310ad2415ae71782861bd89398d746";
             
-            // Naya Stream URL
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1777948867~exp=1777970467~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=90d2ce6c198be94b56fe482a0116ebb639df746605b608c0b9a5a544b830e2e3";
-            
-            // Cookie nikalne ke liye URL se split
-            let cookieHeader = streamUrl.split('?')[1] || "";
+            // Extracting token for headers
+            let cookieHeader = streamUrl.split('?')[1];
 
             player.configure({
                 drm: drmConfig,
@@ -86,8 +87,13 @@
                     bufferingGoal: 15,
                     rebufferingGoal: 2,
                     bufferBehind: 15,
-                    retryParameters: { timeout: 10000, maxAttempts: 5 },
+                    retryParameters: { timeout: 10000, maxAttempts: 5, baseDelay: 300, backoffFactor: 1.2 },
+                    segmentRequestTimeout: 8000,
+                    segmentPrefetchLimit: 2,
                     useNativeHlsOnSafari: true
+                },
+                manifest: {
+                    retryParameters: { timeout: 8000, maxAttempts: 3 }
                 }
             });
 
@@ -95,13 +101,12 @@
                 request.headers['Referer'] = 'https://www.jiotv.com/';
                 request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
                 
-                // Har segment request mein cookie attach karna
-                if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
-                    type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
-                    if (!request.uris[0].includes('__hdnea=')) {
-                        const separator = request.uris[0].includes('?') ? '&' : '?';
-                        request.uris[0] += separator + cookieHeader;
-                    }
+                // Adding token to segments if not present
+                if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
+                     type === shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
+                     request.uris[0] && !request.uris[0].includes('__hdnea=')) {
+                    const separator = request.uris[0].includes('?') ? '&' : '?';
+                    request.uris[0] += separator + cookieHeader;
                 }
             });
 
@@ -115,23 +120,21 @@
                 }
             };
 
-            video.addEventListener('play', () => {
-                if (window.innerWidth <= 768) {
-                    container.requestFullscreen().catch(() => {});
-                }
-            }, { once: true });
+            player.addEventListener('error', (event) => console.error('Error:', event.detail));
 
             try {
                 await player.load(streamUrl);
-                await attemptAutoplay();
+                if (video.readyState >= 3) {
+                    await attemptAutoplay();
+                } else {
+                    video.addEventListener('canplay', attemptAutoplay, { once: true });
+                }
             } catch (error) {
                 console.error('Load error:', error);
             }
-            
-            // User interaction par sound enable karna
-            ['click', 'touchstart'].forEach(ev => {
-                document.addEventListener(ev, () => { video.muted = false; }, { once: true });
-            });
+
+            // Unmute on first click
+            document.addEventListener('click', () => { if(video.muted) video.muted = false; }, { once: true });
         });
     </script>
 </body>
