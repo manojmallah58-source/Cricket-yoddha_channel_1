@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Sports HD 1 Hindi</title>
+    <title>Star Sports 1 Hindi HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -27,8 +27,9 @@
             background: #000;
             object-fit: contain;
         }
-        /* Spinner hide karne ke liye */
-        .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg {
+        .shaka-spinner-container,
+        .shaka-spinner,
+        .shaka-spinner-svg {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
@@ -66,18 +67,16 @@
                 seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
             });
 
-            // --- NAYA DATA YAHA HAI ---
-            const streamUrl = "https://jiotvpllive.cdn.jio.com//bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1778157954~exp=1778179554~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=6e09ac2743fe86f7d74c02508c385b1f2a472390c1dd51dde0cf22c97e116980";
-            
-            // Aapka naya DRM Key aur KID
+            // UPDATED: New Stream URL and DRM Configuration
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd";
             let drmConfig = {
                 clearKeys: {
                     "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"
                 }
             };
-
-            // URL se cookie extract karna
-            const cookieValue = streamUrl.split('?')[1]; 
+            
+            // Extracting cookie from your provided link
+            let cookieHeader = "__hdnea__=st=1778237091~exp=1778258691~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=02e31049e5eb76959f326af56d437445a59192f26fe6a4beee1db60283c6982b";
 
             player.configure({
                 drm: drmConfig,
@@ -85,25 +84,29 @@
                     lowLatencyMode: true,
                     bufferingGoal: 15,
                     rebufferingGoal: 2,
-                    retryParameters: { timeout: 10000, maxAttempts: 5 }
-                }
-            });
-
-            // Request Filter for Headers
-            player.getNetworkingEngine().registerRequestFilter((type, request) => {
-                request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
-                
-                // Har request mein cookie add karna
-                if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
-                    if (!request.uris[0].includes('__hdnea=')) {
-                        const separator = request.uris[0].includes('?') ? '&' : '?';
-                        request.uris[0] += separator + cookieValue;
+                    bufferBehind: 15,
+                    retryParameters: {
+                        timeout: 10000,
+                        maxAttempts: 5,
+                        baseDelay: 300,
+                        backoffFactor: 1.2
                     }
                 }
             });
 
-            // Autoplay Logic
+            player.getNetworkingEngine().registerRequestFilter((type, request) => {
+                request.headers['Referer'] = 'https://www.jiotv.com/';
+                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+                request.headers['Cookie'] = cookieHeader;
+
+                if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
+                     type === shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
+                    request.uris[0] && !request.uris[0].includes('__hdnea=')) {
+                    const separator = request.uris[0].includes('?') ? '&' : '?';
+                    request.uris[0] += separator + cookieHeader;
+                }
+            });
+
             const attemptAutoplay = async () => {
                 try {
                     video.muted = false;
@@ -114,15 +117,23 @@
                 }
             };
 
+            player.addEventListener('error', (event) => console.error('Shaka Player Error:', event.detail));
+
             try {
                 await player.load(streamUrl);
-                await attemptAutoplay();
+                if (video.readyState >= 3) {
+                    await attemptAutoplay();
+                } else {
+                    video.addEventListener('canplay', attemptAutoplay, { once: true });
+                }
             } catch (error) {
                 console.error('Load error:', error);
             }
 
-            // Click karne par sound enable
-            document.addEventListener('click', () => { video.muted = false; }, { once: true });
+            // Unmute on first interaction
+            ['click', 'touchstart'].forEach(event => {
+                document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
+            });
         });
     </script>
 </body>
