@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Sports 1 Hindi HD</title>
+    <title>Ten 3 HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,15 +68,16 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd";
+            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1780416041~exp=1780437641~acl=/*~hmac=6a3585f75470ccc17b234f4cd7be0533cc677d5bc2852bee08556384ddb6e6f6";
+            
             let drmConfig = {
                 clearKeys: {
-                    "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"
+                    "111e6908b965566e97139efddf7ef459": "c87903abbc052e1f21e51ebd928d9cb1"
                 }
             };
             
-            // Extracting cookie from your provided link
-            let cookieHeader = "__hdnea__=st=1778237091~exp=1778258691~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=02e31049e5eb76959f326af56d437445a59192f26fe6a4beee1db60283c6982b";
+            // Cookie extracted from URL parameters
+            let cookieHeader = "__hdnea__=st=1780416041~exp=1780437641~acl=/*~hmac=6a3585f75470ccc17b234f4cd7be0533cc677d5bc2852bee08556384ddb6e6f6";
 
             player.configure({
                 drm: drmConfig,
@@ -96,7 +97,7 @@
 
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
                 request.headers['Cookie'] = cookieHeader;
 
                 if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
@@ -130,7 +131,6 @@
                 console.error('Load error:', error);
             }
 
-            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
