@@ -3,128 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten HD</title>
+    <title>Stream Player</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-            background: #000;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        .shaka-video-container {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            background: #000;
-            object-fit: contain;
-        }
-        .shaka-spinner-container,
-        .shaka-spinner,
-        .shaka-spinner-svg {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-        }
+        html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: sans-serif; }
+        .shaka-video-container { position: absolute; inset: 0; width: 100%; height: 100%; }
+        video { width: 100%; height: 100%; background: #000; object-fit: contain; }
     </style>
 </head>
 <body>
     <div class="shaka-video-container" data-shaka-player>
-        <video autoplay playsinline preload="metadata" poster=""></video>
+        <video autoplay playsinline preload="metadata"></video>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             shaka.polyfill.installAll();
-
-            if (!shaka.Player.isBrowserSupported()) {
-                console.error('Browser not supported');
-                return;
-            }
-
             const video = document.querySelector('video');
             const player = new shaka.Player();
             await player.attach(video);
-
             const container = document.querySelector('.shaka-video-container');
-            const ui = new shaka.ui.Overlay(player, container, video);
+            new shaka.ui.Overlay(player, container, video);
 
-            ui.configure({
-                controlPanelElements: [
-                    'play_pause', 'time_and_duration', 'mute', 'volume',
-                    'spacer', 'language', 'captions', 'picture_in_picture',
-                    'quality', 'fullscreen'
-                ],
-                volumeBarColors: { base: 'purple', level: 'purple' },
-                seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
-            });
-
-            // UPDATED: New Stream URL and DRM Configuration
+            // UPDATED: Stream URL and DRM Configuration
             let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1780653814~exp=1780675414~acl=/*~hmac=833da75b8830292913c77f267596646ca7d4c8123036d4afa500312251fba1ce";
+            
             let drmConfig = {
                 clearKeys: {
                     "3525c924e54154b39533d86b1c7a428a": "8548b566fc6608a7d3bd601ee5f3d889"
                 }
             };
             
+            // Cookie extracted from URL parameters
             let cookieHeader = "__hdnea__=st=1780653814~exp=1780675414~acl=/*~hmac=833da75b8830292913c77f267596646ca7d4c8123036d4afa500312251fba1ce";
 
             player.configure({
                 drm: drmConfig,
-                streaming: {
-                    lowLatencyMode: true,
-                    bufferingGoal: 15,
-                    rebufferingGoal: 2,
-                    bufferBehind: 15,
-                    retryParameters: {
-                        timeout: 10000,
-                        maxAttempts: 5,
-                        baseDelay: 300,
-                        backoffFactor: 1.2
-                    }
-                }
+                streaming: { lowLatencyMode: true }
             });
 
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
                 request.headers['Cookie'] = cookieHeader;
             });
 
-            const attemptAutoplay = async () => {
-                try {
-                    video.muted = false;
-                    await video.play();
-                } catch (error) {
-                    video.muted = true;
-                    await video.play();
-                }
-            };
-
-            player.addEventListener('error', (event) => console.error('Shaka Player Error:', event.detail));
-
             try {
                 await player.load(streamUrl);
-                if (video.readyState >= 3) {
-                    await attemptAutoplay();
-                } else {
-                    video.addEventListener('canplay', attemptAutoplay, { once: true });
-                }
             } catch (error) {
                 console.error('Load error:', error);
             }
-
-            ['click', 'touchstart'].forEach(event => {
-                document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
-            });
         });
     </script>
 </body>
