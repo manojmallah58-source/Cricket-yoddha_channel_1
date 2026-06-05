@@ -68,15 +68,14 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1780416041~exp=1780437641~acl=/*~hmac=6a3585f75470ccc17b234f4cd7be0533cc677d5bc2852bee08556384ddb6e6f6";
-            
+            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd";
             let drmConfig = {
                 clearKeys: {
-                    "111e6908b965566e97139efddf7ef459": "c87903abbc052e1f21e51ebd928d9cb1"
+                    "3525c924e54154b39533d86b1c7a428a": "8548b566fc6608a7d3bd601ee5f3d889"
                 }
             };
             
-            // Cookie extracted from URL parameters
+            // Updated cookie based on the provided URL
             let cookieHeader = "__hdnea__=st=1780416041~exp=1780437641~acl=/*~hmac=6a3585f75470ccc17b234f4cd7be0533cc677d5bc2852bee08556384ddb6e6f6";
 
             player.configure({
@@ -97,7 +96,7 @@
 
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
                 request.headers['Cookie'] = cookieHeader;
 
                 if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
