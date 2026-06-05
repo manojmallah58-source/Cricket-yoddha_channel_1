@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten 3 HD</title>
+    <title>Ten HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,15 +68,14 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd";
+            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1780653814~exp=1780675414~acl=/*~hmac=833da75b8830292913c77f267596646ca7d4c8123036d4afa500312251fba1ce";
             let drmConfig = {
                 clearKeys: {
                     "3525c924e54154b39533d86b1c7a428a": "8548b566fc6608a7d3bd601ee5f3d889"
                 }
             };
             
-            // Updated cookie based on the provided URL
-            let cookieHeader = "__hdnea__=st=1780416041~exp=1780437641~acl=/*~hmac=6a3585f75470ccc17b234f4cd7be0533cc677d5bc2852bee08556384ddb6e6f6";
+            let cookieHeader = "__hdnea__=st=1780653814~exp=1780675414~acl=/*~hmac=833da75b8830292913c77f267596646ca7d4c8123036d4afa500312251fba1ce";
 
             player.configure({
                 drm: drmConfig,
@@ -98,13 +97,6 @@
                 request.headers['Referer'] = 'https://www.jiotv.com/';
                 request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
                 request.headers['Cookie'] = cookieHeader;
-
-                if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
-                     type === shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
-                    request.uris[0] && !request.uris[0].includes('__hdnea=')) {
-                    const separator = request.uris[0].includes('?') ? '&' : '?';
-                    request.uris[0] += separator + cookieHeader;
-                }
             });
 
             const attemptAutoplay = async () => {
