@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sony Sports Ten 3 Hindi HD</title>
+    <title>Ten 3 HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,16 +68,14 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1780990219~exp=1781011819~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=631ff6c66176bd48398dfc4e6482b6ec246ee5600d6a4aa925b9c2fa4a049b4a";
-            
+            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd";
             let drmConfig = {
                 clearKeys: {
-                    "08638117638b55649c6befa7f5cb34f6": "58ddb6bbdf8d8b1e2aac2b5312e99086"
+                    "111e6908b965566e97139efddf7ef459": "c87903abbc052e1f21e51ebd928d9cb1"
                 }
             };
             
-            // Extracted cookie from your URL
-            let cookieHeader = "__hdnea__=st=1780990219~exp=1781011819~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=631ff6c66176bd48398dfc4e6482b6ec246ee5600d6a4aa925b9c2fa4a049b4a";
+            let cookieHeader = "__hdnea__=st=1781148822~exp=1781170422~acl=/*~hmac=a380c159be35875145c0a95039388343c04b38d0ef43612622da03b2241f5f01";
 
             player.configure({
                 drm: drmConfig,
