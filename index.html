@@ -68,15 +68,15 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1781148822~exp=1781170422~acl=/*~hmac=a380c159be35875145c0a95039388343c04b38d0ef43612622da03b2241f5f01";
+            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1781159661~exp=1781181261~acl=/*~hmac=2ccf740e3e78fe06ea328d695968aa0f2c236b2a0e250e070ec13e588065c8b8";
             let drmConfig = {
                 clearKeys: {
                     "111e6908b965566e97139efddf7ef459": "c87903abbc052e1f21e51ebd928d9cb1"
                 }
             };
             
-            // Cookie extracted from the provided URL
-            let cookieHeader = "__hdnea__=st=1781148822~exp=1781170422~acl=/*~hmac=a380c159be35875145c0a95039388343c04b38d0ef43612622da03b2241f5f01";
+            // Updated Cookie Header
+            let cookieHeader = "__hdnea__=st=1781159661~exp=1781181261~acl=/*~hmac=2ccf740e3e78fe06ea328d695968aa0f2c236b2a0e250e070ec13e588065c8b8";
 
             player.configure({
                 drm: drmConfig,
@@ -96,7 +96,7 @@
 
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
                 request.headers['Cookie'] = cookieHeader;
 
                 if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
@@ -130,7 +130,6 @@
                 console.error('Load error:', error);
             }
 
-            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
