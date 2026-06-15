@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sony Sports Ten 3 HD</title>
+    <title>Ten 3 HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,14 +68,15 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1781490623~exp=1781512223~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=112f6b89013bcb5d3fe2849fe6a08a31a87655f00d47db141cfc805a330798aa";
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd";
             let drmConfig = {
                 clearKeys: {
-                    "08638117638b55649c6befa7f5cb34f6": "58ddb6bbdf8d8b1e2aac2b5312e99086"
+                    "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
                 }
             };
             
-            let cookieHeader = "__hdnea__=st=1781490623~exp=1781512223~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=112f6b89013bcb5d3fe2849fe6a08a31a87655f00d47db141cfc805a330798aa";
+            // Updated cookie based on the new URL provided
+            let cookieHeader = "__hdnea__=st=1781512816~exp=1781534416~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=d0a372b8852a0082aa1d015c639612387ab9e32c59724629662681404be0b486";
 
             player.configure({
                 drm: drmConfig,
@@ -129,6 +130,7 @@
                 console.error('Load error:', error);
             }
 
+            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
