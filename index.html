@@ -68,15 +68,16 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd";
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=517971566020fa4268fe32932b9c375ca3f4cc2f7e14f93d774b38c2e71c6776";
+            
             let drmConfig = {
                 clearKeys: {
                     "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
                 }
             };
             
-            // Updated cookie based on the new URL provided
-            let cookieHeader = "__hdnea__=st=1781512816~exp=1781534416~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=d0a372b8852a0082aa1d015c639612387ab9e32c59724629662681404be0b486";
+            // Cookie extracted from the URL
+            let cookieHeader = "__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=517971566020fa4268fe32932b9c375ca3f4cc2f7e14f93d774b38c2e71c6776";
 
             player.configure({
                 drm: drmConfig,
