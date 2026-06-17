@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten HD</title>
+    <title>Ten HD Player</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -67,15 +67,16 @@
                 seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
             });
 
-            // UPDATED: New Stream URL and DRM Configuration
+            // UPDATED: Stream URL and DRM Configuration
             let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=34f9bb8ce4608897b4b98d53130573cda44b14ceb8a69d47c87f45defd9d193c";
+            
             let drmConfig = {
                 clearKeys: {
                     "08638117638b55649c6befa7f5cb34f6": "58ddb6bbdf8d8b1e2aac2b5312e99086"
                 }
             };
             
-            // Extracting cookie from your provided link
+            // Cookie header based on the URL provided
             let cookieHeader = "__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=34f9bb8ce4608897b4b98d53130573cda44b14ceb8a69d47c87f45defd9d193c";
 
             player.configure({
@@ -96,7 +97,7 @@
 
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
                 request.headers['Cookie'] = cookieHeader;
 
                 if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
@@ -130,7 +131,6 @@
                 console.error('Load error:', error);
             }
 
-            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
