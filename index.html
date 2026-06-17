@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten 3 HD</title>
+    <title>Ten HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,16 +68,15 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=517971566020fa4268fe32932b9c375ca3f4cc2f7e14f93d774b38c2e71c6776";
-            
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=34f9bb8ce4608897b4b98d53130573cda44b14ceb8a69d47c87f45defd9d193c";
             let drmConfig = {
                 clearKeys: {
-                    "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
+                    "08638117638b55649c6befa7f5cb34f6": "58ddb6bbdf8d8b1e2aac2b5312e99086"
                 }
             };
             
-            // Cookie extracted from the URL
-            let cookieHeader = "__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=517971566020fa4268fe32932b9c375ca3f4cc2f7e14f93d774b38c2e71c6776";
+            // Extracting cookie from your provided link
+            let cookieHeader = "__hdnea__=st=1781654637~exp=1781676237~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=34f9bb8ce4608897b4b98d53130573cda44b14ceb8a69d47c87f45defd9d193c";
 
             player.configure({
                 drm: drmConfig,
