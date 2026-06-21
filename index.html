@@ -67,8 +67,8 @@
                 seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
             });
 
-            // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1782001827~exp=1782023427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=50b9f27c6cae1c952011e123c4028fe1f300b09056fc5b84db8a267f05e68ba7";
+            // UPDATED: Sony Sports Ten 3 Stream URL and DRM Configuration
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1782019827~exp=1782041427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=1e049d4c12518a1e42effd624ba88107ef03eba4d36ab279de9cbf253bfdc5bb";
             
             let drmConfig = {
                 clearKeys: {
@@ -76,8 +76,8 @@
                 }
             };
             
-            // Cookie extracted from the provided URL
-            let cookieHeader = "__hdnea__=st=1782001827~exp=1782023427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=50b9f27c6cae1c952011e123c4028fe1f300b09056fc5b84db8a267f05e68ba7";
+            // Cookie extracted from URL
+            let cookieHeader = "__hdnea__=st=1782019827~exp=1782041427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=1e049d4c12518a1e42effd624ba88107ef03eba4d36ab279de9cbf253bfdc5bb";
 
             player.configure({
                 drm: drmConfig,
