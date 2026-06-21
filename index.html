@@ -68,7 +68,7 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1781677826~exp=1781699426~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=feb6c45596142d7abdcf362d8d651a3ea24705d56b724074ed0ff81a55bb0812";
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1782001827~exp=1782023427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=50b9f27c6cae1c952011e123c4028fe1f300b09056fc5b84db8a267f05e68ba7";
             
             let drmConfig = {
                 clearKeys: {
@@ -76,7 +76,8 @@
                 }
             };
             
-            let cookieHeader = "__hdnea__=st=1781677826~exp=1781699426~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=feb6c45596142d7abdcf362d8d651a3ea24705d56b724074ed0ff81a55bb0812";
+            // Cookie extracted from the provided URL
+            let cookieHeader = "__hdnea__=st=1782001827~exp=1782023427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=50b9f27c6cae1c952011e123c4028fe1f300b09056fc5b84db8a267f05e68ba7";
 
             player.configure({
                 drm: drmConfig,
@@ -96,7 +97,7 @@
 
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
                 request.headers['Cookie'] = cookieHeader;
 
                 if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
