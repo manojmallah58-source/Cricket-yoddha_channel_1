@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sony Sports Ten 3 HD</title>
+    <title>Sony Sports Ten 3 Hindi HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -67,8 +67,8 @@
                 seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
             });
 
-            // UPDATED: Sony Sports Ten 3 Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1782019827~exp=1782041427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=1e049d4c12518a1e42effd624ba88107ef03eba4d36ab279de9cbf253bfdc5bb";
+            // UPDATED: New Stream URL and DRM Configuration
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1782037827~exp=1782059427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=d914185c5d01ec767d10b8936139a99ff2875aee7a7b0c5f4e85aac38beaecbc";
             
             let drmConfig = {
                 clearKeys: {
@@ -77,7 +77,7 @@
             };
             
             // Cookie extracted from URL
-            let cookieHeader = "__hdnea__=st=1782019827~exp=1782041427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=1e049d4c12518a1e42effd624ba88107ef03eba4d36ab279de9cbf253bfdc5bb";
+            let cookieHeader = "__hdnea__=st=1782037827~exp=1782059427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=d914185c5d01ec767d10b8936139a99ff2875aee7a7b0c5f4e85aac38beaecbc";
 
             player.configure({
                 drm: drmConfig,
@@ -131,6 +131,7 @@
                 console.error('Load error:', error);
             }
 
+            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
