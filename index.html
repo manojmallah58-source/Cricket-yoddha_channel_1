@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sony Sports Ten 3 Hindi HD</title>
+    <title>Ten 3 HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,16 +68,14 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1782037827~exp=1782059427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=d914185c5d01ec767d10b8936139a99ff2875aee7a7b0c5f4e85aac38beaecbc";
-            
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782468939~exp=1782490539~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=a130374cf30f3e4655c900422900f863849e977e8ca0ffed64ddbc491e93f11b";
             let drmConfig = {
                 clearKeys: {
-                    "08638117638b55649c6befa7f5cb34f6": "58ddb6bbdf8d8b1e2aac2b5312e99086"
+                    "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
                 }
             };
             
-            // Cookie extracted from URL
-            let cookieHeader = "__hdnea__=st=1782037827~exp=1782059427~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=d914185c5d01ec767d10b8936139a99ff2875aee7a7b0c5f4e85aac38beaecbc";
+            let cookieHeader = "__hdnea__=st=1782468939~exp=1782490539~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=a130374cf30f3e4655c900422900f863849e977e8ca0ffed64ddbc491e93f11b";
 
             player.configure({
                 drm: drmConfig,
@@ -131,7 +129,6 @@
                 console.error('Load error:', error);
             }
 
-            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
