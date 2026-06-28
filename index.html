@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten HD</title>
+    <title>Ten 3 HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,15 +68,16 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782642313~exp=1782663913~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=bacd8d9f78e4dc446079928bb5829bd8cf5cba4e3e05561de7993735d558a0ee";
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782648904~exp=1782670504~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=6bf0d52627d501290a883b5c5ca3af418f3d8d92ef41343fa86fd1b3f220a307";
+            
             let drmConfig = {
                 clearKeys: {
-                    "523acf1f55485476817958a62a3f2ed9": "52b3cea435ed25d445f9eae4883c7001"
+                    "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
                 }
             };
             
-            // Cookie from the provided URL
-            let cookieHeader = "__hdnea__=st=1782642313~exp=1782663913~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=bacd8d9f78e4dc446079928bb5829bd8cf5cba4e3e05561de7993735d558a0ee";
+            // Cookie extracted from URL parameters
+            let cookieHeader = "__hdnea__=st=1782648904~exp=1782670504~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=6bf0d52627d501290a883b5c5ca3af418f3d8d92ef41343fa86fd1b3f220a307";
 
             player.configure({
                 drm: drmConfig,
@@ -130,7 +131,6 @@
                 console.error('Load error:', error);
             }
 
-            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
