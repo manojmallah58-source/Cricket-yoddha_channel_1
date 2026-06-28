@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten 3 HD</title>
+    <title>Ten HD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -68,14 +68,15 @@
             });
 
             // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782468939~exp=1782490539~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=a130374cf30f3e4655c900422900f863849e977e8ca0ffed64ddbc491e93f11b";
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782642313~exp=1782663913~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=bacd8d9f78e4dc446079928bb5829bd8cf5cba4e3e05561de7993735d558a0ee";
             let drmConfig = {
                 clearKeys: {
-                    "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
+                    "523acf1f55485476817958a62a3f2ed9": "52b3cea435ed25d445f9eae4883c7001"
                 }
             };
             
-            let cookieHeader = "__hdnea__=st=1782468939~exp=1782490539~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=a130374cf30f3e4655c900422900f863849e977e8ca0ffed64ddbc491e93f11b";
+            // Cookie from the provided URL
+            let cookieHeader = "__hdnea__=st=1782642313~exp=1782663913~acl=/bpk-tv/Ten_HD_BTS/WDVLive/*~hmac=bacd8d9f78e4dc446079928bb5829bd8cf5cba4e3e05561de7993735d558a0ee";
 
             player.configure({
                 drm: drmConfig,
@@ -129,6 +130,7 @@
                 console.error('Load error:', error);
             }
 
+            // Unmute on first interaction
             ['click', 'touchstart'].forEach(event => {
                 document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
             });
