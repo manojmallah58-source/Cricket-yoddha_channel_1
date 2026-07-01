@@ -67,16 +67,16 @@
                 seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
             });
 
-            // UPDATED: New Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782876544~exp=1782898144~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=bef372772e7b6d3fbd628eb678199bed84041ce4012d0a06caa57050691daff7";
+            // UPDATED: Stream URL and DRM Configuration
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782907109~exp=1782928709~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=1c3abb2fb4f068a5abaeb142dde956526097c908561b6c803bfbb5061af24494";
+            
             let drmConfig = {
                 clearKeys: {
                     "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
                 }
             };
             
-            // Cookie extracted from the provided URL
-            let cookieHeader = "__hdnea__=st=1782876544~exp=1782898144~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=bef372772e7b6d3fbd628eb678199bed84041ce4012d0a06caa57050691daff7";
+            let cookieHeader = "__hdnea__=st=1782907109~exp=1782928709~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=1c3abb2fb4f068a5abaeb142dde956526097c908561b6c803bfbb5061af24494";
 
             player.configure({
                 drm: drmConfig,
@@ -96,7 +96,7 @@
 
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
                 request.headers['Cookie'] = cookieHeader;
 
                 if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
