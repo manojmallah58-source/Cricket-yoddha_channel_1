@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten 3 HD</title>
+    <title>Sony MAX Player</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
     <style>
@@ -67,16 +67,17 @@
                 seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
             });
 
-            // UPDATED: Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782907109~exp=1782928709~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=1c3abb2fb4f068a5abaeb142dde956526097c908561b6c803bfbb5061af24494";
+            // UPDATED: Stream URL and Multiple DRM Keys
+            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/SonyMAX_MOB/WDVLive/index.mpd?__hdnea__=st=1783167891~exp=1783189491~acl=/*~hmac=4b81b9ac7fe2809d617bb9c3ed9cab49f4038d776129542357a9b27d354c2945";
             
             let drmConfig = {
                 clearKeys: {
-                    "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
+                    "9d2bfb4c9aa45ac488bd92ec0e351217": "c980b395f0be528c4233417ef6305274",
+                    "523acf1f55485476817958a62a3f2ed9": "52b3cea435ed25d445f9eae4883c7001"
                 }
             };
             
-            let cookieHeader = "__hdnea__=st=1782907109~exp=1782928709~acl=/bpk-tv/Ten3_HD_BTS/WDVLive/*~hmac=1c3abb2fb4f068a5abaeb142dde956526097c908561b6c803bfbb5061af24494";
+            let cookieHeader = "__hdnea__=st=1783167891~exp=1783189491~acl=/*~hmac=4b81b9ac7fe2809d617bb9c3ed9cab49f4038d776129542357a9b27d354c2945";
 
             player.configure({
                 drm: drmConfig,
