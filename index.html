@@ -1,35 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cricket Live</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-    }
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    <title>Sonu // Live Stream</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@5.1.8/dist/controls.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { 
+            width: 100%; height: 100%; 
+            background: #000; overflow: hidden; 
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            user-select: none;
+        }
+        .shaka-video-container {
+            position: fixed; inset: 0;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+        .shaka-spinner-container, .shaka-spinner { display: none !important; }
+        #loader {
+            position: absolute; inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        #loader.on { opacity: 1; }
+        .spin {
+            width: 36px; height: 36px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: sp 0.75s linear infinite;
+        }
+        @keyframes sp { to { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
 
-<iframe 
-  src="https://allrounder2-0.pages.dev/cricket/kick"
-  sandbox="allow-scripts allow-same-origin allow-presentation"
-  allow="autoplay; encrypted-media"
-  allowfullscreen>
-</iframe>
+    <div class="shaka-video-container" id="pc">
+        <video id="v" autoplay playsinline preload="metadata"></video>
+        <div id="loader"><div class="spin"></div></div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@5.1.8/dist/shaka-player.ui.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            shaka.polyfill.installAll();
+            if (!shaka.Player.isBrowserSupported()) return;
+
+            const video = document.getElementById('v');
+            const container = document.getElementById('pc');
+            const loader = document.getElementById('loader');
+
+            let playing = false;
+            const showLoader = () => { if (playing) loader.classList.add('on'); };
+            const hideLoader = () => { playing = true; loader.classList.remove('on'); };
+
+            video.addEventListener('waiting', showLoader);
+            video.addEventListener('playing', hideLoader);
+
+            const player = new shaka.Player();
+            await player.attach(video);
+
+            const ui = new shaka.ui.Overlay(player, container, video);
+            ui.configure({
+                controlPanelElements: ['play_pause', 'time_and_duration', 'spacer', 'quality', 'fullscreen', 'overflow_menu']
+            });
+
+            // UPDATED URL AND KEYS
+            const STREAM_URL = 'https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/orxueyvu1q/out/v1/4f512a0c1bf2470c875bf8b26b563c80/cenc.mpd';
+            const clearKeys = { 
+                'f52a13486b5aa72569ab1e6b45e7ec29': '41611477a72a4b932513c0b824ccae06' 
+            };
+
+            player.configure({
+                drm: { clearKeys }
+            });
+
+            player.getNetworkingEngine().registerRequestFilter((type, request) => {
+                request.headers['Referer'] = 'https://www.cricbuzz.com/';
+                request.headers['User-Agent'] = 'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36';
+            });
+
+            try {
+                await player.load(STREAM_URL);
+            } catch (e) {
+                console.error("Error loading stream:", e);
+            }
+        });
+    </script>
 </body>
 </html>
