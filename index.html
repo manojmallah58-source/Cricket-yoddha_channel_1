@@ -1,126 +1,139 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Prime By Cricket Yoddha</title>     
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
-  <style>  
-   * { margin: 0; padding: 0; box-sizing: border-box; }  
-    html, body {  
-      background: #000;  
-      height: 100vh;  
-      width: 100vw;  
-      overflow: hidden;  
-      font-family: system-ui, -apple-system, sans-serif;  
-    }  
-    .shaka-video-container {  
-      position: absolute;  
-      inset: 0;  
-      width: 100%;  
-      height: 100%;  
-    }  
-    video {  
-      width: 100%;  
-      height: 100%;  
-      background: #000;  
-      object-fit: contain;  
-    }  
-    /* Shaka Spinner Hiding */
-    .shaka-spinner-container,  
-    .shaka-spinner,  
-    .shaka-spinner-svg {  
-      display: none !important;  
-      visibility: hidden !important;  
-      opacity: 0 !important;  
-    }  
-  </style>  
-</head>  
-<body>  
-  <div class="shaka-video-container" data-shaka-player>  
-    <video autoplay playsinline preload="metadata" poster="https://i.ibb.co/VrsnMcD/image-search-1765615733453.webp"></video>  
-  </div>  
-  
-  <script>  
-    document.addEventListener('DOMContentLoaded', async () => {  
-      shaka.polyfill.installAll();  
-  
-      if (!shaka.Player.isBrowserSupported()) {  
-        console.error('Browser not supported');  
-        return;  
-      }  
-  
-      const video = document.querySelector('video');  
-      const player = new shaka.Player();  
-      await player.attach(video);  
-  
-      const container = document.querySelector('.shaka-video-container');  
-      const ui = new shaka.ui.Overlay(player, container, video);  
-  
-      ui.configure({  
-        controlPanelElements: [  
-          'play_pause', 'time_and_duration', 'mute', 'volume',  
-          'spacer', 'language', 'captions', 'picture_in_picture',  
-          'quality', 'fullscreen'  
-        ],  
-        volumeBarColors: {  
-          base: 'rgba(255, 192, 203, 0.3)',  
-          level: 'rgb(255, 105, 180)'
-        },  
-        seekBarColors: {  
-          base: 'rgba(255, 255, 0, 0.3)',  
-          buffered: 'rgba(255, 255, 0, 0.6)',  
-          played: 'rgb(255, 255, 0)'  
-        }  
-      });  
-  
-      // Updated DRM Key from your link
-      let drmConfig = {  
-        clearKeys: {  
-          "1d63df11bb77a72701ae3233bdbfa1ab": "95598b0c96d8c75ec60041e9151c1b11"  
-        }  
-      };  
-  
-      // Updated MPD URL
-      let streamUrl = "https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/il6abt14ce/out/v1/7973ad2adc6341dcb785e9960bdf1c0c/cenc.mpd";  
-  
-      player.configure({  
-        drm: drmConfig,  
-        streaming: {  
-          lowLatencyMode: true,  
-          bufferingGoal: 15,  
-          rebufferingGoal: 2,  
-          bufferBehind: 15,  
-          retryParameters: {  
-            timeout: 10000,  
-            maxAttempts: 5,  
-            baseDelay: 300,  
-            backoffFactor: 1.2  
-          },  
-          segmentRequestTimeout: 8000,  
-          segmentPrefetchLimit: 2,  
-          useNativeHlsOnSafari: true  
-        },  
-        manifest: {  
-          retryParameters: {  
-            timeout: 8000,  
-            maxAttempts: 3  
-          }  
-        }  
-      });  
-  
-      player.addEventListener('error', (event) => {  
-        console.error('Shaka Player Error:', event.detail);  
-      });  
-  
-      try {  
-        await player.load(streamUrl);  
-        console.log("Stream loaded successfully");  
-      } catch (error) {  
-        console.error('Load error:', error);  
-      }  
-    });  
-  </script>  
-</body>  
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Sports 1 Hindi HD</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .shaka-video-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            object-fit: contain;
+        }
+        .shaka-spinner-container,
+        .shaka-spinner,
+        .shaka-spinner-svg {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="shaka-video-container" data-shaka-player>
+        <video autoplay playsinline preload="metadata" poster=""></video>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            shaka.polyfill.installAll();
+
+            if (!shaka.Player.isBrowserSupported()) {
+                console.error('Browser not supported');
+                return;
+            }
+
+            const video = document.querySelector('video');
+            const player = new shaka.Player();
+            await player.attach(video);
+
+            const container = document.querySelector('.shaka-video-container');
+            const ui = new shaka.ui.Overlay(player, container, video);
+
+            ui.configure({
+                controlPanelElements: [
+                    'play_pause', 'time_and_duration', 'mute', 'volume',
+                    'spacer', 'language', 'captions', 'picture_in_picture',
+                    'quality', 'fullscreen'
+                ],
+                volumeBarColors: { base: 'purple', level: 'purple' },
+                seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
+            });
+
+            // UPDATED: New Stream URL and DRM Configuration
+            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1783773049~exp=1783794649~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=b17170a0f5031275e32b9ac93e8600e38f40ec06e58d6cbfa791b621fe625d54";
+            
+            let drmConfig = {
+                clearKeys: {
+                    "08638117638b55649c6befa7f5cb34f6": "58ddb6bbdf8d8b1e2aac2b5312e99086"
+                }
+            };
+            
+            let cookieHeader = "__hdnea__=st=1783773049~exp=1783794649~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=b17170a0f5031275e32b9ac93e8600e38f40ec06e58d6cbfa791b621fe625d54";
+
+            player.configure({
+                drm: drmConfig,
+                streaming: {
+                    lowLatencyMode: true,
+                    bufferingGoal: 15,
+                    rebufferingGoal: 2,
+                    bufferBehind: 15,
+                    retryParameters: {
+                        timeout: 10000,
+                        maxAttempts: 5,
+                        baseDelay: 300,
+                        backoffFactor: 1.2
+                    }
+                }
+            });
+
+            player.getNetworkingEngine().registerRequestFilter((type, request) => {
+                request.headers['Referer'] = 'https://www.jiotv.com/';
+                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+                request.headers['Cookie'] = cookieHeader;
+
+                if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
+                     type === shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
+                    request.uris[0] && !request.uris[0].includes('__hdnea=')) {
+                    const separator = request.uris[0].includes('?') ? '&' : '?';
+                    request.uris[0] += separator + cookieHeader;
+                }
+            });
+
+            const attemptAutoplay = async () => {
+                try {
+                    video.muted = false;
+                    await video.play();
+                } catch (error) {
+                    video.muted = true;
+                    await video.play();
+                }
+            };
+
+            player.addEventListener('error', (event) => console.error('Shaka Player Error:', event.detail));
+
+            try {
+                await player.load(streamUrl);
+                if (video.readyState >= 3) {
+                    await attemptAutoplay();
+                } else {
+                    video.addEventListener('canplay', attemptAutoplay, { once: true });
+                }
+            } catch (error) {
+                console.error('Load error:', error);
+            }
+
+            ['click', 'touchstart'].forEach(event => {
+                document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
+            });
+        });
+    </script>
+</body>
 </html>
