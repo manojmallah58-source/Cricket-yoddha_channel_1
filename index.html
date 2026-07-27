@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cricket Yoddha • Live</title>
+  <title>Cricket Yoddha</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
     :root {
       --red: #e8000d;
-      --red-dark: #c4000a;
       --bg: #050507;
       --card: #0f0f12;
-      --border: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,7 +22,7 @@
       overflow-x: hidden;
     }
 
-    /* Loading */
+    /* Loading Screen */
     #loading-screen {
       position: fixed; inset: 0;
       background: var(--bg);
@@ -36,31 +35,31 @@
     }
     .load-logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 11vw, 62px);
+      font-size: clamp(46px, 10vw, 60px);
       letter-spacing: 8px;
       font-weight: 700;
-      text-align: center;
     }
     .load-logo span { color: var(--red); }
+
     .load-bar-wrap {
       width: 260px;
       max-width: 85vw;
       height: 4px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.1);
       border-radius: 50px;
       overflow: hidden;
     }
     .load-bar {
       height: 100%;
-      width: 40%;
+      width: 45%;
       background: linear-gradient(90deg, var(--red), #ff4757);
       border-radius: 50px;
-      animation: loading 1.5s infinite ease-in-out;
+      animation: loading 1.6s infinite ease-in-out;
       box-shadow: 0 0 20px var(--red);
     }
     @keyframes loading { 0%{transform:translateX(-150%)} 100%{transform:translateX(400%)} }
 
-    /* Player */
+    /* Main Player */
     #player-container {
       display: none;
       flex-direction: column;
@@ -81,12 +80,11 @@
       top: 0; left: 0;
     }
 
-    /* Top Bar */
     .topbar {
       position: absolute;
       top: 0; left: 0; right: 0;
-      padding: 16px 18px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+      padding: 15px 18px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.92), transparent);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -94,9 +92,8 @@
     }
     .brand {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(26px, 7vw, 34px);
+      font-size: clamp(26px, 7.5vw, 34px);
       letter-spacing: 6px;
-      font-weight: 700;
     }
     .brand span { color: var(--red); }
 
@@ -105,51 +102,50 @@
       color: white;
       font-size: 13px;
       font-weight: 700;
-      padding: 7px 16px;
+      padding: 6px 15px;
       border-radius: 50px;
       display: flex;
       align-items: center;
-      gap: 7px;
-      box-shadow: 0 0 20px rgba(232,0,13,0.6);
+      gap: 6px;
+      box-shadow: 0 0 18px rgba(232,0,13,0.6);
     }
-    .live-dot {
-      width: 8px; height: 8px;
-      background: #fff;
-      border-radius: 50%;
-      animation: pulse 1s infinite;
+    .live-dot { 
+      width: 7px; height: 7px; 
+      background: #fff; 
+      border-radius: 50%; 
+      animation: pulse 1.2s infinite; 
     }
-    @keyframes pulse { 50% { opacity: 0.3; } }
+    @keyframes pulse { 50% { opacity: 0.4; } }
 
-    /* Bottom Content */
+    /* Bottom Panel */
     .bottom-panel {
       background: var(--card);
       flex: 1;
-      padding: 24px 18px 30px;
+      padding: 22px 18px 30px;
       border-top: 1px solid var(--border);
     }
 
     .join-banner {
-      background: linear-gradient(145deg, #1a1a1f, #121216);
+      background: linear-gradient(145deg, #1a1a20, #121216);
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 24px 20px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      align-items: center;
+      gap: 16px;
       text-align: center;
     }
 
     .join-text h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(32px, 8.5vw, 42px);
+      font-size: clamp(30px, 8vw, 40px);
       letter-spacing: 4px;
-      background: linear-gradient(90deg, #ffffff, var(--red));
+      background: linear-gradient(90deg, #fff, var(--red));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .join-text p {
+    .join-sub {
       color: #aaaaaa;
       font-size: 15px;
       margin-top: 4px;
@@ -157,31 +153,26 @@
 
     .tg-join-btn {
       width: 100%;
-      max-width: 320px;
-      background: linear-gradient(135deg, #0088cc, #005f99);
+      padding: 16px;
+      background: linear-gradient(135deg, #0088cc, #006699);
       color: white;
-      padding: 16px 24px;
+      border: none;
       border-radius: 16px;
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
-      box-shadow: 0 10px 30px rgba(0, 136, 204, 0.35);
-      transition: all 0.3s ease;
-    }
-    .tg-join-btn:active {
-      transform: scale(0.96);
+      box-shadow: 0 8px 25px rgba(0,136,204,0.3);
     }
 
     /* Popup */
     .overlay {
       display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.95);
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.94);
       backdrop-filter: blur(12px);
       z-index: 9999;
       align-items: center;
@@ -196,44 +187,38 @@
       border-radius: 24px;
       padding: 32px 24px;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       text-align: center;
     }
 
     .popup-icon {
-      width: 78px;
-      height: 78px;
+      width: 70px;
+      height: 70px;
       background: linear-gradient(135deg, #0088cc, #006699);
-      border-radius: 20px;
+      border-radius: 18px;
       margin: 0 auto 20px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    .popup p {
+      color: #ccc;
+      line-height: 1.65;
+      font-size: 15.2px;
+    }
+
     .btn-join {
       width: 100%;
-      padding: 17px;
+      padding: 16px;
       background: linear-gradient(135deg, #0088cc, #006699);
       color: white;
       border: none;
       border-radius: 16px;
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 600;
-      margin-top: 20px;
+      margin-top: 24px;
       cursor: pointer;
-    }
-
-    #error-screen {
-      display: none;
-      position: fixed; inset: 0;
-      background: var(--bg);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      z-index: 9998;
     }
   </style>
 </head>
@@ -246,10 +231,10 @@
   </div>
 
   <!-- Error -->
-  <div id="error-screen">
-    <h2 style="color:var(--red); font-size:38px; font-family:'Bebas Neue',sans-serif;">Stream Offline</h2>
-    <p style="color:#888; margin:16px 0 24px;">Please check your connection or try again later.</p>
-    <button onclick="location.reload()" style="padding:14px 36px; background:var(--red); color:white; border:none; border-radius:14px; font-weight:600;">Retry</button>
+  <div id="error-screen" style="display:none; position:fixed; inset:0; background:var(--bg); flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; z-index:9998;">
+    <h2 style="color:var(--red); font-family:'Bebas Neue',sans-serif; font-size:36px;">Stream Offline</h2>
+    <p style="color:#888; max-width:320px; margin:16px 0;">This stream is currently unavailable.<br>The link may have expired.</p>
+    <button onclick="location.reload()" style="padding:12px 32px; background:var(--red); color:white; border:none; border-radius:12px; font-weight:600;">Retry</button>
   </div>
 
   <!-- Main Player -->
@@ -257,9 +242,7 @@
     <div class="video-wrap">
       <div class="topbar">
         <div class="brand">CRICKET <span>YODDHA</span></div>
-        <div class="live-pill">
-          <div class="live-dot"></div> LIVE
-        </div>
+        <div class="live-pill"><div class="live-dot"></div>LIVE</div>
       </div>
       <iframe id="main-iframe" allowfullscreen allow="encrypted-media; fullscreen; autoplay"></iframe>
     </div>
@@ -268,48 +251,54 @@
       <div class="join-banner">
         <div class="join-text">
           <h1>CRICKET YODDHA</h1>
-          <p>India's Most Trusted Platform for Free Live Cricket</p>
+          <div class="join-sub">Free HD Streams • Live Scores • Updates</div>
         </div>
         <a href="#" class="tg-join-btn" onclick="showPopup(); return false;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
-          </svg>
-          Join Official Telegram
+          Join Telegram Channel
         </a>
       </div>
     </div>
   </div>
 
-  <!-- Compulsory Popup -->
+  <!-- Telegram Popup -->
   <div class="overlay" id="forcePop">
     <div class="popup">
       <div class="popup-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="white" viewBox="0 0 24 24">
           <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
         </svg>
       </div>
-      <h2 style="font-family:'Bebas Neue',sans-serif; font-size:32px; margin-bottom:12px;">CRICKET YODDHA</h2>
-      <p style="color:#ccc; line-height:1.6;">Join our official Telegram channel for instant access to all live matches.</p>
+      <h2 style="font-family:'Bebas Neue',sans-serif; font-size:30px; margin-bottom:16px;">CRICKET YODDHA</h2>
+      <p>To watch all live matches seamlessly, joining our official Telegram channel is compulsory. Once joined, you will get free access for the next 24 hours!</p>
       <button class="btn-join" onclick="goTelegram()">Join Telegram Now →</button>
     </div>
   </div>
 
   <script>
-    const CONFIG = { timeKey: "yoddha_access_v3", expiry: 86400000 };
+    const CONFIG = { timeKey: "yoddha_time_v3", expiry: 86400000 };
+
+    window.onload = () => {
+      const lastJoin = localStorage.getItem(CONFIG.timeKey);
+      if (!lastJoin || (Date.now() - lastJoin > CONFIG.expiry)) {
+        setTimeout(() => document.getElementById('forcePop').classList.add('active'), 7000);
+      }
+      loadStream();
+    };
 
     function loadStream() {
-      const params = new URLSearchParams(location.search);
+      const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
       if (!id) return showError();
 
       fetch("https://allrounder2-0.pages.dev/id.json?t=" + Date.now())
-        .then(r => r.json())
+        .then(res => res.json())
         .then(data => {
-          const stream = data.iframes?.find(x => x.id === id);
-          if (stream && stream.iframeSrc) {
-            document.getElementById("main-iframe").src = stream.iframeSrc;
-            revealPlayer();
-          } else showError();
+          const stream = data.iframes && data.iframes.find(x => x.id === id);
+          if (!stream || !stream.iframeSrc) return showError();
+
+          document.title = (stream.name || "Live Stream") + " — Cricket Yoddha";
+          document.getElementById("main-iframe").src = stream.iframeSrc;
+          revealPlayer();
         })
         .catch(() => showError());
     }
@@ -319,7 +308,7 @@
       setTimeout(() => {
         document.getElementById("loading-screen").style.display = "none";
         document.getElementById("player-container").style.display = "flex";
-      }, 500);
+      }, 600);
     }
 
     function showError() {
@@ -336,15 +325,6 @@
       document.getElementById("forcePop").classList.remove("active");
       window.open("https://t.me/+p17HazejGX1jNmE1", "_blank");
     }
-
-    // Init
-    window.onload = () => {
-      const lastJoin = localStorage.getItem(CONFIG.timeKey);
-      if (!lastJoin || Date.now() - lastJoin > CONFIG.expiry) {
-        setTimeout(showPopup, 6500);
-      }
-      loadStream();
-    };
   </script>
 </body>
 </html>
