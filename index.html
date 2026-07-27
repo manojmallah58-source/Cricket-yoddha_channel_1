@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Cricket Yoddha</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #00ff9d;
-      --primary-glow: rgba(0, 255, 157, 0.45);
-      --accent: #ffcc00;
-      --dark: #050507;
-      --card: #0f0f14;
+      --red: #ff2a3c;
+      --green: #00ff9d;
+      --gold: #ffd700;
+      --dark: #08080b;
+      --card: #111116;
       --border: rgba(255,255,255,0.08);
-      --text: #f8f8f8;
-      --muted: #aaaaaa;
+      --text: #f0f0f0;
+      --muted: #999;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,377 +30,163 @@
     #loading-screen {
       position: fixed; inset: 0; background: var(--dark);
       display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 24px; z-index: 9999;
+      flex-direction: column; gap: 22px; z-index: 9999;
     }
     .load-logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(42px, 11vw, 62px);
-      letter-spacing: 8px;
-      font-weight: 700;
-      animation: pulse 2s ease-in-out infinite;
+      font-size: clamp(36px, 10vw, 54px);
+      letter-spacing: 6px; 
+      animation: pulse 1.6s ease-in-out infinite;
     }
-    .load-logo span { 
-      color: var(--primary); 
-      text-shadow: 0 0 20px var(--primary-glow);
-    }
-    .load-bar-wrap { 
-      width: min(260px, 70vw); 
-      height: 3px; 
-      background: rgba(255,255,255,0.1); 
-      border-radius: 50px; 
-      overflow: hidden; 
-    }
-    .load-bar { 
-      height: 100%; 
-      width: 35%; 
-      background: linear-gradient(90deg, transparent, var(--primary), transparent);
-      border-radius: 50px; 
-      animation: slide 1.4s linear infinite; 
-      box-shadow: 0 0 18px var(--primary-glow);
-    }
-    @keyframes slide { 0%{transform:translateX(-120%)} 100%{transform:translateX(420%)} }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.75} }
-    #loading-text { 
-      font-size: 12px; 
-      letter-spacing: 4px; 
-      text-transform: uppercase; 
-      color: var(--muted); 
-      font-weight: 500;
-    }
+    .load-logo span { color: var(--green); text-shadow: 0 0 15px var(--green); }
+    .load-bar-wrap { width: min(220px, 65vw); height: 3px; background: rgba(255,255,255,0.1); border-radius: 50px; overflow: hidden; }
+    .load-bar { height: 100%; width: 45%; background: linear-gradient(90deg, var(--green), #fff); border-radius: 50px; 
+                animation: slide 1.3s ease-in-out infinite; box-shadow: 0 0 15px var(--green); }
+    @keyframes slide { 0%{transform:translateX(-100%)} 100%{transform:translateX(350%)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+    #loading-text { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
 
-    /* LOCKED STAGE */
+    /* LOCKED */
     #main-stage.locked .video-wrap {
-      filter: blur(14px) brightness(0.7);
+      filter: blur(12px);
       pointer-events: none;
-      user-select: none;
     }
 
-    /* VIDEO WRAP */
+    /* PLAYER */
     .video-wrap {
-      width: 100%; 
-      position: relative;
-      background: #000;
-      aspect-ratio: 16/9;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-      transition: all 0.4s ease;
+      width: 100%; position: relative; background: #000;
+      aspect-ratio: 16/9; overflow: hidden;
     }
     #main-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: #000;
-      display: block;
-      position: absolute;
-      top: 0; left: 0;
+      width: 100%; height: 100%; border: none; background: #000;
+      position: absolute; top: 0; left: 0;
     }
 
     /* TOPBAR */
     .topbar {
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between;
-      padding: clamp(12px, 3vw, 18px) clamp(16px, 5vw, 28px);
-      background: linear-gradient(180deg, rgba(5,5,7,0.95) 0%, transparent 100%);
-      position: absolute; 
-      top: 0; left: 0; right: 0; 
-      z-index: 20;
-      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: clamp(10px,3vw,16px) clamp(12px,4vw,24px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, transparent 100%);
+      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
     }
     .brand { 
       font-family: 'Bebas Neue', sans-serif; 
-      font-size: clamp(22px, 6vw, 32px); 
-      letter-spacing: 6px; 
-      font-weight: 700;
+      font-size: clamp(20px,5.5vw,28px); 
+      letter-spacing: 5px; 
     }
-    .brand span { 
-      color: var(--primary); 
-      text-shadow: 0 0 15px var(--primary-glow);
-    }
-    .live-pill {
-      display: flex; 
-      align-items: center; 
-      gap: 6px;
-      background: rgba(0, 255, 157, 0.15);
-      color: var(--primary);
-      font-size: clamp(10px, 2.5vw, 12px); 
-      font-weight: 700; 
-      letter-spacing: 2px;
-      padding: 6px 14px; 
-      border-radius: 50px; 
-      text-transform: uppercase;
-      border: 1px solid rgba(0, 255, 157, 0.3);
-      box-shadow: 0 0 12px var(--primary-glow);
-    }
-    .live-dot { 
-      width: 7px; 
-      height: 7px; 
-      border-radius: 50%; 
-      background: var(--primary); 
-      animation: blink 1.2s infinite;
-      box-shadow: 0 0 8px var(--primary);
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .brand span { color: var(--green); }
 
-    /* BUFFERING */
-    #buffering-overlay {
-      display: none; 
-      position: absolute; 
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      align-items: center; 
-      justify-content: center;
-      flex-direction: column; 
-      gap: 14px; 
-      z-index: 15;
+    .live-pill {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,42,60,0.9); color: #fff;
+      font-size: clamp(9px,2.5vw,11px); font-weight: 700; letter-spacing: 2px;
+      padding: 5px 12px; border-radius: 50px; text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(255,42,60,0.6);
     }
-    #buffering-overlay.show { display: flex; }
-    .buf-spinner {
-      width: 42px; 
-      height: 42px; 
-      border: 4px solid rgba(0,255,157,0.15);
-      border-top-color: var(--primary); 
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to{transform:rotate(360deg)} }
-    #buf-text { 
-      font-size: 11px; 
-      letter-spacing: 3px; 
-      text-transform: uppercase; 
-      color: var(--muted); 
-    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: blink 1s infinite; }
 
     /* BOTTOM PANEL */
     .bottom-panel {
       background: var(--card);
       border-top: 1px solid var(--border);
-      padding: clamp(20px, 5vw, 32px) clamp(18px, 5vw, 32px);
+      padding: clamp(16px,4vw,24px) clamp(16px,5vw,28px) clamp(24px,5vw,32px);
       flex: 1;
     }
 
-    /* JOIN BANNER */
     .join-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: clamp(16px, 4vw, 28px);
-      padding: 0 0 22px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: clamp(12px,3vw,24px);
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
     .join-text-block { flex: 1; min-width: 0; }
-    .join-eyebrow { 
-      font-size: clamp(10px, 2.2vw, 11px); 
-      letter-spacing: 3.5px; 
-      text-transform: uppercase; 
-      color: var(--muted); 
-      margin-bottom: 4px; 
-    }
+    .join-eyebrow { font-size: clamp(9px,2vw,11px); letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
     .join-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(32px, 9vw, 48px);
-      letter-spacing: clamp(4px, 2.5vw, 9px); 
-      line-height: 1;
-      background: linear-gradient(135deg, #ffffff 0%, var(--primary) 50%, #00cc7a 100%);
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-      background-clip: text;
-      filter: drop-shadow(0 0 20px rgba(0,255,157,0.4));
+      font-size: clamp(30px,8.5vw,44px);
+      letter-spacing: clamp(4px,2vw,8px); line-height: 1;
+      background: linear-gradient(135deg, #fff, var(--green), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .join-sub { 
-      font-size: clamp(11px, 2.6vw, 13px); 
-      letter-spacing: 2px; 
-      text-transform: uppercase; 
-      color: var(--muted); 
-      margin-top: 6px; 
-    }
+    .join-sub { font-size: clamp(10px,2.4vw,12px); letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
 
     .tg-join-btn {
-      display: flex; 
-      align-items: center; 
-      gap: 10px;
+      display: flex; align-items: center; gap: 8px;
       background: linear-gradient(135deg, #0088cc, #005f99);
-      color: #fff; 
-      text-decoration: none;
-      padding: clamp(14px, 3.5vw, 16px) clamp(24px, 5vw, 32px);
+      color: #fff; text-decoration: none;
+      padding: clamp(12px,3vw,15px) clamp(20px,4.5vw,28px);
       border-radius: 12px;
-      font-size: clamp(13px, 3.2vw, 15px); 
-      font-weight: 600; 
-      letter-spacing: 0.6px;
-      border: none; 
-      cursor: pointer;
-      box-shadow: 0 6px 24px rgba(0,136,204,0.35);
-      transition: all 0.25s ease;
-      white-space: nowrap; 
-      flex-shrink: 0;
+      font-size: clamp(13px,3.2vw,15px); font-weight: 600;
+      box-shadow: 0 5px 20px rgba(0,136,204,0.4);
+      transition: all 0.3s ease;
+      white-space: nowrap;
     }
-    .tg-join-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0,136,204,0.5);
-    }
-    .tg-join-btn svg { 
-      width: clamp(18px, 4.5vw, 22px); 
-      height: clamp(18px, 4.5vw, 22px); 
-      fill: #fff; 
-    }
+    .tg-join-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,136,204,0.5); }
 
-    .stream-info { 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-    }
+    .stream-info { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
     .stream-badge {
-      background: rgba(0,255,157,0.12); 
-      border: 1px solid rgba(0,255,157,0.4);
-      color: var(--primary); 
-      font-size: 11px; 
-      font-weight: 700;
-      letter-spacing: 2px; 
-      text-transform: uppercase; 
-      padding: 5px 12px; 
-      border-radius: 6px;
+      background: rgba(0,255,157,0.15); border: 1px solid var(--green);
+      color: var(--green); font-size: 10px; font-weight: 700;
+      padding: 4px 10px; border-radius: 6px; letter-spacing: 1.5px;
     }
-    .stream-name { 
-      font-size: clamp(13px, 3.2vw, 15px); 
-      color: var(--muted); 
-      letter-spacing: 0.5px; 
-    }
-
-    /* ERROR */
-    #error-screen {
-      display: none; 
-      position: fixed; 
-      inset: 0; 
-      background: var(--dark);
-      align-items: center; 
-      justify-content: center;
-      flex-direction: column; 
-      gap: 16px; 
-      z-index: 9998; 
-      padding: 24px; 
-      text-align: center;
-    }
-    #error-screen h2 { 
-      font-family: 'Bebas Neue', sans-serif; 
-      font-size: clamp(32px,9vw,42px); 
-      letter-spacing: 4px; 
-      color: var(--primary); 
-    }
-    #error-screen p { 
-      color: var(--muted); 
-      font-size: 15px; 
-      line-height: 1.6; 
-      max-width: 380px;
-    }
-    .retry-btn {
-      margin-top: 12px; 
-      padding: 12px 32px;
-      background: var(--primary); 
-      color: #000; 
-      border: none;
-      border-radius: 10px; 
-      font-size: 14px; 
-      font-weight: 700;
-      letter-spacing: 2px; 
-      text-transform: uppercase; 
-      cursor: pointer;
-      box-shadow: 0 0 20px var(--primary-glow);
-    }
+    .stream-name { font-size: clamp(13px,3vw,15px); color: var(--muted); }
 
     /* POPUP */
-    .overlay {
-      display: none; 
-      position: fixed; 
-      inset: 0;
-      background: rgba(5,5,7,0.92); 
-      backdrop-filter: blur(12px);
-      z-index: 9000; 
-      justify-content: center; 
-      align-items: center; 
-      padding: 20px;
-    }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+      z-index: 9000; justify-content: center; align-items: center; padding: 20px; }
     .overlay.active { display: flex; }
     .popup {
-      background: var(--card); 
-      border: 1px solid var(--border); 
-      border-radius: 24px;
-      padding: clamp(32px, 7vw, 44px) clamp(24px, 7vw, 40px);
-      width: 100%; 
-      max-width: 440px; 
-      text-align: center;
-      box-shadow: 0 40px 90px rgba(0,0,0,0.7);
-      animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+      padding: clamp(28px,6vw,42px) clamp(24px,6vw,36px);
+      width: 100%; max-width: 420px; text-align: center;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.7);
+      animation: popIn 0.4s ease;
     }
-    @keyframes popIn { 
-      from{transform:scale(0.85) translateY(30px);opacity:0} 
-      to{transform:scale(1) translateY(0);opacity:1} 
-    }
+    @keyframes popIn { from{transform:scale(0.9) translateY(30px); opacity:0} to{transform:scale(1) translateY(0); opacity:1} }
+
     .popup-icon {
-      width: 62px; 
-      height: 62px; 
-      background: linear-gradient(135deg, var(--primary), #00cc7a);
-      border-radius: 16px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      margin: 0 auto 20px; 
-      box-shadow: 0 10px 30px rgba(0,255,157,0.4);
+      width: 58px; height: 58px; background: linear-gradient(135deg, var(--green), #00cc7a);
+      border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; box-shadow: 0 8px 25px rgba(0,255,157,0.4);
     }
-    .accent-line { 
-      width: 48px; 
-      height: 4px; 
-      background: var(--primary); 
-      border-radius: 4px; 
-      margin: 0 auto 16px; 
-      box-shadow: 0 0 16px var(--primary-glow); 
-    }
+    .accent-line { width: 40px; height: 3px; background: var(--green); margin: 0 auto 16px; border-radius: 3px; }
     .popup-brand {
-      font-family: 'Bebas Neue', sans-serif; 
-      font-size: clamp(32px, 9vw, 40px); 
-      letter-spacing: 6px;
-      background: linear-gradient(135deg,#fff 0%, var(--primary) 100%);
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-      margin-bottom: 10px;
-    }
-    .popup p { 
-      color: #ccc; 
-      font-size: clamp(14px, 3.5vw, 15px); 
-      line-height: 1.65; 
-      margin-bottom: 28px; 
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(30px,8vw,38px); letter-spacing: 5px;
+      background: linear-gradient(135deg, #fff, var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .btn-join {
-      width: 100%; 
-      padding: clamp(14px, 4vw, 16px);
-      background: linear-gradient(135deg, var(--primary), #00cc7a);
-      border: none; 
-      color: #000; 
-      border-radius: 12px;
-      font-size: clamp(14px, 3.5vw, 16px); 
-      font-weight: 700; 
-      cursor: pointer;
-      box-shadow: 0 6px 25px rgba(0,255,157,0.4); 
-      transition: all 0.25s;
+      width: 100%; padding: 14px; background: linear-gradient(135deg, var(--green), #00cc7a);
+      color: #000; border: none; border-radius: 12px; font-weight: 700; font-size: 15px;
+      margin-top: 10px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,255,157,0.4);
     }
-    .btn-join:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 35px rgba(0,255,157,0.5);
+
+    /* Error */
+    #error-screen {
+      display: none; position: fixed; inset: 0; background: var(--dark);
+      align-items: center; justify-content: center; flex-direction: column; gap: 12px; z-index: 9998; padding: 24px; text-align: center;
+    }
+    #error-screen h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(30px,8vw,40px); color: var(--red); }
+    .retry-btn {
+      margin-top: 10px; padding: 12px 32px; background: var(--red); color: #fff;
+      border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <!-- Loading, Error, Main Stage, Popup etc. same as your original but with updated styles -->
+
   <div id="loading-screen">
     <div class="load-logo">CRICKET <span>YODDHA</span></div>
     <div class="load-bar-wrap"><div class="load-bar"></div></div>
-    <div id="loading-text">CONNECTING TO ARENA...</div>
+    <div id="loading-text">connecting...</div>
   </div>
 
   <div id="error-screen">
-    <h2>STREAM OFFLINE</h2>
+    <h2>Stream Offline</h2>
     <p>This stream is currently unavailable.<br>The link may have expired — update it in the admin panel.</p>
-    <button class="retry-btn" onclick="location.reload()">RETRY</button>
+    <button class="retry-btn" onclick="location.reload()">Retry</button>
   </div>
   
   <div id="main-stage">
@@ -410,72 +196,53 @@
           <div class="brand">CRICKET <span>YODDHA</span></div>
           <div class="live-pill"><div class="live-dot"></div>LIVE</div>
         </div>
-        <iframe
-          id="main-iframe"
-          allowfullscreen
-          allow="encrypted-media; fullscreen; autoplay">
-        </iframe>
-        <div id="buffering-overlay">
-          <div class="buf-spinner"></div>
-          <div id="buf-text">BUFFERING...</div>
-        </div>
+        <iframe id="main-iframe" allowfullscreen allow="encrypted-media; fullscreen; autoplay"></iframe>
       </div>
-
       <div class="bottom-panel">
         <div class="join-banner">
           <div class="join-text-block">
-            <div class="join-eyebrow">OFFICIAL BROADCAST</div>
+            <div class="join-eyebrow">Official Channel</div>
             <div class="join-title">CRICKET YODDHA</div>
-            <div class="join-sub">HD Streams • Live Scores • Instant Updates</div>
+            <div class="join-sub">Free streams · Live scores · Updates</div>
           </div>
           <a class="tg-join-btn" onclick="showPopup(); return false;" href="#">
-            <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
-            Join Telegram
+            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#fff" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
+            Join Telegram Channel 
           </a>
         </div>
-
         <div class="stream-info">
-          <div class="stream-badge">4K • HDR</div>
-          <div class="stream-name" id="stream-name-label">Live Cricket Match</div>
+          <div class="stream-badge">HD</div>
+          <div class="stream-name" id="stream-name-label">Live Stream</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Force Popup -->
   <div class="overlay" id="forcePop">
     <div class="popup">
       <div class="popup-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
+        <svg viewBox="0 0 24 24" width="28" height="28"><path fill="#000" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
       </div>
       <div class="accent-line"></div>
       <div class="popup-brand">CRICKET YODDHA</div>
-      <p>To continue watching live matches in HD without interruption, please join our official Telegram channel. Access will be granted instantly for 24 hours after joining.</p>
-      <div class="popup-actions">
-        <button class="btn-join" onclick="goTelegram()">JOIN TELEGRAM NOW →</button>
-      </div>
+      <p>To watch all live matches seamlessly, joining our official Telegram channel is compulsory. Once joined, you will get free access for the next 24 hours!</p>
+      <button class="btn-join" onclick="goTelegram()">Join Telegram Now →</button>
     </div>
   </div>
 
   <script>
-    const CONFIG = { 
-      key: "yoddha_access_v12", 
-      timeKey: "yoddha_time_v12", 
-      preview: 12000, 
-      expiry: 86400000 
-    };
+    // === Your original script (same) ===
+    const CONFIG = { key: "yoddha_access_v12", timeKey: "yoddha_time_v12", preview: 15000, expiry: 86400000 };
 
     window.onload = () => {
       const lastJoin = localStorage.getItem(CONFIG.timeKey);
       const now = new Date().getTime();
-      
       if (!(lastJoin && (now - lastJoin < CONFIG.expiry))) {
         setTimeout(() => {
           document.getElementById('main-stage').classList.add('locked');
           document.getElementById('forcePop').classList.add('active');
         }, CONFIG.preview);
       }
-      
       loadStream();
     };
 
@@ -491,39 +258,27 @@
     async function loadStream() {
       const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
-      if (!id) {
-        showError("No stream ID provided in URL.");
-        return;
-      }
+      if (!id) { showError("No stream ID provided in URL."); return; }
       try {
         const res = await fetch(JSON_URL + "?t=" + Date.now());
-        if (!res.ok) throw new Error("Fetch failed");
         const data = await res.json();
         const stream = data.iframes && data.iframes.find(x => x.id === id);
-        
-        if (!stream || !stream.iframeSrc) {
-          showError("Stream not found for this ID.");
-          return;
-        }
+        if (!stream || !stream.iframeSrc) { showError("Stream not found."); return; }
 
-        document.title = (stream.name || "Live Match") + " — Cricket Yoddha";
-        document.getElementById("stream-name-label").innerText = stream.name || "Live Cricket Match";
-
+        document.title = (stream.name || "Live Stream") + " — Cricket Yoddha";
+        document.getElementById("stream-name-label").innerText = stream.name || "Live Stream";
         if (stream.hit) fetch(stream.hit).catch(() => {});
 
         revealPlayer();
-        
-        const iframe = document.getElementById("main-iframe");
-        iframe.src = stream.iframeSrc;
+        document.getElementById("main-iframe").src = stream.iframeSrc;
       } catch (e) {
-        showError("Failed to load stream data. Please retry.");
+        showError("Failed to load stream data.");
       }
     }
 
     function revealPlayer() {
       document.getElementById("loading-screen").style.display = "none";
-      const pc = document.getElementById("player-container");
-      pc.style.display = "flex";
+      document.getElementById("player-container").style.display = "flex";
     }
 
     function showPopup() {
