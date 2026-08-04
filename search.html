@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Search Sports Channels - Cricket Yoddha</title>
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Header with Instant Input -->
+        <header class="app-header search-header-bar">
+            <div class="header-left search-input-wrapper">
+                <a href="index.html" class="back-icon"><i class="fa-solid fa-arrow-left"></i></a>
+                <input type="text" id="searchInputField" placeholder="Search Star Sports, Sony, Willow, Sky..." autofocus>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" id="clearSearchBtn" aria-label="Clear">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="app-content">
+            <!-- Popular Quick Tags -->
+            <div class="quick-tags-section" id="quickTagsSection">
+                <p class="section-subtitle">Trending Searches</p>
+                <div class="tags-flex">
+                    <span class="search-tag" data-query="Star Sports">Star Sports</span>
+                    <span class="search-tag" data-query="Sony Sports">Sony Sports</span>
+                    <span class="search-tag" data-query="Sports18">Sports18</span>
+                    <span class="search-tag" data-query="Willow TV">Willow TV</span>
+                    <span class="search-tag" data-query="Sky Sports">Sky Sports</span>
+                    <span class="search-tag" data-query="Ten Sports">Ten Sports</span>
+                    <span class="search-tag" data-query="Fox Sports">Fox Sports</span>
+                    <span class="search-tag" data-query="PTV Sports">PTV Sports</span>
+                </div>
+            </div>
+
+            <!-- Search Results Grid -->
+            <div class="grid-channels full-view" id="searchResultsContainer">
+                <!-- Dynamic Search Output -->
+            </div>
+
+            <!-- No Result State -->
+            <div class="no-results-box hidden" id="noResultsBox">
+                <i class="fa-solid fa-face-frown-open"></i>
+                <h3>No Channels Found</h3>
+                <p>Try searching with another broadcaster or network name.</p>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="live.html" class="nav-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Live</span>
+            </a>
+            <a href="channels.html" class="nav-item">
+                <i class="fa-solid fa-tv"></i>
+                <span>Channels</span>
+            </a>
+            <a href="search.html" class="nav-item active">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Search</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>
