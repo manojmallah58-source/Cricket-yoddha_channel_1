@@ -1,0 +1,9 @@
+{
+  "appName": "Cricket Yoddha",
+  "version": "3.2.0",
+  "autoRefreshInterval": 60000,
+  "defaultTheme": "dark",
+  "apiEndpoint": "https://raw.githubusercontent.com/manojmallah58-source/Cricket-yoddha-json/main/links.json",
+  "maintenanceMode": false,
+  "announcement": "Welcome to Cricket Yoddha! Enjoy uninterrupted live sports streaming."
+}
