@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Live Matches - Cricket Yoddha</title>
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <a href="index.html" class="back-icon"><i class="fa-solid fa-arrow-left"></i></a>
+                <span class="header-title">Live Matches</span>
+            </div>
+            <div class="header-right">
+                <a href="search.html" class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="app-content">
+            <div class="filter-chips" id="filterChips">
+                <button class="chip active" data-filter="all">All</button>
+                <button class="chip" data-filter="cricket">Cricket</button>
+                <button class="chip" data-filter="football">Football</button>
+                <button class="chip" data-filter="sports">Other Sports</button>
+            </div>
+
+            <div class="live-grid-container" id="liveGridContainer">
+                <!-- Dynamically populated live match cards -->
+                <div class="loading-spinner-box">
+                    <img src="assets/loading.gif" alt="Loading..." class="loader-gif">
+                    <p>Loading live matches...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="live.html" class="nav-item active">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Live</span>
+            </a>
+            <a href="channels.html" class="nav-item">
+                <i class="fa-solid fa-tv"></i>
+                <span>Channels</span>
+            </a>
+            <a href="search.html" class="nav-item">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Search</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/live.js"></script>
+</body>
+</html>
