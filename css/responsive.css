@@ -1,0 +1,27 @@
+/* ==========================================================================
+   Cricket Yoddha - Mobile & Tablet Responsive Stylesheet
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    body {
+        background-color: #050b14;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .app-container {
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    }
+}
+
+@media (max-width: 360px) {
+    .grid-channels {
+        grid-template-columns: 1fr;
+    }
+    .loading-spinner-box, .no-results-box {
+        grid-column: span 1;
+    }
+}
