@@ -1,1 +1,1127 @@
+Q1. Create Different Blinking Patterns Using 6 LEDs on Raspberry Pi
 
+1. Aim
+
+To create different blinking patterns using 6 LEDs connected to 6 GPIO pins of Raspberry Pi.
+
+2. Prior Concept
+
+Basic knowledge of Raspberry Pi, GPIO pins, LEDs, and Python programming.
+
+3. New Concept
+
+Using GPIO pins to control LEDs and create different blinking patterns.
+
+4. Requirement
+
+1. Raspberry Pi
+2. 6 LEDs
+3. 6 resistors (220Ω or 330Ω)
+4. Breadboard
+5. Jumper wires
+
+5. Steps
+
+1. Connect 6 LEDs to GPIO pins 17, 18, 22, 23, 24, and 25.
+2. Connect each LED in series with a resistor.
+3. Connect the circuit to GND.
+4. Write the Python program.
+5. Run the program and observe the patterns.
+
+6. Procedure
+
+1. Set the GPIO mode to BCM.
+2. Configure the six GPIO pins as outputs.
+3. Blink all LEDs together.
+4. Blink LEDs one by one.
+5. Blink alternate LEDs.
+6. Stop the program using Ctrl+C.
+
+7. Program
+
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+leds = [17, 18, 22, 23, 24, 25]
+
+for led in leds:
+    GPIO.setup(led, GPIO.OUT)
+
+try:
+    while True:
+        # Pattern 1: All LEDs together
+        for led in leds:
+            GPIO.output(led, GPIO.HIGH)
+        time.sleep(1)
+
+        for led in leds:
+            GPIO.output(led, GPIO.LOW)
+        time.sleep(1)
+
+        # Pattern 2: One by one
+        for led in leds:
+            GPIO.output(led, GPIO.HIGH)
+            time.sleep(0.3)
+            GPIO.output(led, GPIO.LOW)
+
+        # Pattern 3: Alternate LEDs
+        for led in [17, 22, 24]:
+            GPIO.output(led, GPIO.HIGH)
+
+        time.sleep(1)
+
+        for led in leds:
+            GPIO.output(led, GPIO.LOW)
+
+        for led in [18, 23, 25]:
+            GPIO.output(led, GPIO.HIGH)
+
+        time.sleep(1)
+
+        for led in leds:
+            GPIO.output(led, GPIO.LOW)
+
+except KeyboardInterrupt:
+    pass
+
+finally:
+    GPIO.cleanup()
+
+---
+
+Q2. Interface TM1637 with Raspberry Pi and Display Current Time
+
+1. Aim
+
+To interface the TM1637 4-digit display with Raspberry Pi and display the current time.
+
+2. Prior Concept
+
+Basic knowledge of GPIO pins, Python programming, and digital displays.
+
+3. New Concept
+
+Displaying the current time using a TM1637 4-digit display module.
+
+4. Requirement
+
+1. Raspberry Pi
+2. TM1637 display module
+3. Jumper wires
+4. TM1637 Python library
+
+5. Steps
+
+1. Connect VCC and GND to the appropriate power and ground pins.
+2. Connect CLK to GPIO 23.
+3. Connect DIO to GPIO 24.
+4. Install the required library.
+5. Run the Python program.
+
+6. Procedure
+
+1. Import the required libraries.
+2. Initialize the TM1637 display.
+3. Read the current system time.
+4. Extract the hour and minute.
+5. Display the time in HH:MM format.
+6. Update the display every second.
+
+7. Program
+
+import tm1637
+import time
+from datetime import datetime
+
+display = tm1637.TM1637(clk=23, dio=24)
+display.brightness(3)
+
+try:
+    while True:
+        now = datetime.now()
+        display.numbers(now.hour, now.minute)
+        display.showDoublePoint(True)
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    display.show([0, 0, 0, 0])
+
+---
+
+Q3. Interface GPS Module with Raspberry Pi
+
+1. Aim
+
+To interface a GPS module with Raspberry Pi and obtain latitude, longitude, and GPS time.
+
+2. Prior Concept
+
+Basic knowledge of serial communication, UART, and Python programming.
+
+3. New Concept
+
+Receiving GPS data from satellites and extracting geographical coordinates.
+
+4. Requirement
+
+1. Raspberry Pi
+2. NEO-6M GPS module
+3. Jumper wires
+4. PySerial library
+5. pynmea2 library
+
+5. Steps
+
+1. Connect GPS VCC and GND according to the module specifications.
+2. Connect GPS TX to Raspberry Pi RXD, GPIO 15.
+3. Connect GPS RX to Raspberry Pi TXD, GPIO 14, if required.
+4. Enable the serial interface.
+5. Install the required libraries.
+6. Run the program where GPS reception is available.
+
+6. Procedure
+
+1. Import the serial and pynmea2 libraries.
+2. Open the GPS serial port.
+3. Read incoming GPS sentences.
+4. Identify RMC sentences.
+5. Extract latitude, longitude, and time.
+6. Display valid GPS readings.
+
+7. Program
+
+import serial
+import pynmea2
+
+gps = serial.Serial(
+    '/dev/serial0',
+    baudrate=9600,
+    timeout=1
+)
+
+try:
+    while True:
+        data = gps.readline().decode(
+            'ascii', errors='replace'
+        ).strip()
+
+        if data.startswith(('$GPRMC', '$GNRMC')):
+            try:
+                msg = pynmea2.parse(data)
+
+                if msg.status == 'A':
+                    print("Latitude:", msg.latitude)
+                    print("Longitude:", msg.longitude)
+                    print("GPS Time:", msg.timestamp)
+
+            except pynmea2.ParseError:
+                pass
+
+except KeyboardInterrupt:
+    gps.close()
+
+---
+
+Q4. Interface ADS1115 with Raspberry Pi to Act as an Oscilloscope
+
+1. Aim
+
+To interface ADS1115 ADC with Raspberry Pi and display analog signal waveforms.
+
+2. Prior Concept
+
+Basic knowledge of analog signals, ADC, I2C communication, and Python programming.
+
+3. New Concept
+
+Converting analog input voltage into digital readings and plotting the readings against time.
+
+4. Requirement
+
+1. Raspberry Pi
+2. ADS1115 ADC module
+3. Jumper wires
+4. Analog signal source
+5. Adafruit ADS1x15 library
+6. Matplotlib library
+
+5. Steps
+
+1. Connect VDD to 3.3V and GND to GND.
+2. Connect SDA to GPIO 2.
+3. Connect SCL to GPIO 3.
+4. Connect the analog signal to A0 within the permitted input range.
+5. Enable I2C.
+6. Install the required libraries.
+7. Run the program.
+
+6. Procedure
+
+1. Initialize I2C communication.
+2. Create the ADS1115 object.
+3. Select analog input channel A0.
+4. Read voltage samples.
+5. Record the time of each sample.
+6. Plot voltage against time.
+
+7. Program
+
+import time
+import board
+import busio
+import matplotlib.pyplot as plt
+import adafruit_ads1x15.ads1115 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
+
+i2c = busio.I2C(board.SCL, board.SDA)
+ads = ADS.ADS1115(i2c)
+channel = AnalogIn(ads, ADS.P0)
+
+times = []
+voltages = []
+start = time.time()
+
+for i in range(200):
+    voltages.append(channel.voltage)
+    times.append(time.time() - start)
+    time.sleep(0.01)
+
+plt.plot(times, voltages)
+plt.xlabel("Time (seconds)")
+plt.ylabel("Voltage (V)")
+plt.title("ADS1115 Oscilloscope")
+plt.grid(True)
+plt.show()
+
+---
+
+Q5. Interface 16×2 LCD with Raspberry Pi Using I2C to Display Text
+
+1. Aim
+
+To interface a 16×2 LCD with Raspberry Pi using an I2C module to display text.
+
+2. Prior Concept
+
+Basic knowledge of GPIO pins, I2C communication, and Python programming.
+
+3. New Concept
+
+Displaying messages on an LCD using the I2C communication protocol.
+
+4. Requirement
+
+1. Raspberry Pi
+2. 16×2 LCD with I2C module
+3. Jumper wires
+4. RPLCD Python library
+
+5. Steps
+
+1. Connect LCD VCC and GND correctly.
+2. Connect SDA to GPIO 2.
+3. Connect SCL to GPIO 3.
+4. Enable I2C.
+5. Check the LCD address.
+6. Install RPLCD.
+7. Run the program.
+
+6. Procedure
+
+1. Import the CharLCD library.
+2. Initialize the LCD.
+3. Clear the display.
+4. Display the first message.
+5. Move the cursor to the second row.
+6. Display the second message.
+
+7. Program
+
+from RPLCD.i2c import CharLCD
+import time
+
+lcd = CharLCD(
+    'PCF8574',
+    0x27,
+    port=1,
+    cols=16,
+    rows=2
+)
+
+try:
+    lcd.clear()
+    lcd.write_string("Hello Raspberry")
+    lcd.cursor_pos = (1, 0)
+    lcd.write_string("LCD using I2C")
+    time.sleep(10)
+
+finally:
+    lcd.clear()
+    lcd.close()
+
+---
+
+Q6. Interface RFID Module with Raspberry Pi to Read and Write RFID Cards
+
+1. Aim
+
+To interface an RFID module with Raspberry Pi to read card IDs and read or write data on compatible RFID cards.
+
+2. Prior Concept
+
+Basic knowledge of Raspberry Pi, SPI communication, RFID technology, and Python programming.
+
+3. New Concept
+
+Using an MFRC522 reader to identify RFID cards and store or retrieve text.
+
+4. Requirement
+
+1. Raspberry Pi
+2. MFRC522 RFID module
+3. Compatible writable RFID card
+4. Jumper wires
+5. Compatible MFRC522 Python library
+
+5. Steps
+
+1. Connect the MFRC522 module to Raspberry Pi.
+2. Connect SDA/SS to GPIO 8.
+3. Connect SCK to GPIO 11.
+4. Connect MOSI to GPIO 10.
+5. Connect MISO to GPIO 9.
+6. Connect RST to GPIO 25.
+7. Enable SPI and install the library.
+
+6. Procedure
+
+1. Initialize the RFID reader.
+2. Place a compatible card near the reader.
+3. Read the card ID and stored text.
+4. Enter new text.
+5. Write the new text to the card.
+6. Verify the written data.
+
+7. Program
+
+from mfrc522 import SimpleMFRC522
+import RPi.GPIO as GPIO
+
+reader = SimpleMFRC522()
+
+try:
+    print("Place RFID card near reader")
+
+    card_id, text = reader.read()
+    print("Card ID:", card_id)
+    print("Stored Data:", text)
+
+    new_text = input("Enter data to write: ")
+    reader.write(new_text)
+
+    print("Data written successfully")
+
+except KeyboardInterrupt:
+    print("Program stopped")
+
+finally:
+    GPIO.cleanup()
+
+---
+
+Q7. Interface Fingerprint Sensor with Raspberry Pi
+
+1. Aim
+
+To interface a fingerprint sensor with Raspberry Pi to identify registered fingerprints.
+
+2. Prior Concept
+
+Basic knowledge of UART communication, serial ports, and Python programming.
+
+3. New Concept
+
+Capturing a fingerprint and comparing it with enrolled fingerprint templates.
+
+4. Requirement
+
+1. Raspberry Pi
+2. Compatible fingerprint sensor
+3. Jumper wires
+4. PySerial library
+5. Compatible Adafruit fingerprint library
+
+5. Steps
+
+1. Connect the sensor power and ground correctly.
+2. Connect sensor TX to GPIO 15.
+3. Connect sensor RX to GPIO 14.
+4. Enable UART.
+5. Install the required libraries.
+6. Enroll a fingerprint.
+7. Run the program.
+
+6. Procedure
+
+1. Initialize serial communication.
+2. Wait for a finger.
+3. Capture the fingerprint image.
+4. Convert the image into a template.
+5. Search for a matching fingerprint.
+6. Display the matching ID or an unmatched message.
+
+7. Program
+
+import serial
+from adafruit_fingerprint import Adafruit_Fingerprint
+
+uart = serial.Serial(
+    "/dev/serial0",
+    baudrate=57600,
+    timeout=1
+)
+
+finger = Adafruit_Fingerprint(uart)
+
+try:
+    while True:
+        print("Place your finger on the sensor")
+
+        while finger.get_image() != 0:
+            pass
+
+        if finger.image_2_tz(1) != 0:
+            print("Image conversion failed")
+            continue
+
+        if finger.finger_search() == 0:
+            print("Fingerprint matched")
+            print("Fingerprint ID:", finger.finger_id)
+        else:
+            print("Fingerprint not found")
+
+        input("Press Enter to scan again")
+
+except KeyboardInterrupt:
+    print("Program stopped")
+
+finally:
+    uart.close()
+
+---
+
+Q8. Interface Pi Camera with Raspberry Pi to Capture Images and Videos
+
+1. Aim
+
+To interface a Pi Camera with Raspberry Pi to capture images and record videos.
+
+2. Prior Concept
+
+Basic knowledge of Raspberry Pi, camera connections, and Python programming.
+
+3. New Concept
+
+Using Picamera2 to capture still images and record videos.
+
+4. Requirement
+
+1. Raspberry Pi
+2. Compatible Pi Camera module
+3. Camera ribbon cable
+4. Picamera2 library
+
+5. Steps
+
+1. Connect the camera to the correct camera connector.
+2. Ensure the camera is detected.
+3. Install Picamera2 if required.
+4. Import the camera libraries.
+5. Run the program to capture an image.
+6. Record a 10-second video.
+
+6. Procedure
+
+1. Initialize the camera.
+2. Configure still-image mode.
+3. Capture and save an image.
+4. Configure video mode.
+5. Record a video for 10 seconds.
+6. Stop recording and close the camera.
+
+7. Program
+
+from picamera2 import Picamera2
+from picamera2.encoders import H264Encoder
+import time
+
+camera = Picamera2()
+
+try:
+    camera.configure(
+        camera.create_still_configuration()
+    )
+
+    camera.start()
+    time.sleep(2)
+    camera.capture_file("image.jpg")
+    print("Image captured successfully")
+    camera.stop()
+
+    camera.configure(
+        camera.create_video_configuration()
+    )
+
+    camera.start()
+    time.sleep(2)
+
+    encoder = H264Encoder()
+    camera.start_recording(encoder, "video.h264")
+
+    time.sleep(10)
+
+    camera.stop_recording()
+    camera.stop()
+
+    print("Video recorded successfully")
+
+finally:
+    camera.close()
+
+---
+
+Q9. Interface Fingerprint Sensor and 16×2 LCD with Raspberry Pi and Display UID Matched or Unmatched
+
+1. Aim
+
+To interface a fingerprint sensor and a 16×2 LCD with Raspberry Pi and display whether a fingerprint is matched or unmatched.
+
+2. Prior Concept
+
+Basic knowledge of UART, I2C, fingerprint recognition, and Python programming.
+
+3. New Concept
+
+Displaying fingerprint authentication results on an LCD.
+
+4. Requirement
+
+1. Raspberry Pi
+2. Fingerprint sensor
+3. 16×2 LCD with I2C module
+4. Jumper wires
+5. PySerial, Adafruit fingerprint, and RPLCD libraries
+
+5. Steps
+
+1. Connect the fingerprint sensor to UART.
+2. Connect the LCD to SDA and SCL.
+3. Enable UART and I2C.
+4. Install the required libraries.
+5. Enroll a fingerprint.
+6. Run the program.
+
+6. Procedure
+
+1. Initialize the fingerprint sensor and LCD.
+2. Display a prompt on the LCD.
+3. Capture a fingerprint.
+4. Search the enrolled fingerprint database.
+5. Display "UID Matched" if successful.
+6. Display "UID Unmatched" if unsuccessful.
+
+7. Program
+
+import serial
+import time
+from adafruit_fingerprint import Adafruit_Fingerprint
+from RPLCD.i2c import CharLCD
+
+uart = serial.Serial(
+    "/dev/serial0",
+    baudrate=57600,
+    timeout=1
+)
+
+finger = Adafruit_Fingerprint(uart)
+
+lcd = CharLCD(
+    'PCF8574',
+    0x27,
+    port=1,
+    cols=16,
+    rows=2
+)
+
+try:
+    lcd.clear()
+    lcd.write_string("Place Finger")
+
+    while True:
+        if finger.get_image() == 0:
+            if finger.image_2_tz(1) == 0:
+                if finger.finger_search() == 0:
+                    lcd.clear()
+                    lcd.write_string("UID Matched")
+                    lcd.cursor_pos = (1, 0)
+                    lcd.write_string(
+                        "ID: " + str(finger.finger_id)
+                    )
+                    print("UID Matched")
+                else:
+                    lcd.clear()
+                    lcd.write_string("UID Unmatched")
+                    print("UID Unmatched")
+
+                time.sleep(2)
+                lcd.clear()
+                lcd.write_string("Place Finger")
+
+        time.sleep(0.2)
+
+except KeyboardInterrupt:
+    print("Program stopped")
+
+finally:
+    lcd.clear()
+    lcd.close()
+    uart.close()
+
+---
+
+Q10. Simulate a Door Lock Using Fingerprint Sensor and Relay with Raspberry Pi
+
+1. Aim
+
+To simulate an electronic door-lock system using a fingerprint sensor and relay module connected to Raspberry Pi.
+
+2. Prior Concept
+
+Basic knowledge of GPIO, UART communication, and fingerprint recognition.
+
+3. New Concept
+
+Controlling a relay after successful fingerprint authentication.
+
+4. Requirement
+
+1. Raspberry Pi
+2. Fingerprint sensor
+3. Compatible relay module
+4. Jumper wires
+5. PySerial and fingerprint libraries
+
+5. Steps
+
+1. Connect the fingerprint sensor to UART.
+2. Connect the relay input to GPIO 17.
+3. Connect power and ground according to module specifications.
+4. Enable UART.
+5. Enroll an authorized fingerprint.
+6. Execute the program.
+
+6. Procedure
+
+1. Initialize the fingerprint sensor.
+2. Configure the relay GPIO.
+3. Capture a fingerprint.
+4. Search for a matching template.
+5. Activate the relay for three seconds if matched.
+6. Keep the relay inactive if unmatched.
+
+7. Program
+
+import serial
+import time
+import RPi.GPIO as GPIO
+from adafruit_fingerprint import Adafruit_Fingerprint
+
+RELAY = 17
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(RELAY, GPIO.OUT)
+GPIO.output(RELAY, GPIO.LOW)
+
+uart = serial.Serial(
+    "/dev/serial0",
+    baudrate=57600,
+    timeout=1
+)
+
+finger = Adafruit_Fingerprint(uart)
+
+try:
+    while True:
+        print("Place your finger")
+
+        while finger.get_image() != 0:
+            time.sleep(0.2)
+
+        if finger.image_2_tz(1) == 0:
+            if finger.finger_search() == 0:
+                print("Access Granted")
+
+                GPIO.output(RELAY, GPIO.HIGH)
+                time.sleep(3)
+                GPIO.output(RELAY, GPIO.LOW)
+
+            else:
+                print("Access Denied")
+
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    print("Program stopped")
+
+finally:
+    GPIO.output(RELAY, GPIO.LOW)
+    GPIO.cleanup()
+    uart.close()
+
+---
+
+Q11. Implement Basic Publisher-Subscriber Using MQTT and Control LED
+
+1. Aim
+
+To implement MQTT publisher-subscriber communication using Paho MQTT and control an LED through subscribed messages.
+
+2. Prior Concept
+
+Basic knowledge of Python, networking, MQTT, and GPIO pins.
+
+3. New Concept
+
+Using MQTT messages to control an LED remotely through a publisher and subscriber.
+
+4. Requirement
+
+1. Raspberry Pi
+2. LED
+3. 220Ω or 330Ω resistor
+4. Jumper wires
+5. MQTT broker
+6. Paho MQTT library
+
+5. Steps
+
+1. Connect the LED through a resistor to GPIO 17.
+2. Install the Paho MQTT library.
+3. Start an MQTT broker.
+4. Create a subscriber program.
+5. Create a publisher program.
+6. Publish ON and OFF messages.
+
+6. Procedure
+
+1. Connect to the MQTT broker.
+2. Subscribe to the LED topic.
+3. Receive messages from the publisher.
+4. Turn the LED ON when the message is ON.
+5. Turn the LED OFF when the message is OFF.
+6. Observe the LED response.
+
+7. Program A: Subscriber
+
+import paho.mqtt.client as mqtt
+import RPi.GPIO as GPIO
+
+LED = 17
+TOPIC = "raspberry/led"
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED, GPIO.OUT)
+GPIO.output(LED, GPIO.LOW)
+
+def on_connect(client, userdata, flags, reason_code, properties):
+    print("Connected to MQTT broker")
+    client.subscribe(TOPIC)
+
+def on_message(client, userdata, msg):
+    command = msg.payload.decode().strip().upper()
+
+    if command == "ON":
+        GPIO.output(LED, GPIO.HIGH)
+        print("LED ON")
+
+    elif command == "OFF":
+        GPIO.output(LED, GPIO.LOW)
+        print("LED OFF")
+
+client = mqtt.Client(
+    callback_api_version=mqtt.CallbackAPIVersion.VERSION2
+)
+
+client.on_connect = on_connect
+client.on_message = on_message
+
+try:
+    client.connect("localhost", 1883, 60)
+    client.loop_forever()
+
+except KeyboardInterrupt:
+    print("Program stopped")
+
+finally:
+    GPIO.cleanup()
+    client.disconnect()
+
+Program B: Publisher
+
+import paho.mqtt.client as mqtt
+
+client = mqtt.Client(
+    callback_api_version=mqtt.CallbackAPIVersion.VERSION2
+)
+
+client.connect("localhost", 1883, 60)
+client.loop_start()
+
+try:
+    while True:
+        message = input("Enter ON, OFF or EXIT: ").strip().upper()
+
+        if message == "EXIT":
+            break
+
+        if message in ("ON", "OFF"):
+            client.publish("raspberry/led", message)
+            print("Published:", message)
+        else:
+            print("Invalid command")
+
+finally:
+    client.loop_stop()
+    client.disconnect()
+
+Result
+
+Successfully implemented MQTT publisher-subscriber communication to control an LED.
+
+---
+
+Q12. Create Two-Factor Authentication Using Fingerprint Sensor, RFID, and Relay
+
+1. Aim
+
+To create a two-factor authentication system using a fingerprint sensor, RFID reader, and relay module.
+
+2. Prior Concept
+
+Basic knowledge of UART, SPI, GPIO, RFID, and fingerprint recognition.
+
+3. New Concept
+
+Combining RFID and fingerprint authentication to control a relay only when both factors are valid.
+
+4. Requirement
+
+1. Raspberry Pi
+2. Fingerprint sensor
+3. MFRC522 RFID reader
+4. Compatible RFID card
+5. Relay module
+6. Jumper wires
+7. Required Python libraries
+
+5. Steps
+
+1. Connect the fingerprint sensor to UART.
+2. Connect the MFRC522 module to SPI.
+3. Connect the relay input to GPIO 17.
+4. Enable UART and SPI.
+5. Enroll a fingerprint.
+6. Configure the authorized RFID card ID.
+7. Run the program.
+
+6. Procedure
+
+1. Initialize the RFID reader and fingerprint sensor.
+2. Scan the RFID card.
+3. Verify the card ID.
+4. Scan the fingerprint.
+5. Verify the fingerprint template.
+6. Activate the relay only if both checks succeed.
+
+7. Program
+
+import time
+import serial
+import RPi.GPIO as GPIO
+
+from mfrc522 import SimpleMFRC522
+from adafruit_fingerprint import Adafruit_Fingerprint
+
+RELAY = 17
+
+# Replace with the actual authorized RFID card ID.
+AUTHORIZED_CARD_ID = 123456789
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(RELAY, GPIO.OUT)
+GPIO.output(RELAY, GPIO.LOW)
+
+rfid = SimpleMFRC522()
+
+uart = serial.Serial(
+    "/dev/serial0",
+    baudrate=57600,
+    timeout=1
+)
+
+finger = Adafruit_Fingerprint(uart)
+
+try:
+    while True:
+        print("Scan RFID card")
+
+        card_id, text = rfid.read()
+
+        if card_id != AUTHORIZED_CARD_ID:
+            print("RFID authentication failed")
+            continue
+
+        print("RFID matched. Place your finger.")
+
+        while finger.get_image() != 0:
+            time.sleep(0.2)
+
+        if finger.image_2_tz(1) == 0:
+            if finger.finger_search() == 0:
+                print("Both factors matched")
+                print("Access Granted")
+
+                GPIO.output(RELAY, GPIO.HIGH)
+                time.sleep(3)
+                GPIO.output(RELAY, GPIO.LOW)
+
+            else:
+                print("Fingerprint unmatched")
+                print("Access Denied")
+
+        else:
+            print("Fingerprint processing failed")
+
+except KeyboardInterrupt:
+    print("Program stopped")
+
+finally:
+    GPIO.output(RELAY, GPIO.LOW)
+    GPIO.cleanup()
+    uart.close()
+
+Result
+
+Successfully implemented two-factor authentication using RFID and fingerprint verification to control a relay.
+
+---
+
+Q13. Read CPU Usage, Memory Usage, and CPU Temperature of Raspberry Pi
+
+1. Aim
+
+To monitor CPU usage, memory usage, and CPU temperature of Raspberry Pi using Python.
+
+2. Prior Concept
+
+Basic knowledge of Python programming, Raspberry Pi OS, and system monitoring.
+
+3. New Concept
+
+Using the psutil library and system thermal sensor to monitor system performance.
+
+4. Requirement
+
+1. Raspberry Pi
+2. Raspberry Pi OS
+3. Python 3
+4. psutil library
+
+5. Steps
+
+1. Open the terminal.
+2. Install the psutil library.
+3. Create a Python file.
+4. Write the monitoring program.
+5. Execute the program.
+6. Observe the CPU, memory, and temperature readings.
+
+6. Procedure
+
+1. Import the required libraries.
+2. Read CPU utilization.
+3. Read memory utilization.
+4. Obtain CPU temperature.
+5. Display the values.
+6. Repeat the monitoring every two seconds.
+
+7. Program
+
+import psutil
+import time
+
+def get_cpu_temperature():
+    try:
+        temps = psutil.sensors_temperatures()
+
+        for name, entries in temps.items():
+            for entry in entries:
+                if entry.current is not None:
+                    return entry.current
+
+    except (AttributeError, OSError):
+        pass
+
+    try:
+        with open(
+            "/sys/class/thermal/thermal_zone0/temp",
+            "r"
+        ) as file:
+            return int(file.read().strip()) / 1000
+
+    except (OSError, ValueError):
+        return None
+
+try:
+    while True:
+        cpu_usage = psutil.cpu_percent(interval=1)
+        memory_usage = psutil.virtual_memory().percent
+        temperature = get_cpu_temperature()
+
+        print("CPU Usage:", cpu_usage, "%")
+        print("Memory Usage:", memory_usage, "%")
+
+        if temperature is not None:
+            print("CPU Temperature:", temperature, "°C")
+        else:
+            print("CPU Temperature: Not available")
+
+        print("-------------------------")
+        time.sleep(2)
+
+except KeyboardInterrupt:
+    print("Monitoring stopped")
+
+Result
+
+Successfully monitored CPU usage, memory usage, and CPU temperature on Raspberry Pi.
+
+---
+
+General Notes
+
+1. Enable the required interfaces, such as UART, SPI, and I2C, before running the programs.
+2. Install the necessary Python libraries for each experiment.
+3. Check the voltage and GPIO requirements of every module before connecting it.
+4. The LCD I2C address may be "0x27" or "0x3F".
+5. GPS requires satellite reception to obtain valid coordinates.
+6. Fingerprint templates must be enrolled before identification.
+7. RFID cards must be compatible with the MFRC522 module.
+8. The ADS1115 is suitable for low-frequency signal demonstrations, not high-speed oscilloscope measurements.
+9. Relay logic varies by module; verify whether it is active-HIGH or active-LOW before connecting a lock.
+10. On newer Raspberry Pi OS versions, GPIO libraries and serial-port configuration may differ.
+
+Overall Conclusion
+
+Successfully studied 13 Raspberry Pi practicals involving LED blinking, TM1637 display, GPS, ADS1115, I2C LCD, RFID, fingerprint recognition, Pi Camera, fingerprint-LCD authentication, relay-based door locking, MQTT-based LED control, two-factor authentication, and system performance monitoring.
